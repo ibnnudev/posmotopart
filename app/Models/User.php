@@ -7,21 +7,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasRoles;
 
-    const SUPER_ADMIN = 'super-admin';
-    const MANAGEMENT_ADMIN = 'management-admin';
-    const FINANCE_ADMIN = 'finance-admin';
-    const CONTENT_ADMIN = 'content-admin';
-    const CUSTOMER = 'customer';
+    const ADMIN = 'admin';
+    const SELLER = 'seller';
+    const BUYER = 'buyer';
 
     protected $fillable = [
         'name',
         'email',
         'password',
+        'phone',
+        'store_name'
     ];
 
     protected $hidden = [

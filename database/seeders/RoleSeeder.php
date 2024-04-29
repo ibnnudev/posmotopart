@@ -15,11 +15,9 @@ class RoleSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Role::truncate();
         $roles = [
-            User::SUPER_ADMIN,
-            User::MANAGEMENT_ADMIN,
-            User::FINANCE_ADMIN,
-            User::CONTENT_ADMIN,
-            User::CUSTOMER,
+            User::ADMIN,
+            User::SELLER,
+            User::BUYER,
         ];
         Role::insert(array_map(fn ($role) => ['name' => $role, 'guard_name' => 'web'], $roles));
     }

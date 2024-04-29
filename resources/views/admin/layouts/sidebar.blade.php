@@ -21,7 +21,7 @@
             {{-- <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('doctor.dashboard') }}"
                 active="{{ request()->routeIs('doctor.dashboard') }}" /> --}}
             <li>
-                <form action="{{ route('sign-out') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit"
                         class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100">
