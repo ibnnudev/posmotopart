@@ -13,13 +13,15 @@
     aria-label="Sidebar">
     <div class="h-full px-4 py-8 overflow-y-auto bg-white">
         {{-- Logo --}}
-        <a href="#" class="flex items-center justify-center mb-4">
+        {{-- <a href="#" class="flex items-center justify-center mb-4">
             <img src="{{ asset('assets/image/logo.jpg') }}" class="mr-3 object-contain h-20" alt="logo"
                 class="mix-blend-multiply" />
-        </a>
+        </a> --}}
         <ul class="space-y-1">
-            {{-- <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('doctor.dashboard') }}"
-                active="{{ request()->routeIs('doctor.dashboard') }}" /> --}}
+            <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
+                active="{{ request()->routeIs('doctor.dashboard') }}" />
+            <x-sidebar-item name="Kategori" icon="fas fa-list" route="{{ route('admin.category.index') }}"
+                active="{{ request()->routeIs('admin.category.*') }}" />
             <li>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
