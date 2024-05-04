@@ -22,6 +22,9 @@
                 active="{{ request()->routeIs('doctor.dashboard') }}" />
             <x-sidebar-item name="Kategori" icon="fas fa-list" route="{{ route('admin.category.index') }}"
                 active="{{ request()->routeIs('admin.category.*') }}" />
+            <x-sidebar-item name="Payment Option" icon="fas fa-credit-card"
+                route="{{ route('admin.payment-option.index') }}"
+                active="{{ request()->routeIs('admin.payment-option.*') }}" />
             <li>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf

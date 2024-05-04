@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentOptionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
     // Category
     Route::resource('category', CategoryController::class, ['as' => 'admin']);
+    Route::resource('payment-option', PaymentOptionController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';
