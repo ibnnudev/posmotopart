@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->boolean('status')->default(1);
+            $table->enum('status', [1, 0])->default(1);
             $table->integer('admin_fee')->nullable();
             $table->integer('duration')->nullable();
             $table->softDeletes();

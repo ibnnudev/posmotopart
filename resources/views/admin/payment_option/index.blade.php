@@ -80,7 +80,6 @@
                             name: 'description',
                         },
                         {
-                            // when status is 1 show active
                             data: 'status',
                             name: 'status',
                             render: function(data) {

@@ -51,7 +51,6 @@ class PaymentOptionController extends Controller
      */
     public function create()
     {
-
         return view('admin.payment_option.create');
     }
 
@@ -64,12 +63,12 @@ class PaymentOptionController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'string|max:255',
             'status' => 'required|in:1,0',
-            'admin_fee' => 'required|numeric',
-            'duration' => 'required|numeric',
+            'admin_fee' => 'numeric',
+            'duration' => 'numeric',
         ]);
 
         try {
-            $this->paymentOption->store($request->accepts('_token'));
+            $this->paymentOption->store($request->except('_token'));
             toast('Payment option created successfully', 'success');
             return redirect()->route('admin.payment-option.index');
         } catch (\Throwable $th) {
@@ -121,7 +120,13 @@ class PaymentOptionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PaymentOption $paymentOption)
+    public function destroy($id)
     {
+        try {
+            $this->paymentOption->destroy($id);
+            return response()->json(true);
+        } catch (\Throwable $th) {
+            return response()->json(false);
+        }
     }
 }
