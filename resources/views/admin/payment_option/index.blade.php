@@ -2,18 +2,18 @@
     <x-card-container>
         <div class="text-end my-4">
             <a href="{{ route('admin.payment-option.create') }}"
-                class="px-4 py-2 bg-red-700 text-white rounded-md">Tambah</a>
+                class="px-4 py-2 bg-primary text-white rounded-md">Tambah</a>
         </div>
         <table>
             <thead>
                 <tr>
                     <td>#</td>
-                    <td>Name</td>
-                    <td>Description</td>
+                    <td>Nama</td>
+                    <td>Deskripsi</td>
                     <td>Status</td>
                     <td>Admin Fee</td>
-                    <td>Duration / day</td>
-                    <td>Action</td>
+                    <td>Durasi / hari</td>
+                    <td>Aksi</td>
                 </tr>
             </thead>
         </table>

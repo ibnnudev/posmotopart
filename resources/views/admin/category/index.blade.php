@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-card-container>
         <div class="text-end my-4">
-            <a href="{{ route('admin.category.create') }}" class="px-4 py-2 bg-red-700 text-white rounded-md">Tambah</a>
+            <a href="{{ route('admin.category.create') }}" class="px-4 py-2 bg-primary text-white rounded-md">Tambah</a>
         </div>
         <table>
             <thead>

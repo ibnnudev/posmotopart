@@ -9,29 +9,29 @@
 </button>
 
 <aside id="logo-sidebar"
-    class="fixed top-0 left-0 z-40 w-64 h-screen border border-r transition-transform -translate-x-full sm:translate-x-0"
+    class="fixed top-0 left-0 z-40 w-64 h-screen border border-primary border-r transition-transform -translate-x-full sm:translate-x-0"
     aria-label="Sidebar">
-    <div class="h-full px-4 py-8 overflow-y-auto bg-white">
-        {{-- Logo --}}
-        {{-- <a href="#" class="flex items-center justify-center mb-4">
-            <img src="{{ asset('assets/image/logo.jpg') }}" class="mr-3 object-contain h-20" alt="logo"
-                class="mix-blend-multiply" />
-        </a> --}}
-        <ul class="space-y-1">
+    <div class="h-full px-4 py-8 overflow-y-auto bg-primary">
+        <ul class="space-y-2">
             <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
-                active="{{ request()->routeIs('doctor.dashboard') }}" />
+                active="{{ request()->routeIs('admin.dashboard') }}" />
+            <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
+                <span>Master Data</span>
+            </li>
             <x-sidebar-item name="Kategori" icon="fas fa-list" route="{{ route('admin.category.index') }}"
                 active="{{ request()->routeIs('admin.category.*') }}" />
-            <x-sidebar-item name="Payment Option" icon="fas fa-credit-card"
+            <x-sidebar-item name="Metode Pembayaran" icon="fas fa-credit-card"
                 route="{{ route('admin.payment-option.index') }}"
                 active="{{ request()->routeIs('admin.payment-option.*') }}" />
+            <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
+                <span>Pengaturan</span>
+            </li>
             <li>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit"
-                        class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100">
-                        <i
-                            class="fas fa-sign-out-alt w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                        class="flex w-full items-center p-3 font-normal text-white rounded-md  hover:bg-gray-100 hover:text-primary">
+                        <i class="fas fa-sign-out-alt w-4 h-4 transition duration-75 hover:text-primary"></i>
                         <span class="ml-3">Keluar</span>
                     </button>
                 </form>

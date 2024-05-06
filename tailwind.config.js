@@ -13,15 +13,16 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: [
+                    "Lato",
                     "Inter",
                     "Lexend Deca",
-                    // "Plus Jakarta Sans",
+                    "Plus Jakarta Sans",
                     ...defaultTheme.fontFamily.sans,
                 ],
                 poppins: "'Poppins', sans-serif",
             },
             colors: {
-                primary: "#D04848",
+                primary: "#1D9A6C",
                 secondary: "#F000B8",
                 accent: "#37CDBE",
                 neutral: "#3D4451",
