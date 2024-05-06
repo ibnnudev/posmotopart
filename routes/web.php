@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentOptionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,7 +16,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
     // Category
     Route::resource('category', CategoryController::class, ['as' => 'admin']);
+
+    // Payment Option
     Route::resource('payment-option', PaymentOptionController::class, ['as' => 'admin']);
+
+    // Store
+    Route::put('store/{id}/update-status', [StoreController::class, 'updateStatus'])->name('admin.store.update-status');
+    Route::resource('store', StoreController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';

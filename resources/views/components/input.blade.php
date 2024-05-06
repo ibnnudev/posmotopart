@@ -12,13 +12,14 @@
     'disabled' => false,
 ])
 <div>
-    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="{{ $id }}">
+    <label class="block mb-2 text-sm font-normal text-gray-900 dark:text-white" for="{{ $id }}">
         {{ $label }} {!! $required ? '<span class="text-red-600">*</span>' : '' !!}
     </label>
     <input type="{{ $type }}" id="{{ $id }}" data-format="{{ $format }}"
         {{ $step ? 'step="any"' : '' }} {{ $disabled ? 'disabled' : '' }}
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-300 block w-full p-2.5"
-        name="{{ $name }}" value="{{ $value }}"  {{ $required != false ? 'required' : '' }} {{ $readonly }} />
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary focus:border-primary transition duration-300 block w-full p-2.5"
+        name="{{ $name }}" value="{{ $value }}" {{ $required != false ? 'required' : '' }}
+        {{ $readonly }} />
     @if ($tip)
         <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ $tip }}</p>
     @endif

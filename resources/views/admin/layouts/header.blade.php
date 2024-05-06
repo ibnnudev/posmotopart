@@ -4,7 +4,7 @@
         <div class="p-1 w-full flex justify-end">
             <div class="flex justify-end gap-4 items-center">
                 <span class="ml-3">{{ auth()->user()->name }}</span>
-                <img src="https://ui-avatars.com/api/?background=D04848&color=fff&name={{ auth()->user()->name }}"
+                <img src="https://ui-avatars.com/api/?background=1D9A6C&color=fff&name={{ auth()->user()->name }}"
                     class="w-8 h-8 rounded-full" alt="avatar">
             </div>
             <form action="{{ route('logout') }}" method="POST">

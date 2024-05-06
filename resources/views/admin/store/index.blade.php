@@ -1,22 +1,19 @@
 <x-app-layout>
     <x-breadcrumb :links="[
         ['name' => 'Dashboard', 'url' => route('admin.dashboard')],
-        ['name' => 'Metode Pembayaran', 'url' => route('admin.payment-option.index')],
+        ['name' => 'Daftar Toko', 'url' => route('admin.store.index')],
     ]" />
     <x-card-container>
-        <div class="text-end my-4">
-            <a href="{{ route('admin.payment-option.create') }}"
-                class="px-4 py-2 bg-primary text-white rounded-md">Tambah</a>
+        <div class="text-end my-5">
+            <a href="{{ route('admin.store.create') }}" class="px-5 py-2.5 bg-primary text-white rounded-md">Tambah</a>
         </div>
         <table>
             <thead>
                 <tr>
                     <td>#</td>
                     <td>Nama</td>
-                    <td>Deskripsi</td>
+                    <td>No. Telefon</td>
                     <td>Status</td>
-                    <td>Admin Fee (%)</td>
-                    <td>Durasi / hari</td>
                     <td>Aksi</td>
                 </tr>
             </thead>
@@ -36,7 +33,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `{{ route('admin.payment-option.destroy', ':id') }}`.replace(':id', id),
+                            url: `{{ route('admin.store.destroy', ':id') }}`.replace(':id', id),
                             type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}'
@@ -61,12 +58,50 @@
                 });
             }
 
+            function updateStatus(id, val) {
+                Swal.fire({
+                    title: 'Apakah Anda Yakin?',
+                    text: "Anda akan mengubah status toko ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Ubah!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `{{ route('admin.store.update-status', ':id') }}`.replace(':id', id),
+                            type: 'PUT',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                status: val.checked
+                            },
+                            success: function(response) {
+                                if (response.status) {
+                                    Swal.fire(
+                                        'Berhasil!',
+                                        response.message,
+                                        'success'
+                                    );
+                                } else {
+                                    Swal.fire(
+                                        'Gagal!',
+                                        response.message,
+                                        'error'
+                                    );
+                                }
+                                $('table').DataTable().ajax.reload();
+                            },
+                        });
+                    }
+                });
+            }
+
             $(function() {
                 $('table').DataTable({
                     processing: true,
                     autoWidth: false,
                     responsive: true,
-                    ajax: '{{ route('admin.payment-option.index') }}',
+                    ajax: '{{ route('admin.store.index') }}',
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex',
@@ -80,27 +115,12 @@
                             searchable: false
                         },
                         {
-                            data: 'description',
-                            name: 'description',
+                            data: 'phone',
+                            name: 'phone'
                         },
                         {
                             data: 'status',
-                            name: 'status',
-                            render: function(data) {
-                                if (data == 1) {
-                                    return '<span class="text-green-500">Aktif</span>';
-                                } else {
-                                    return '<span class="text-red-500">Non Aktif</span>';
-                                }
-                            }
-                        },
-                        {
-                            data: 'admin_fee',
-                            name: 'admin_fee',
-                        },
-                        {
-                            data: 'duration',
-                            name: 'duration',
+                            name: 'status'
                         },
                         {
                             data: 'action',
