@@ -20,7 +20,7 @@
             </li>
             <x-sidebar-item name="Daftar Toko" icon="fas fa-store" route="{{ route('admin.store.index') }}"
                 active="{{ request()->routeIs('admin.store.*') }}" />
-            <x-sidebar-item name="Kategori" icon="fas fa-list" route="{{ route('admin.category.index') }}"
+            <x-sidebar-item name="Kategori Toko" icon="fas fa-list" route="{{ route('admin.category.index') }}"
                 active="{{ request()->routeIs('admin.category.*') }}" />
             <x-sidebar-item name="Metode Pembayaran" icon="fas fa-credit-card"
                 route="{{ route('admin.payment-option.index') }}"
@@ -32,7 +32,7 @@
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit"
-                        class="flex w-full items-center p-3 text-sm font-light text-white rounded-md  hover:bg-gray-100 hover:text-primary">
+                        class="flex w-full items-center p-3 text-sm text-white rounded-md  hover:bg-gray-100 hover:text-primary">
                         <i class="fas fa-sign-out-alt w-4 h-4 transition duration-75 hover:text-primary"></i>
                         <span class="ml-3">Keluar</span>
                     </button>

@@ -1,4 +1,8 @@
 <x-app-layout>
+    <x-breadcrumb :links="[
+        ['name' => 'Dashboard', 'url' => route('admin.dashboard')],
+        ['name' => 'Metode Pembayaran', 'url' => route('admin.payment-option.index')],
+    ]" />
     <x-card-container>
         <div class="text-end my-4">
             <a href="{{ route('admin.payment-option.create') }}"
@@ -11,7 +15,7 @@
                     <td>Nama</td>
                     <td>Deskripsi</td>
                     <td>Status</td>
-                    <td>Admin Fee</td>
+                    <td>Admin Fee (%)</td>
                     <td>Durasi / hari</td>
                     <td>Aksi</td>
                 </tr>

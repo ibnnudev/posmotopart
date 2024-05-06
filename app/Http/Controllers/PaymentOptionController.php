@@ -30,7 +30,7 @@ class PaymentOptionController extends Controller
                     return $data->status;
                 })
                 ->addColumn('admin_fee', function ($data) {
-                    return $data->admin_fee;
+                    return $data->admin_fee . ' %';
                 })
                 ->addColumn('duration', function ($data) {
                     return $data->duration;
@@ -64,7 +64,7 @@ class PaymentOptionController extends Controller
             'description' => 'string|max:255',
             'status' => 'required|in:1,0',
             'admin_fee' => 'numeric',
-            'duration' => 'numeric',
+            'duration' => 'nullable|numeric',
         ]);
 
         try {
@@ -104,7 +104,7 @@ class PaymentOptionController extends Controller
             'description' => 'string|max:255',
             'status' => 'required|in:1,0',
             'admin_fee' => 'required|numeric',
-            'duration' => 'required|numeric',
+            'duration' => 'nullable|numeric',
         ]);
 
         try {
