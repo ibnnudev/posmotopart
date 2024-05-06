@@ -1,10 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PaymentOptionController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\StoreController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PaymentOptionController;
+use App\Http\Controllers\Admin\StoreController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
