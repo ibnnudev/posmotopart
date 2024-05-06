@@ -84,9 +84,9 @@
                             name: 'status',
                             render: function(data) {
                                 if (data == 1) {
-                                    return '<span class="text-green-500">Active</span>';
+                                    return '<span class="text-green-500">Aktif</span>';
                                 } else {
-                                    return '<span class="text-red-500">Inactive</span>';
+                                    return '<span class="text-red-500">Non Aktif</span>';
                                 }
                             }
                         },

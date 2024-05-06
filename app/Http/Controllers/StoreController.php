@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\StoreInterface;
 use App\Models\Store;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
     private $store;
+    private $user;
 
-
-    public function __construct(StoreInterface $store)
+    public function __construct(StoreInterface $store, User $user)
     {
         $this->store = $store;
+        $this->user = $user;
     }
 
 
@@ -29,7 +31,7 @@ class StoreController extends Controller
                     return $data->phone;
                 })
                 ->addColumn('status', function ($data) {
-                    return $data->status ? 'Aktif' : 'Tidak Aktif';
+                    return view('admin.store.partials.status', compact('data'));
                 })
                 ->addColumn('action', function ($data) {
                     return view('admin.store.partials.action', ['id' => $data->id]);
@@ -68,35 +70,64 @@ class StoreController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Store $store)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Store $store)
+    public function edit($id)
     {
-        //
+        $data = $this->store->getById($id);
+        return view('admin.store.edit', compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Store $store)
+    public function update($id, Request $request)
     {
-        //
+        $user = $this->store->getById($id)['user'];
+        $request->validate([
+            'name' => 'required',
+            'store_name' => 'required',
+            'email' => ['required', 'email', 'unique:users,email,' . $user['id']],
+            'phone' => 'required',
+            'address' => 'required',
+            'logo' => 'nullable',
+        ]);
+
+        try {
+            $this->store->update($id, $request->all());
+            toast('Data berhasil diubah', 'success');
+            return redirect()->route('admin.store.index');
+        } catch (\Throwable $th) {
+            toast($th->getMessage(), 'error');
+            return redirect()->back();
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Store $store)
+    public function destroy($id)
     {
-        //
+        try {
+            $this->store->destroy($id);
+            toast('Data berhasil dihapus', 'success');
+            return redirect()->route('admin.store.index');
+        } catch (\Throwable $th) {
+            toast($th->getMessage(), 'error');
+            return redirect()->back();
+        }
+    }
+
+    public function updateStatus($id, Request $request)
+    {
+        try {
+            $this->store->updateStatus($id, $request->status);
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil diubah'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }

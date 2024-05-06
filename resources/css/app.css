@@ -22,11 +22,17 @@
 }
 
 .swal2-title {
-    @apply text-xl;
+    @apply text-base;
 }
 
 .swal2-html-container {
-    @apply text-xs 2xl:text-sm;
+    font-size: 14px !important;
+}
+
+.swal2-confirm,
+.swal2-cancel,
+.swal2-deny {
+    @apply text-xs !important;
 }
 div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
     @apply bg-primary rounded-md text-sm;

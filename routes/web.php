@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('payment-option', PaymentOptionController::class, ['as' => 'admin']);
 
     // Store
+    Route::put('store/{id}/update-status', [StoreController::class, 'updateStatus'])->name('admin.store.update-status');
     Route::resource('store', StoreController::class, ['as' => 'admin']);
 });
 

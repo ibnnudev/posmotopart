@@ -55,6 +55,7 @@ class StoreRepository implements StoreInterface
 
             DB::commit();
         } catch (\Throwable $th) {
+            Storage::delete('public/store/' . $filename);
             throw $th;
             DB::rollBack();
         }
@@ -66,24 +67,27 @@ class StoreRepository implements StoreInterface
         try {
             $store = $this->store->find($id);
 
-            if (isset($data['logo'])) {
-                if ($store->logo != null) {
-                    Storage::delete('public/store/' . $store->logo);
-                }
+            $this->user->find($store->user_id)->update([
+                'name' => $data['name'],
+                'email' => $data['email'],
+            ]);
+
+            if (isset($data['logo']) && $data['logo'] != null) {
+                Storage::delete('public/store/' . $store->logo);
                 $filename = Str::random(10) . '.' . $data['logo']->getClientOriginalExtension();
                 $data['logo']->storeAs('public/store', $filename);
                 $data['logo'] = $filename;
             }
 
             $data['name'] = $data['store_name'];
-            $data['slug'] = Str::slug($data['name']);
+            $data['slug'] = Str::slug($data['store_name']);
+
             $store->update($data);
-            return $store;
         } catch (\Throwable $th) {
+            Storage::delete('public/store/' . $filename);
             DB::rollBack();
             throw $th;
         }
-
         DB::commit();
     }
 
@@ -91,12 +95,33 @@ class StoreRepository implements StoreInterface
     {
         DB::beginTransaction();
         try {
+            $this->user->find($this->store->find($id)->user_id)->delete();
             $this->store->find($id)->update(['status' => 0]);
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             DB::rollBack();
             throw $th;
         }
 
         DB::commit();
+    }
+
+    public function updateStatus($id, $status)
+    {
+        DB::beginTransaction();
+        try {
+            $store = $this->getById($id);
+            if ($status == 'true') {
+                $this->user->withTrashed()->find($store->user_id)->restore();
+                $store->update(['status' => 1]);
+            } else {
+                $this->user->find($store->user_id)->delete();
+                $store->update(['status' => 0]);
+            }
+            DB::commit();
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+        }
     }
 }

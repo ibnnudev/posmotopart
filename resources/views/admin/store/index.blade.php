@@ -58,6 +58,44 @@
                 });
             }
 
+            function updateStatus(id, val) {
+                Swal.fire({
+                    title: 'Apakah Anda Yakin?',
+                    text: "Anda akan mengubah status toko ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Ubah!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `{{ route('admin.store.update-status', ':id') }}`.replace(':id', id),
+                            type: 'PUT',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                status: val.checked
+                            },
+                            success: function(response) {
+                                if (response.status) {
+                                    Swal.fire(
+                                        'Berhasil!',
+                                        response.message,
+                                        'success'
+                                    );
+                                } else {
+                                    Swal.fire(
+                                        'Gagal!',
+                                        response.message,
+                                        'error'
+                                    );
+                                }
+                                $('table').DataTable().ajax.reload();
+                            },
+                        });
+                    }
+                });
+            }
+
             $(function() {
                 $('table').DataTable({
                     processing: true,

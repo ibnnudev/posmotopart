@@ -45,8 +45,8 @@ class PaymentOptionRepository implements PaymentOptionInterface
 
     public function destroy($id)
     {
-        $category = $this->paymentOption->find($id);
         try {
+            $category = $this->paymentOption->find($id);
             return $category->delete();
         } catch (\Throwable $th) {
             throw $th;
