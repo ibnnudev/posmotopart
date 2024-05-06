@@ -1,7 +1,7 @@
-@props(['links' => [], 'title'])
+@props(['links' => []])
 
-<div class="mb-8">
-    <p class="text-gray-500">
+<div class="mb-4 text-sm">
+    <p class="text-gray-500 bg-white p-4 rounded-lg">
         @foreach ($links as $link)
             @if ($loop->last)
                 {{ $link['name'] }}
@@ -10,7 +10,4 @@
             @endif
         @endforeach
     </p>
-    <h2 class="text-xl font-semibold mt-8">
-        {{ $title }}
-    </h2>
 </div>
