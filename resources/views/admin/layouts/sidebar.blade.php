@@ -16,6 +16,19 @@
             <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
                 active="{{ request()->routeIs('admin.dashboard') }}" />
             <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
+                <span>Master Pengguna</span>
+            </li>
+            <x-sidebar-dropdown title="Manajemen Pengguna" icon="fas fa-users" toggle="master-users"
+                active="{{ request()->routeIs('admin.permission.*') || request()->routeIs('admin.user.*') || request()->routeIs('admin.role.*') }}">
+                <x-sidebar-submenu name="Permission" route="{{ route('admin.permission.index') }}"
+                    active="{{ request()->routeIs('admin.permission.*') }}" icon="fas fa-key" />
+                <x-sidebar-submenu name="Hak Akses" route="{{ route('admin.role.index') }}"
+                    active="{{ request()->routeIs('admin.role.*') }}" icon="fas fa-user-lock" />
+                <x-sidebar-submenu name="Pengguna" route="{{ route('admin.user.index') }}"
+                    active="{{ request()->routeIs('admin.user.*') }}" icon="fas fa-user" />
+            </x-sidebar-dropdown>
+
+            <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
                 <span>Master Data</span>
             </li>
             <x-sidebar-item name="Daftar Toko" icon="fas fa-store" route="{{ route('admin.store.index') }}"
