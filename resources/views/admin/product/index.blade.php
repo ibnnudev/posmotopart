@@ -18,13 +18,12 @@
         <table id="productTable">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>SKU</th>
                     <th>SKU Seller</th>
                     <th>Nama Produk</th>
                     <th>Stok</th>
                     <th>Harga</th>
-                    <th>Aksi</th>
+                    {{-- <th>Aksi</th> --}}
                 </tr>
             </thead>
         </table>
@@ -40,7 +39,19 @@
                     document.getElementById('importButton').setAttribute('disabled', 'disabled');
                     document.getElementById('importButton').classList.add('cursor-not-allowed');
 
-                    this.form.submit();
+                    // add overlay sweet alert loading
+                    Swal.fire({
+                        title: 'Sedang mengunggah...',
+                        html: 'Mohon tunggu sebentar',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: false,
+                        willOpen: () => {
+                            Swal.showLoading();
+                        },
+                    });
+
+                    document.getElementById('importButton').parentElement.submit();
                 };
             }
 
@@ -51,10 +62,6 @@
                     autoWidth: false,
                     ajax: '{{ route('admin.product.index') }}',
                     columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex'
-                        },
-                        {
                             data: 'sku',
                             name: 'sku'
                         },
@@ -74,13 +81,25 @@
                             data: 'price',
                             name: 'price'
                         },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false
-                        },
-                    ]
+                        // {
+                        //     data: 'action',
+                        //     name: 'action',
+                        //     orderable: false,
+                        //     searchable: false
+                        // },
+                    ],
+                    // show 50 rows by default
+                    lengthMenu: [
+                        [10, 25, 50, 100, 500],
+                        [10, 25, 50, 100, 500]
+                    ],
+                    pageLength: 50,
+                    // set the initial value
+                    order: [
+                        [0, 'asc']
+                    ],
+                    // set the default order column
+                    orderCellsTop: true,
                 });
             });
 

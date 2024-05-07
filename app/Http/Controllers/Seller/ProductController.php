@@ -35,11 +35,11 @@ class ProductController extends Controller
                     return $data->stock;
                 })
                 ->addColumn('price', function ($data) {
-                    return 'Rp. ' . number_format($data->price, 2, ',', '.');
+                    return 'Rp ' . number_format($data->price, 0, ',', '.');
                 })
-                ->addColumn('action', function ($data) {
-                    return view('admin.product.patials._action', ['data' => $data]);
-                })
+                // ->addColumn('action', function ($data) {
+                //     return view('admin.product.patials._action', ['data' => $data]);
+                // })
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -65,7 +65,7 @@ class ProductController extends Controller
                 'id' => (string) \Illuminate\Support\Str::uuid(),
                 'user_id' => auth()->id(),
                 'store_id' => $store_id,
-                'SKU' => $data[0],
+                'SKU' => trim($data[0], '"'),
                 'SKU_seller' => $data[1],
                 'name' => trim($data[2], '"'),
                 'stock' => $data[3],
