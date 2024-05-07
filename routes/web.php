@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\RequestProductController;
 use App\Http\Controllers\Seller\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
-    Route::get('/', DashboardController::class)->name('admin.dashboard');
+    Route::get('/', DashboardController::class)->name('admin.dashboard')->middleware('isAdminSeller');
     // Permission
     Route::resource('permission', PermissionController::class, ['as' => 'admin'])->middleware('role:admin');
     // Role
@@ -30,8 +31,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::put('store/{id}/update-status', [StoreController::class, 'updateStatus'])->name('admin.store.update-status')->middleware('role:admin');
     Route::resource('store', StoreController::class, ['as' => 'admin'])->middleware('role:admin');
 
+    // Request Product (admin, seller)
+    Route::post('request-product/change-status/{id}', [RequestProductController::class, 'changeStatus'])->name('admin.request-product.change-status')->middleware('role:admin');
+    Route::post('request-product/import', [RequestProductController::class, 'import'])->name('admin.request-product.import')->middleware('role:admin|seller');
+    Route::resource('request-product', RequestProductController::class, ['as' => 'admin'])->middleware('role:admin|seller');
+
     // Product
-    Route::post('import', [ProductController::class, 'import'])->name('admin.product.import')->middleware('role:seller');
+    Route::post('product/import', [ProductController::class, 'import'])->name('admin.product.import')->middleware('role:seller');
     Route::resource('product', ProductController::class, ['as' => 'admin'])->middleware('role:seller');
 });
 

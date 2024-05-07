@@ -9,4 +9,5 @@ interface ProductInterface
     public function create($data);
     public function import($data);
     public function getById($id);
+    public function getByStore($id);
 }

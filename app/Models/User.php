@@ -39,4 +39,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Store::class);
     }
+
+    public function requestProducts()
+    {
+        return $this->hasMany(RequestProduct::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

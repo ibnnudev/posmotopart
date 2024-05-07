@@ -10,7 +10,6 @@ class ProductController extends Controller
 {
     private $product;
 
-
     public function __construct(ProductInterface $product)
     {
         $this->product = $product;
@@ -21,7 +20,7 @@ class ProductController extends Controller
     {
         if ($request->wantsJson()) {
             return datatables()
-                ->of($this->product->getAll())
+                ->of($this->product->getByStore(auth()->user()->store->id))
                 ->addColumn('sku', function ($data) {
                     return view('admin.product.patials._sku', ['data' => $data]);
                 })

@@ -5,7 +5,7 @@
     ]" />
 
     <x-card-container>
-        <div class="text-end mb-4 flex justify-end gap-2">
+        {{-- <div class="text-end mb-4 flex justify-end gap-2">
             <x-link-button href="{{ asset('files/template_import_product.csv') }}" title="Download Template" />
             <form action="{{ route('admin.product.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -13,7 +13,7 @@
                 <x-button id="importButton" type="button" fit="true" onclick="uploadFile()">Import
                     Produk</x-button>
             </form>
-        </div>
+        </div> --}}
 
         <table id="productTable">
             <thead>
@@ -31,29 +31,29 @@
 
     @push('js-internal')
         <script>
-            function uploadFile() {
-                document.getElementById('file').click();
+            // function uploadFile() {
+            //     document.getElementById('file').click();
 
-                document.getElementById('file').onchange = function() {
-                    document.getElementById('importButton').innerText = 'Mengunggah...';
-                    document.getElementById('importButton').setAttribute('disabled', 'disabled');
-                    document.getElementById('importButton').classList.add('cursor-not-allowed');
+            //     document.getElementById('file').onchange = function() {
+            //         document.getElementById('importButton').innerText = 'Mengunggah...';
+            //         document.getElementById('importButton').setAttribute('disabled', 'disabled');
+            //         document.getElementById('importButton').classList.add('cursor-not-allowed');
 
-                    // add overlay sweet alert loading
-                    Swal.fire({
-                        title: 'Sedang mengunggah...',
-                        html: 'Mohon tunggu sebentar',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        showConfirmButton: false,
-                        willOpen: () => {
-                            Swal.showLoading();
-                        },
-                    });
+            //         // add overlay sweet alert loading
+            //         Swal.fire({
+            //             title: 'Sedang mengunggah...',
+            //             html: 'Mohon tunggu sebentar',
+            //             allowOutsideClick: false,
+            //             allowEscapeKey: false,
+            //             showConfirmButton: false,
+            //             willOpen: () => {
+            //                 Swal.showLoading();
+            //             },
+            //         });
 
-                    document.getElementById('importButton').parentElement.submit();
-                };
-            }
+            //         document.getElementById('importButton').parentElement.submit();
+            //     };
+            // }
 
             $(function() {
                 $('#productTable').DataTable({
