@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Interfaces\RoleInterface::class, \App\Repositories\RoleRepository::class);
         $this->app->bind(\App\Interfaces\PermissionInterface::class, \App\Repositories\PermissionRepository::class);
         $this->app->bind(\App\Interfaces\ProductInterface::class, \App\Repositories\ProductRepository::class);
+        $this->app->bind(\App\Interfaces\RequestProductInterface::class, \App\Repositories\RequestProductRepository::class);
     }
 
     public function boot(): void
