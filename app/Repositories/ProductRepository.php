@@ -42,4 +42,9 @@ class ProductRepository implements ProductInterface
     public function import($data)
     {
     }
+
+    public function getById($id)
+    {
+        return $this->product->find($id);
+    }
 }

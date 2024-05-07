@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
-    use UUID;
+    use HasFactory, UUID, HasUuids;
 
     public $table = 'products';
     protected $fillable = [
@@ -27,6 +26,7 @@ class Product extends Model
         'SAE',
         'manufacturer',
         'store_id',
-        'user_id'
+        'user_id',
+        'merk'
     ];
 }

@@ -23,7 +23,7 @@ class ProductController extends Controller
             return datatables()
                 ->of($this->product->getAll())
                 ->addColumn('sku', function ($data) {
-                    return $data->SKU;
+                    return view('admin.product.patials._sku', ['data' => $data]);
                 })
                 ->addColumn('sku_seller', function ($data) {
                     return $data->SKU_seller ?? '-';
@@ -37,9 +37,6 @@ class ProductController extends Controller
                 ->addColumn('price', function ($data) {
                     return 'Rp ' . number_format($data->price, 0, ',', '.');
                 })
-                // ->addColumn('action', function ($data) {
-                //     return view('admin.product.patials._action', ['data' => $data]);
-                // })
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -50,7 +47,7 @@ class ProductController extends Controller
     public function import(Request $request)
     {
         // read csv file
-        $file = $request->file('file');
+        $file         = $request->file('file');
         $fileContents = file($file->getPathname());
 
         // remove header
@@ -62,20 +59,21 @@ class ProductController extends Controller
         foreach ($fileContents as $row) {
             $data = explode(',', $row);
             $this->product->create([
-                'id' => (string) \Illuminate\Support\Str::uuid(),
-                'user_id' => auth()->id(),
-                'store_id' => $store_id,
-                'SKU' => trim($data[0], '"'),
-                'SKU_seller' => $data[1],
-                'name' => trim($data[2], '"'),
-                'stock' => $data[3],
-                'price' => (float)  str_replace("\n", "", $data[4]),
-                'unit' => preg_match('/\((.*?)\)/', $data[2], $matches) ? strtoupper($matches[1]) : 'PCS',
-                'size' => $this->extractSize($data[2]),
-                'type' => $this->extractType($data[2]),
+                'id'         => (string) \Illuminate\Support\Str::uuid(),
+                'user_id'    => auth()->id(),
+                'store_id'   => $store_id,
+                'SKU'        => trim($data[0], '"'),
+                'SKU_seller' => $data[1] == '' || $data[1] == '""' ? null : trim($data[1], '"'),
+                'name'       => trim($data[2], '"'),
+                'stock'      => (int) $data[3] ?? 0,
+                'price'      => (float)  str_replace("\n", "", $data[4]),
+                'unit'       => preg_match('/\((.*?)\)/', $data[2], $matches) ? strtoupper($matches[1]) : 'PCS',
+                'size'         => $this->extractSize($data[2]),
+                'type'         => $this->extractType($data[2]),
                 'machine_name' => '-',
-                'SAE' => '-',
+                'SAE'          => '-',
                 'manufacturer' => '-',
+                'merk'         => null // TODO: change to dynamic soon
             ]);
         }
 
@@ -107,9 +105,9 @@ class ProductController extends Controller
 
         // get word after size 
         $words = explode(' ', $data);
-        $size = $this->extractSize($data);
+        $size  = $this->extractSize($data);
         $index = array_search($size, $words);
-        $type = $words[$index + 1];
+        $type  = $words[$index + 1];
 
         return $type;
     }
@@ -124,9 +122,10 @@ class ProductController extends Controller
         //
     }
 
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $data = $this->product->getById($id);
+        return view('admin.product.show', compact('data'));
     }
 
     public function edit(string $id)
