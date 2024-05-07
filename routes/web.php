@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('store', StoreController::class, ['as' => 'admin'])->middleware('role:admin');
 
     // Product
+    Route::post('import', [ProductController::class, 'import'])->name('admin.product.import')->middleware('role:seller');
     Route::resource('product', ProductController::class, ['as' => 'admin'])->middleware('role:seller');
 });
 
