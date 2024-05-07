@@ -99,6 +99,7 @@
             $(function() {
                 $('table').DataTable({
                     processing: true,
+                    serverSide: true,
                     autoWidth: false,
                     responsive: true,
                     ajax: '{{ route('admin.store.index') }}',

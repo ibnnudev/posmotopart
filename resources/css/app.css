@@ -94,3 +94,7 @@ div:where(.swal2-container) .swal2-html-container {
 .select2-container {
     @apply w-full !important;
 }
+
+.dataTable th {
+    @apply text-sm font-normal !important;
+}
