@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\ProductInterface;
 use App\Interfaces\RequestProductInterface;
+use App\Models\ProductStockHistory;
 use App\Models\RequestProduct;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -12,11 +13,13 @@ class RequestProductRepository implements RequestProductInterface
 {
     private $requestProduct;
     private $product;
+    private $productStockHistory;
 
-    public function __construct(RequestProduct $requestProduct, ProductInterface $product)
+    public function __construct(RequestProduct $requestProduct, ProductInterface $product, ProductStockHistory $productStockHistory)
     {
         $this->requestProduct = $requestProduct;
         $this->product        = $product;
+        $this->productStockHistory = $productStockHistory;
     }
 
     public function getAll()
@@ -48,7 +51,7 @@ class RequestProductRepository implements RequestProductInterface
                 foreach ($fileContents as $row) {
                     $column = explode(';', $row);
                     if ($column == [''])   continue;
-                    $this->product->create([
+                    $product = $this->product->create([
                         'id'           => (string) \Illuminate\Support\Str::uuid(),
                         'user_id'      => $imported['user_id'],
                         'store_id'     => $imported['store_id'],
@@ -65,6 +68,16 @@ class RequestProductRepository implements RequestProductInterface
                         'manufacturer' => $column[6],
                         'discount'     => str_replace('\r', '', $column[11]),
                         'merk'         => null                         // TODO: change to dynamic soon
+                    ]);
+
+                    $this->productStockHistory->create([
+                        'store_id'   => $imported['store_id'],
+                        'product_id' => $product['id'],
+                        'in_stock'   => $product['stock'],
+                        'out_stock'  => 0,
+                        'final_stock' => $product['stock'],
+                        'created_at' => now(),
+                        'created_by' => $imported['user_id'],
                     ]);
                 }
             }

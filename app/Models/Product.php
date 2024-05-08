@@ -29,4 +29,19 @@ class Product extends Model
         'user_id',
         'merk'
     ];
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class, 'store_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function stockHistories()
+    {
+        return $this->hasMany(ProductStockHistory::class, 'product_id', 'id');
+    }
 }
