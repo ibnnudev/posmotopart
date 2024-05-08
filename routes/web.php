@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ProductStockHistoryController;
 use App\Http\Controllers\RequestProductController;
 use App\Http\Controllers\Seller\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     // Product
     Route::post('product/import', [ProductController::class, 'import'])->name('admin.product.import')->middleware('role:seller');
     Route::resource('product', ProductController::class, ['as' => 'admin'])->middleware('role:seller');
+
+    // Product Stock History
+    Route::post('product-stock-history/import', [ProductStockHistoryController::class, 'import'])->name('admin.product-stock-history.import')->middleware('role:seller|admin');
+    Route::get('product-stock-history/download-template', [ProductStockHistoryController::class, 'downloadTemplate'])->name('admin.product-stock-history.download-template')->middleware('role:seller|admin');
+    Route::resource('product-stock-history', ProductStockHistoryController::class, ['as' => 'admin'])->middleware('role:seller|admin');
 });
 
 require __DIR__ . '/auth.php';

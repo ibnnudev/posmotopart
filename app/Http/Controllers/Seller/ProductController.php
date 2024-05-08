@@ -4,17 +4,19 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\ProductInterface;
+use App\Interfaces\ProductStockHistoryInterface;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     private $product;
+    private $productStock;
 
-    public function __construct(ProductInterface $product)
+    public function __construct(ProductInterface $product, ProductStockHistoryInterface $productStock)
     {
         $this->product = $product;
+        $this->productStock = $productStock;
     }
-
 
     public function index(Request $request)
     {
@@ -111,34 +113,10 @@ class ProductController extends Controller
         return $type;
     }
 
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
     public function show($id)
     {
         $data = $this->product->getById($id);
-        return view('admin.product.show', compact('data'));
-    }
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
+        $productStock = $this->productStock->getByStoreAndProduct(auth()->user()->store->id, $id);
+        return view('admin.product.show', compact('data', 'productStock'));
     }
 }

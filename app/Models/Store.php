@@ -30,4 +30,14 @@ class Store extends Model
     {
         return $this->hasMany(RequestProduct::class);
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function productStockHistories()
+    {
+        return $this->hasMany(ProductStockHistory::class);
+    }
 }

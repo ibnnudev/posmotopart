@@ -61,6 +61,39 @@
         </x-card-container>
         <x-card-container>
             <h1 class="font-medium mb-4">Riwayat SKU</h1>
+            <table class="productStock">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Qty Masuk</th>
+                        <th>Qty Keluar</th>
+                        <th>Final Stok</th>
+                        <th>Tanggal</th>
+                    </tr>
+                </thead>
+                @foreach ($productStock as $ps)
+                    <tbody>
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $ps->in_stock }}</td>
+                            <td>{{ $ps->out_stock }}</td>
+                            <td>{{ $ps->final_stock }}</td>
+                            <td>{{ Carbon\Carbon::parse($ps->created_at)->locale('id')->isoFormat('d/MM/Y') }}</td>
+                        </tr>
+                    </tbody>
+                @endforeach
+            </table>
         </x-card-container>
     </div>
+    @push('js-internal')
+        <script>
+            $(document).ready(function() {
+                $('.productStock').DataTable({
+                    "paging": false,
+                    "info": false,
+                    "searching": false,
+                });
+            });
+        </script>
+    @endpush
 </x-app-layout>
