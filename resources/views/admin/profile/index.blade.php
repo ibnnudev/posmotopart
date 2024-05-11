@@ -41,44 +41,46 @@
         </div>
     </x-card-container>
 
-    <x-card-container>
-        <div>
-            <div class="md:flex items-center justify-between gap-2">
-                <h1 class="font-medium text-md">Informasi Toko</h1>
-                <div>
-                    <x-link-button href="#" title="Ubah" id="updateStore" />
+    @role('seller')
+        <x-card-container>
+            <div>
+                <div class="md:flex items-center justify-between gap-2">
+                    <h1 class="font-medium text-md">Informasi Toko</h1>
+                    <div>
+                        <x-link-button href="#" title="Ubah" id="updateStore" />
+                    </div>
+                    <div class="hidden" id="cancelUpdateStore">
+                        <x-link-button href="#" title="Batal" primary />
+                    </div>
                 </div>
-                <div class="hidden" id="cancelUpdateStore">
-                    <x-link-button href="#" title="Batal" primary />
-                </div>
-            </div>
-            <form action="{{ route('admin.profile.update-store') }}" method="POST" id="update-store-form"
-                enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="grid md:grid-cols-2 gap-6 mt-8">
-                    <x-input id="name" label="Nama Toko" name="name" type="text" value="{{ $store->name }}"
-                        readonly />
-                    <x-input id="phone" label="Nomor telepon" name="phone" type="text"
-                        value="{{ $store->phone }}" readonly />
-                    <x-textarea id="address" label="Alamat" name="address" readonly value="{{ $store->address }}" />
-                    <x-input-file id="logo" label="Logo" name="logo" readonly value="{{ $store->logo }}"
-                        :path="asset('storage/store/' . $store->logo)" preview />
-                </div>
+                <form action="{{ route('admin.profile.update-store') }}" method="POST" id="update-store-form"
+                    enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="grid md:grid-cols-2 gap-6 mt-8">
+                        <x-input id="name" label="Nama Toko" name="name" type="text" value="{{ $store->name }}"
+                            readonly />
+                        <x-input id="phone" label="Nomor telepon" name="phone" type="text"
+                            value="{{ $store->phone }}" readonly />
+                        <x-textarea id="address" label="Alamat" name="address" readonly value="{{ $store->address }}" />
+                        <x-input-file id="logo" label="Logo" name="logo" readonly value="{{ $store->logo }}"
+                            :path="asset('storage/store/' . $store->logo)" preview />
+                    </div>
 
-                <div class="grid md:grid-cols-3 gap-6 mt-8">
-                    <x-input id="bank_name" label="Nama Bank" name="bank_name" type="text"
-                        value="{{ $user->bank_name ?? '-' }}" readonly />
-                    <x-input id="card_number" label="Nomor Rekening" name="card_number" type="text"
-                        value="{{ $user->card_number ?? '-' }}" readonly />
-                    <x-input id="owner_name" label="Nama Pemilik Rekening" name="owner_name" type="text"
-                        value="{{ $user->owner_name ?? '-' }}" readonly />
-                </div>
-                <div class="hidden">
-                    <x-footer-form :backButton="false" />
-                </div>
-        </div>
-    </x-card-container>
+                    <div class="grid md:grid-cols-3 gap-6 mt-8">
+                        <x-input id="bank_name" label="Nama Bank" name="bank_name" type="text"
+                            value="{{ $user->bank_name ?? '-' }}" readonly />
+                        <x-input id="card_number" label="Nomor Rekening" name="card_number" type="text"
+                            value="{{ $user->card_number ?? '-' }}" readonly />
+                        <x-input id="owner_name" label="Nama Pemilik Rekening" name="owner_name" type="text"
+                            value="{{ $user->owner_name ?? '-' }}" readonly />
+                    </div>
+                    <div class="hidden">
+                        <x-footer-form :backButton="false" />
+                    </div>
+            </div>
+        </x-card-container>
+    @endrole
 
     @push('js-internal')
         <script>

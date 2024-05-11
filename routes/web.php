@@ -22,7 +22,7 @@ Route::get('login', function () {
 })->name('login');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
-    Route::get('/', DashboardController::class)->name('admin.dashboard')->middleware('isAdminSeller');
+    Route::get('/', DashboardController::class)->name('admin.dashboard');
     // Permission
     Route::resource('permission', PermissionController::class, ['as' => 'admin'])->middleware('role:admin');
     // Role
