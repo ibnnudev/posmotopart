@@ -10,4 +10,5 @@ interface RequestProductInterface
     public function addEntry($data);
     public function changeStatus($id, $data);
     public function import($data);
+    public function update($id, $data);
 }

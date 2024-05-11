@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Guest\HomeController;
+use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProductStockHistoryController;
 use App\Http\Controllers\RequestProductController;
 use App\Http\Controllers\Seller\ProductController;
@@ -38,6 +39,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     // Request Product (admin, seller)
     Route::post('request-product/change-status/{id}', [RequestProductController::class, 'changeStatus'])->name('admin.request-product.change-status')->middleware('role:admin');
     Route::post('request-product/import', [RequestProductController::class, 'import'])->name('admin.request-product.import')->middleware('role:admin|seller');
+    Route::get('request-product/change-status-form/{id}', [RequestProductController::class, 'changeStatusForm'])->name('admin.request-product.change-status-form')->middleware('role:admin');
     Route::resource('request-product', RequestProductController::class, ['as' => 'admin'])->middleware('role:admin|seller');
 
     // Product

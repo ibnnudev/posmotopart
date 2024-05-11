@@ -27,7 +27,10 @@ class ProductController extends Controller
                     return view('admin.product.patials._sku', ['data' => $data]);
                 })
                 ->addColumn('sku_seller', function ($data) {
-                    return $data->SKU_seller ?? '-';
+                    return $data->SKU_seller == '' || $data->SKU_seller == null ? '-' : $data->SKU_seller;
+                })
+                ->addColumn('category', function ($data) {
+                    return $data->productCategory->name;
                 })
                 ->addColumn('name', function ($data) {
                     return $data->name;

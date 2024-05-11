@@ -19,6 +19,7 @@ class RequestProduct extends Model
         'status',
         'feedback',
         'reviewed_by',
+        'product_category_id',
     ];
 
     public function store()
@@ -34,5 +35,10 @@ class RequestProduct extends Model
     public function reviewedBy()
     {
         return $this->belongsTo(User::class, 'reviewed_by');
+    }
+
+    public function productCategory()
+    {
+        return $this->belongsTo(ProductCategory::class);
     }
 }
