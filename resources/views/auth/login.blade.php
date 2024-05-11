@@ -26,14 +26,14 @@
                                             Email
                                         </label>
                                         <input type="email" id="email" name="email"
-                                            class="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm">
+                                            class="block w-full h-12 px-4 py-2 text-primary duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm">
                                     </div>
                                     <div class="col-span-full">
                                         <label for="password" class="block mb-3 text-sm font-medium text-black">
                                             Kata sandi
                                         </label>
                                         <input id="password" name="password"
-                                            class="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
+                                            class="block w-full h-12 px-4 py-2 text-primary duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
                                             type="password">
                                     </div>
                                     <div class="col-span-full">

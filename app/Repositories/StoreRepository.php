@@ -47,7 +47,7 @@ class StoreRepository implements StoreInterface
                 $data['logo'] = $filename;
             }
 
-            $data['store_name'] = $data['name'];
+            $data['name'] = $data['store_name'];
             $data['slug'] = Str::slug($data['store_name']);
             $data['user_id'] = $user->id;
 
@@ -123,5 +123,48 @@ class StoreRepository implements StoreInterface
             throw $th;
             DB::rollBack();
         }
+    }
+
+    public function updateStoreOnly($id, $data)
+    {
+        DB::beginTransaction();
+        try {
+            $store = $this->store->find($id);
+
+            if (isset($data['logo']) && $data['logo'] != null) {
+                Storage::delete('public/store/' . $store->logo);
+                $filename = Str::random(10) . '.' . $data['logo']->getClientOriginalExtension();
+                $data['logo']->storeAs('public/store', $filename);
+                $data['logo'] = $filename;
+            }
+
+            $data['slug'] = Str::slug($data['name']);
+
+            $store->update($data);
+
+            $this->user->find($store->user_id)->update([
+                'bank_name' => $data['bank_name'],
+                'card_number' => $data['card_number'],
+                'owner_name' => $data['owner_name']
+            ]);
+        } catch (\Throwable $th) {
+            Storage::delete('public/store/' . $filename);
+            DB::rollBack();
+            throw $th;
+        }
+        DB::commit();
+    }
+
+    public function updateBank($id, $data)
+    {
+        DB::beginTransaction();
+        try {
+            $store = $this->store->find($id);
+            $store->update($data);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+        DB::commit();
     }
 }

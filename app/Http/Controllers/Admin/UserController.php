@@ -12,12 +12,8 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     private $userManagement;
-
     private $permission;
-
     private $role;
-
-    private $branch;
 
     public function __construct(UserInterface $userManagement, PermissionInterface $permission, RoleInterface $role)
     {
@@ -96,7 +92,6 @@ class UserController extends Controller
         return view('admin.user.edit', [
             'data' => $user,
             'roles' => $this->role->get(),
-            'branches' => $this->branch->get()->where('id', '!=', 1),
             'this_role' => $this->role->getByName($role)
         ]);
     }
@@ -111,10 +106,6 @@ class UserController extends Controller
             'branch_id' => 'nullable|exists:branches,id',
             'join_date' => 'required',
         ]);
-
-        if (!$request->has('branch_id')) {
-            $request['branch_id'] = $this->branch->getById(1)->id;
-        }
 
         try {
             $this->userManagement->update($id, $request->all());

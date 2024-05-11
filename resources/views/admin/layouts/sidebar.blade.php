@@ -64,6 +64,8 @@
             <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
                 <span>Pengaturan</span>
             </li>
+            <x-sidebar-item name="Profil" icon="fas fa-user" route="{{ route('admin.profile.index') }}"
+                active="{{ request()->routeIs('admin.profile.*') }}" />
             <li>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf

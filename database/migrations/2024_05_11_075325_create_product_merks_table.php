@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('product_merks', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('store_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('store_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('image')->nullable();
             $table->boolean('is_active')->default(true);
