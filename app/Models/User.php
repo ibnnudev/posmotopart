@@ -27,6 +27,13 @@ class User extends Authenticatable
         'card_number',
         'bank_name',
         'owner_name',
+        // addtional information
+        'province',
+        'regency',
+        'district',
+        'zip_code',
+        'address',
+        'nik',
     ];
 
     protected $hidden = [

@@ -1,4 +1,13 @@
-@props(['id', 'label', 'name', 'value' => null, 'required' => false, 'readonly' => false])
+@props([
+    'id',
+    'label',
+    'name',
+    'value' => null,
+    'required' => false,
+    'readonly' => false,
+    'preview' => false,
+    'path' => null,
+])
 
 <div>
     <label class="block mb-2 text-sm font-normal text-gray-900 dark:text-white" for="{{ $id }}">
@@ -15,5 +24,10 @@
         <small class="text-gray-500 mt-2 block">
             File belum diunggah
         </small>
+    @endif
+
+    @if ($preview && $path)
+        <img src="{{ $path }}" alt="Preview" class="mt-2 rounded-lg"
+            style="max-width: 100px; max-height: 100px;" />
     @endif
 </div>

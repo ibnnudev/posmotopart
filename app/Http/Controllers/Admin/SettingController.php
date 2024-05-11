@@ -33,6 +33,7 @@ class SettingController extends Controller
             toast('Profil berhasil diupdate', 'success');
             return redirect()->route('admin.profile.index');
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             toast('Profil gagal diupdate', 'error');
             return redirect()->route('admin.profile.index');
         }

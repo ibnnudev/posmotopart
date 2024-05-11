@@ -21,6 +21,18 @@
                         value="{{ auth()->user()->phone }}" readonly />
                     <x-input id="email" label="Email" name="email" type="email"
                         value="{{ auth()->user()->email }}" readonly />
+                    <x-input id="province" label="Provinsi" name="province" type="text"
+                        value="{{ auth()->user()->province }}" readonly />
+                    <x-input id="regency" label="Kabupaten/Kota" name="regency" type="text"
+                        value="{{ auth()->user()->regency }}" readonly />
+                    <x-input id="district" label="Kecamatan" name="district" type="text"
+                        value="{{ auth()->user()->district }}" readonly />
+                    <x-input id="zip_code" label="Kode Pos" name="zip_code" type="text"
+                        value="{{ auth()->user()->zip_code }}" readonly />
+                    <x-input id="nik" label="NIK" name="nik" type="number"
+                        value="{{ auth()->user()->nik }}" readonly />
+                    <x-textarea id="address" label="Alamat" name="address" readonly
+                        value="{{ auth()->user()->address }}" />
                 </div>
                 <div class="hidden">
                     <x-footer-form :backButton="false" />
@@ -50,7 +62,8 @@
                     <x-input id="phone" label="Nomor telepon" name="phone" type="text"
                         value="{{ $store->phone }}" readonly />
                     <x-textarea id="address" label="Alamat" name="address" readonly value="{{ $store->address }}" />
-                    <x-input-file id="logo" label="Logo" name="logo" readonly value="{{ $store->logo }}" />
+                    <x-input-file id="logo" label="Logo" name="logo" readonly value="{{ $store->logo }}"
+                        :path="asset('storage/store/' . $store->logo)" preview />
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-6 mt-8">
@@ -70,9 +83,8 @@
     @push('js-internal')
         <script>
             $('#updateProfileButton').click(function() {
-                $('#update-profile-form #name').prop('readonly', false);
-                $('#update-profile-form #phone').prop('readonly', false);
-                $('#update-profile-form #email').prop('readonly', false);
+                $('#update-profile-form input').prop('readonly', false);
+                $('#update-profile-form textarea').prop('readonly', false);
                 $('#update-profile-form').find('.hidden').removeClass('hidden');
                 $('#update-profile-form button[type="submit"]').removeClass('hidden');
 
@@ -81,9 +93,8 @@
             });
 
             $('#cancelUpdateProfileButton').click(function() {
-                $('#update-profile-form #name').prop('readonly', true);
-                $('#update-profile-form #phone').prop('readonly', true);
-                $('#update-profile-form #email').prop('readonly', true);
+                $('#update-profile-form input').prop('readonly', true);
+                $('#update-profile-form textarea').prop('readonly', true);
                 $('#update-profile-form').find('.hidden')
                     .addClass('hidden');
                 $('#update-profile-form button[type="submit"]').addClass('hidden');
