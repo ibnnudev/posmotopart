@@ -10,11 +10,11 @@
                 <span class="ml-3">Keranjang</span>
             </a>
             @auth
-                <div class="flex justify-end gap-4 items-center">
+                <a href="{{ route('admin.dashboard') }}" class="flex justify-end gap-4 items-center">
                     <span class="ml-3 text-sm">{{ auth()->user()->name }}</span>
                     <img src="https://ui-avatars.com/api/?background=1D9A6C&color=fff&name={{ auth()->user()->name }}"
                         class="w-8 h-8 rounded-full" alt="avatar">
-                </div>
+                </a>
             @endauth
             @guest
                 <a href="{{ route('login') }}" type="button"
