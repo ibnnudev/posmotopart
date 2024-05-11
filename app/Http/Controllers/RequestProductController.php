@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\ProductCategoryInterface;
 use App\Interfaces\RequestProductInterface;
-use App\Models\RequestProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
