@@ -21,6 +21,10 @@ Route::get('login', function () {
     return view('auth.login');
 })->name('login');
 
+Route::get('welcome', function () {
+    return view('welcome');
+})->name('welcome');
+
 Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::get('/', DashboardController::class)->name('admin.dashboard');
     // Permission

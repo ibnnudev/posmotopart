@@ -18,7 +18,7 @@ class isAdminSeller
     {
         if (auth()->user()->roles->pluck('name')->toArray()[0] != 'admin' && auth()->user()->roles->pluck('name')->toArray()[0] != 'seller') {
             Auth::logout();
-            return redirect()->route('login');
+            return redirect()->route('admin.dashboard');
         }
         return $next($request);
     }
