@@ -7,7 +7,7 @@
     'type' => 'text',
     'value' => '',
     'format' => '',
-    'readonly' => '',
+    'readonly' => false,
     'step' => false,
     'disabled' => false,
 ])
@@ -19,7 +19,7 @@
         {{ $step ? 'step="any"' : '' }} {{ $disabled ? 'disabled' : '' }}
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-primary focus:border-primary transition duration-300 block w-full p-2.5"
         name="{{ $name }}" value="{{ $value }}" {{ $required != false ? 'required' : '' }}
-        {{ $readonly }} />
+        {{ $readonly ? 'readonly' : '' }} />
     @if ($tip)
         <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ $tip }}</p>
     @endif

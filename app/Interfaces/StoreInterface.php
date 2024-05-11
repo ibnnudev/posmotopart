@@ -11,4 +11,6 @@ interface StoreInterface
     public function destroy($id);
 
     public function updateStatus($id, $status);
+    public function updateStoreOnly($id, $data);
+    public function updateBank($id, $data);
 }
