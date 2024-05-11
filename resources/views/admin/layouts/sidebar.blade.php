@@ -52,17 +52,15 @@
                     route="{{ route('admin.request-product.index') }}"
                     active="{{ request()->routeIs('admin.request-product.*') }}" />
             @endrole
-            <x-sidebar-dropdown title="Master" icon="fas fa-archive" toggle="master-store"
-                active="{{ request()->routeIs('admin.product.*') || request()->routeIs('admin.request-product.*') }}">
-                @role('seller')
+            @role('seller')
+                <x-sidebar-dropdown title="Master" icon="fas fa-archive" toggle="master-store"
+                    active="{{ request()->routeIs('admin.product.*') || request()->routeIs('admin.request-product.*') }}">
                     <x-sidebar-submenu name="Produk" route="{{ route('admin.product.index') }}"
                         active="{{ request()->routeIs('admin.product.*') }}" icon="fas fa-box" />
-                @endrole
-                @role('seller')
                     <x-sidebar-submenu name="Pengajuan Produk" route="{{ route('admin.request-product.index') }}"
                         active="{{ request()->routeIs('admin.request-product.*') }}" icon="fas fa-box-open" />
-                @endrole
-            </x-sidebar-dropdown>
+                </x-sidebar-dropdown>
+            @endrole
             <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
                 <span>Pengaturan</span>
             </li>

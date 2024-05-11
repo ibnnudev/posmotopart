@@ -20,6 +20,7 @@
                 <tr>
                     <th>SKU</th>
                     <th>SKU Seller</th>
+                    <th>Kategori</th>
                     <th>Nama Produk</th>
                     <th>Stok</th>
                     <th>Harga</th>
@@ -68,6 +69,10 @@
                         {
                             data: 'sku_seller',
                             name: 'sku_seller'
+                        },
+                        {
+                            data: 'category',
+                            name: 'category'
                         },
                         {
                             data: 'name',

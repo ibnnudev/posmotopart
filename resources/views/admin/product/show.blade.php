@@ -18,6 +18,10 @@
                     <p>{{ $data->name }}</p>
                 </div>
                 <div>
+                    <p class="text-gray-500">Kategori</p>
+                    <p>{{ $data->productCategory->name }}</p>
+                </div>
+                <div>
                     <p class="text-gray-500">Seller SKU</p>
                     <p>{{ $data->SKU_seller ?? '-' }}</p>
                 </div>

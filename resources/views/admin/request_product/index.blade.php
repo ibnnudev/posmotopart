@@ -5,29 +5,31 @@
     ]" />
 
     <x-card-container>
-        <div class="text-end mb-4 flex justify-end gap-2">
-            <x-link-button href="{{ asset('files/pengajuan_produk.csv') }}" title="Download Template" />
-            <form action="{{ route('admin.request-product.import') }}" method="POST" enctype="multipart/form-data">
+        @role('seller')
+            <div class="text-end mb-4 flex justify-end gap-2">
+                <x-link-button href="{{ asset('files/pengajuan_produk.csv') }}" title="Download Template" />
+                <x-link-button href="{{ route('admin.request-product.create') }}" title="Tambah" />
+                {{-- <form action="{{ route('admin.request-product.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="file" id="file" class="hidden" accept=".csv" />
                 <x-button id="importButton" type="button" fit="true" onclick="uploadFile()">
                     Upload Pengajuan (.csv)
                 </x-button>
-            </form>
-        </div>
+            </form> --}}
+            </div>
+        @endrole
 
         <table id="requestProduct">
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Kategori</th>
                     <th>File</th>
                     <th>Tgl. Upload</th>
                     <th>Status</th>
                     <th>Catatan</th>
                     <th>Reviewer</th>
-                    @role('admin')
-                        <th>Aksi</th>
-                    @endrole
+                    <th>Aksi</th>
                 </tr>
             </thead>
         </table>
@@ -86,6 +88,10 @@
                             name: 'DT_RowIndex'
                         },
                         {
+                            data: 'product_category',
+                            name: 'product_category'
+                        },
+                        {
                             data: 'file',
                             name: 'file'
                         },
@@ -105,14 +111,12 @@
                             data: 'reviewer',
                             name: 'reviewer'
                         },
-                        @role('admin')
-                            {
-                                data: 'action',
-                                name: 'action',
-                                orderable: false,
-                                searchable: false
-                            }
-                        @endrole
+                        {
+                            data: 'action',
+                            name: 'action',
+                            orderable: false,
+                            searchable: false
+                        }
                     ]
                 });
             });

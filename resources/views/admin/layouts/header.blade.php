@@ -7,7 +7,7 @@
                 <img src="https://ui-avatars.com/api/?background=1D9A6C&color=fff&name={{ auth()->user()->name }}"
                     class="w-8 h-8 rounded-full" alt="avatar">
             </div>
-            <form action="{{ route('logout') }}" method="POST">
+            {{-- <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit"
                     class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100">
@@ -15,7 +15,7 @@
                         class="fas fa-sign-out-alt w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                     <span class="ml-3">Keluar</span>
                 </button>
-            </form>
+            </form> --}}
         </div>
     </div>
 </header>

@@ -27,7 +27,8 @@ class Product extends Model
         'manufacturer',
         'store_id',
         'user_id',
-        'merk'
+        'merk',
+        'product_category_id'
     ];
 
     public function store()
@@ -43,5 +44,10 @@ class Product extends Model
     public function stockHistories()
     {
         return $this->hasMany(ProductStockHistory::class, 'product_id', 'id');
+    }
+
+    public function productCategory()
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id', 'id');
     }
 }
