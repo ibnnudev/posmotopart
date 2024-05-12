@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\ProductCategoryInterface;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Storage;
 
 class ProductCategoryRepository implements ProductCategoryInterface
 {
@@ -19,7 +20,7 @@ class ProductCategoryRepository implements ProductCategoryInterface
 
     public function getAll()
     {
-        return $this->productCategory->all();
+        return $this->productCategory->where('is_active', 1)->get();
     }
 
     public function getById($id)
@@ -29,12 +30,25 @@ class ProductCategoryRepository implements ProductCategoryInterface
 
     public function create($data)
     {
+        $filename = uniqid() . '.' . $data['image']->getClientOriginalExtension();
+        $data['image']->storeAs('public/product-category', $filename);
+        $data['image'] = $filename;
+
         return $this->productCategory->create($data);
     }
 
     public function update($id, $data)
     {
-        return $this->productCategory->find($id)->update($data);
+        $productCategory = $this->productCategory->find($id);
+        if (isset($data['image'])) {
+            $filename = uniqid() . '.' . $data['image']->getClientOriginalExtension();
+            $data['image']->storeAs('public/product-category', $filename);
+            $data['image'] = $filename;
+
+            Storage::delete('public/product-category/' . $productCategory->image);
+        }
+
+        return $productCategory->update($data);
     }
 
     public function delete($id)

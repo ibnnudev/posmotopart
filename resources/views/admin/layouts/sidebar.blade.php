@@ -34,8 +34,9 @@
                 </li>
                 <x-sidebar-item name="Daftar Toko" icon="fas fa-store" route="{{ route('admin.store.index') }}"
                     active="{{ request()->routeIs('admin.store.*') }}" />
-                <x-sidebar-item name="Kategori Toko" icon="fas fa-list" route="{{ route('admin.category.index') }}"
-                    active="{{ request()->routeIs('admin.category.*') }}" />
+                <x-sidebar-item name="Kategori Produk" icon="fas fa-list"
+                    route="{{ route('admin.product-category.index') }}"
+                    active="{{ request()->routeIs('admin.product-category.*') }}" />
                 <x-sidebar-item name="Metode Pembayaran" icon="fas fa-credit-card"
                     route="{{ route('admin.payment-option.index') }}"
                     active="{{ request()->routeIs('admin.payment-option.*') }}" />

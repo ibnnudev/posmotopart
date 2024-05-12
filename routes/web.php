@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Guest\HomeController;
+use App\Http\Controllers\Guest\ProductController as GuestProductController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProductStockHistoryController;
 use App\Http\Controllers\RequestProductController;
@@ -17,13 +19,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Product By Category
+Route::group(['prefix' => 'product-category'], function () {
+    Route::get('/', [GuestProductController::class, 'index'])->name('product-category.index');
+});
+
 Route::get('login', function () {
     return view('auth.login');
 })->name('login');
-
-Route::get('welcome', function () {
-    return view('welcome');
-})->name('welcome');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::get('/', DashboardController::class)->name('admin.dashboard');
@@ -59,6 +62,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::put('update-store', [SettingController::class, 'updateStore'])->name('update-store');
         Route::put('update-bank', [SettingController::class, 'updateBank'])->name('update-bank');
     });
+    // Product Category
+    Route::resource('product-category', ProductCategoryController::class, ['as' => 'admin'])->middleware('role:seller|admin');
 });
 
 require __DIR__ . '/auth.php';
