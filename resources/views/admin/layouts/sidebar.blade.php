@@ -39,6 +39,8 @@
                 <x-sidebar-item name="Metode Pembayaran" icon="fas fa-credit-card"
                     route="{{ route('admin.payment-option.index') }}"
                     active="{{ request()->routeIs('admin.payment-option.*') }}" />
+                <x-sidebar-item name="Campaign" icon="fas fa-credit-card" route="{{ route('admin.discount.index') }}"
+                    active="{{ request()->routeIs('admin.discount.*') }}" />
             @endrole
 
             @role('seller')
