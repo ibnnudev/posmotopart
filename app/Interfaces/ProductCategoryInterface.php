@@ -10,4 +10,6 @@ interface ProductCategoryInterface
     public function update($id, $data);
     public function delete($id);
     public function getByStore($storeId);
+
+    public function getAllStoreByCategory();
 }

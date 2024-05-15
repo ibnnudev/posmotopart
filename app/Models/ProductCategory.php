@@ -25,4 +25,9 @@ class ProductCategory extends Model
     {
         return $this->hasMany(ProductImage::class, 'product_category_id', 'id');
     }
+
+    public function productMerks()
+    {
+        return $this->hasMany(ProductMerk::class, 'product_category_id', 'id');
+    }
 }

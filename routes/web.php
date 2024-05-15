@@ -4,12 +4,14 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PaymentOptionController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\ProductMerkController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\ProductController as GuestProductController;
+use App\Http\Controllers\Guest\StoreController as GuestStoreController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProductStockHistoryController;
@@ -19,9 +21,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Store
+Route::get('store/show/{slug}', [GuestStoreController::class, 'show'])->name('store.show');
+
 // Product By Category
 Route::group(['prefix' => 'product-category'], function () {
     Route::get('/', [GuestProductController::class, 'index'])->name('product-category.index');
+    Route::get('show/{categoryId}/{storeId}', [GuestProductController::class, 'show'])->name('product-category.show');
 });
 
 Route::get('login', function () {
@@ -64,6 +70,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     });
     // Product Category
     Route::resource('product-category', ProductCategoryController::class, ['as' => 'admin'])->middleware('role:seller|admin');
+    // Product Merks
+    Route::resource('product-merk', ProductMerkController::class, ['as' => 'admin'])->middleware('role:seller|admin');
 });
 
 require __DIR__ . '/auth.php';

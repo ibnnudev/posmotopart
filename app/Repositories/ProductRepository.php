@@ -4,15 +4,18 @@ namespace App\Repositories;
 
 use App\Interfaces\ProductInterface;
 use App\Models\Product;
+use App\Models\ProductStockHistory;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository implements ProductInterface
 {
     private $product;
+    private $productStockHistory;
 
-    public function __construct(Product $product)
+    public function __construct(Product $product, ProductStockHistory $productStockHistory)
     {
         $this->product = $product;
+        $this->productStockHistory = $productStockHistory;
     }
 
     public function getAll()
@@ -51,5 +54,16 @@ class ProductRepository implements ProductInterface
     public function getById($id)
     {
         return $this->product->find($id);
+    }
+
+    public function getByCategoryAndStore($categoryId, $storeId)
+    {
+        $products = $this->product->where('product_category_id', $categoryId)->where('store_id', $storeId)->get();
+        // add final stock from product stock history
+        foreach ($products as $product) {
+            $productStockHistory = $this->productStockHistory->where('product_id', $product->id)->orderBy('id', 'desc')->first();
+            $product->final_stock = $productStockHistory->final_stock;
+        }
+        return $products;
     }
 }

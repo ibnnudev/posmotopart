@@ -56,6 +56,8 @@
             @role('seller')
                 <x-sidebar-dropdown title="Master" icon="fas fa-archive" toggle="master-store"
                     active="{{ request()->routeIs('admin.product.*') || request()->routeIs('admin.request-product.*') }}">
+                    <x-sidebar-submenu name="Variasi Produk" route="{{ route('admin.product-merk.index') }}"
+                        active="{{ request()->routeIs('admin.product-merk.*') }}" icon="fas fa-box" />
                     <x-sidebar-submenu name="Produk" route="{{ route('admin.product.index') }}"
                         active="{{ request()->routeIs('admin.product.*') }}" icon="fas fa-box" />
                     <x-sidebar-submenu name="Pengajuan Produk" route="{{ route('admin.request-product.index') }}"

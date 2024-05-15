@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\StoreInterface;
+use App\Models\ProductCategory;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -13,11 +14,13 @@ class StoreRepository implements StoreInterface
 {
     private $store;
     private $user;
+    private $productCategory;
 
-    public function __construct(Store $store, User $user)
+    public function __construct(Store $store, User $user, ProductCategory $productCategory)
     {
         $this->store = $store;
         $this->user = $user;
+        $this->productCategory = $productCategory;
     }
 
     public function getAll()
@@ -166,5 +169,14 @@ class StoreRepository implements StoreInterface
             throw $th;
         }
         DB::commit();
+    }
+
+    public function getBySlug($slug)
+    {
+        $productCategory = $this->productCategory->whereHas('products', function ($query) use ($slug) {
+            $query->where('store_id', $this->store->where('slug', $slug)->first()->id);
+        })->with('products')->get();
+
+        dd($productCategory);
     }
 }

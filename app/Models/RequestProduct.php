@@ -20,6 +20,7 @@ class RequestProduct extends Model
         'feedback',
         'reviewed_by',
         'product_category_id',
+        'product_merk_id',
     ];
 
     public function store()

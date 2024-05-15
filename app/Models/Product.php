@@ -28,7 +28,8 @@ class Product extends Model
         'store_id',
         'user_id',
         'merk',
-        'product_category_id'
+        'product_category_id',
+        'product_merk_id'
     ];
 
     public function store()

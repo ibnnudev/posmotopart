@@ -5,17 +5,20 @@ namespace App\Repositories;
 use App\Interfaces\ProductCategoryInterface;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\Store;
 use Illuminate\Support\Facades\Storage;
 
 class ProductCategoryRepository implements ProductCategoryInterface
 {
     private $productCategory;
     private $product;
+    private $store;
 
     public function __construct()
     {
         $this->productCategory = new ProductCategory();
-        $this->product = new Product();
+        $this->product         = new Product();
+        $this->store          = new Store();
     }
 
     public function getAll()
@@ -60,5 +63,21 @@ class ProductCategoryRepository implements ProductCategoryInterface
     {
         $productIds = $this->product->where('store_id', $storeId)->pluck('product_category_id');
         return $this->productCategory->whereIn('id', $productIds)->get();
+    }
+
+    public function getAllStoreByCategory()
+    {
+        $categories = $this->productCategory->where('is_active', 1)->get();
+        $stores = $this->store->where('status', 1)->get();
+        foreach ($categories as $category) {
+            $category->stores = $this->store->where('status', 1)->whereHas('products', function ($query) use ($category) {
+                $query->where('product_category_id', $category->id);
+            })->get();
+        }
+        $categories = $categories->filter(function ($category) {
+            return $category->stores->count() > 0;
+        });
+
+        return $categories;
     }
 }

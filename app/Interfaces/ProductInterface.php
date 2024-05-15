@@ -10,4 +10,5 @@ interface ProductInterface
     public function import($data);
     public function getById($id);
     public function getByStore($id);
+    public function getByCategoryAndStore($categoryId, $storeId);
 }
