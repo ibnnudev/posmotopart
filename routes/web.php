@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DiscountController as AdminDiscountController;
 use App\Http\Controllers\Admin\PaymentOptionController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductMerkController;
@@ -72,6 +73,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('product-category', ProductCategoryController::class, ['as' => 'admin'])->middleware('role:seller|admin');
     // Product Merks
     Route::resource('product-merk', ProductMerkController::class, ['as' => 'admin'])->middleware('role:seller|admin');
+    // Campaign
+    Route::resource('discount', AdminDiscountController::class, ['as' => 'admin'])->middleware('role:admin');
 });
 
 require __DIR__ . '/auth.php';
