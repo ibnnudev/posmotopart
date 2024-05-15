@@ -51,4 +51,9 @@ class Product extends Model
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id', 'id');
     }
+
+    public function productMerk()
+    {
+        return $this->belongsTo(ProductMerk::class, 'product_merk_id', 'id');
+    }
 }

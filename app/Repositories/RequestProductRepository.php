@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\ProductInterface;
 use App\Interfaces\RequestProductInterface;
 use App\Models\ProductCategory;
+use App\Models\ProductMerk;
 use App\Models\ProductStockHistory;
 use App\Models\RequestProduct;
 use Illuminate\Support\Facades\DB;
@@ -16,13 +17,15 @@ class RequestProductRepository implements RequestProductInterface
     private $product;
     private $productStockHistory;
     private $productCategory;
+    private $productMerk;
 
-    public function __construct(RequestProduct $requestProduct, ProductInterface $product, ProductStockHistory $productStockHistory, ProductCategory $productCategory)
+    public function __construct(RequestProduct $requestProduct, ProductInterface $product, ProductStockHistory $productStockHistory, ProductCategory $productCategory, ProductMerk $productMerk)
     {
         $this->requestProduct      = $requestProduct;
         $this->product             = $product;
         $this->productStockHistory = $productStockHistory;
         $this->productCategory     = $productCategory;
+        $this->productMerk         = $productMerk;
     }
 
     public function getAll()
@@ -60,6 +63,7 @@ class RequestProductRepository implements RequestProductInterface
                         'user_id'             => $imported['user_id'],
                         'store_id'            => $imported['store_id'],
                         'product_category_id' => $imported['product_category_id'],
+                        'product_merk_id'     => $imported['product_merk_id'],
                         'SKU'                 => trim($column[0], '"'),
                         'SKU_seller'          => $column[1] ?? '-',
                         'name'                => trim($column[2], '"'),
@@ -72,7 +76,7 @@ class RequestProductRepository implements RequestProductInterface
                         'SAE'                 => $column[5],
                         'manufacturer'        => $column[6],
                         'discount'            => str_replace('\r', '', $column[11]),
-                        'merk'                => null                                             // TODO: change to dynamic soon
+                        'merk'                => null                                       // TODO: change to dynamic soon
                     ]);
 
                     $this->productStockHistory->create([
@@ -110,12 +114,14 @@ class RequestProductRepository implements RequestProductInterface
         try {
             $filename = 'PR-' . date('YmdHis') . '.' . $data['file']->getClientOriginalExtension();
             $data['file']->storeAs('public/request_product', $filename);
+            $productMerk = $this->productMerk->where('id', $data['product_merk_id'])->first();
             $this->requestProduct->create([
-                'user_id'  => auth()->user()->id,
-                'store_id' => auth()->user()->store->id,
-                'product_category_id' => $data['product_category_id'],
-                'file'     => $filename,
-                'status'   => 'menunggu',
+                'user_id'             => auth()->user()->id,
+                'store_id'            => auth()->user()->store->id,
+                'product_category_id' => $productMerk->product_category_id,
+                'product_merk_id'     => $data['product_merk_id'],
+                'file'                => $filename,
+                'status'              => 'menunggu',
             ]);
             DB::commit();
         } catch (\Throwable $th) {

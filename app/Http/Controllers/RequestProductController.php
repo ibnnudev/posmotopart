@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\ProductCategoryInterface;
+use App\Interfaces\ProductMerkInterface;
 use App\Interfaces\RequestProductInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,11 +12,13 @@ class RequestProductController extends Controller
 {
     private $requestProduct;
     private $productCategory;
+    private $productMerk;
 
-    public function __construct(RequestProductInterface $requestProduct, ProductCategoryInterface $productCategory)
+    public function __construct(RequestProductInterface $requestProduct, ProductCategoryInterface $productCategory, ProductMerkInterface $productMerk)
     {
         $this->requestProduct = $requestProduct;
         $this->productCategory = $productCategory;
+        $this->productMerk = $productMerk;
     }
 
 
@@ -29,6 +32,9 @@ class RequestProductController extends Controller
                 })
                 ->addColumn('created_at', function ($data) {
                     return Carbon::parse($data->created_at)->locale('id')->isoFormat('D MMMM Y HH:mm');
+                })
+                ->addColumn('product_merk', function ($data) {
+                    return $data->productMerk->name ?? '-';
                 })
                 ->addColumn('product_category', function ($data) {
                     return $data->productCategory->name ?? '-';
@@ -67,9 +73,10 @@ class RequestProductController extends Controller
 
     public function create()
     {
-        $productCategories = $this->productCategory->getAll()->where('is_active', 1);
+        $productMerk = $this->productMerk->getByStore(auth()->user()->store->id)->where('is_active', 1);
+
         return view('admin.request_product.create', [
-            'productCategories' => $productCategories
+            'productMerks' => $productMerk,
         ]);
     }
 

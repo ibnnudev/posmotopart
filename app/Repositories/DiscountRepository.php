@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\DiscountInterface;
 use App\Models\Discount;
+use Illuminate\Support\Facades\Storage;
 
 class DiscountRepository implements DiscountInterface
 {
@@ -27,6 +28,11 @@ class DiscountRepository implements DiscountInterface
     public function store($data)
     {
         try {
+            if (isset($data['logo'])) {
+                $filename = uniqid() . '.' . $data['logo']->getClientOriginalExtension();
+                $data['logo']->storeAs('public/discount', $filename);
+                $data['logo'] = $filename;
+            }
             return $this->discount->create($data);
         } catch (\Throwable $th) {
             throw $th;
@@ -36,6 +42,16 @@ class DiscountRepository implements DiscountInterface
     public function update($id, $data)
     {
         $category = $this->discount->find($id);
+        if (isset($data['logo'])) {
+
+            if ($category->logo != null) {
+                Storage::delete('public/discount/' . $category->logo);
+            }
+
+            $filename = uniqid() . '.' . $data['logo']->getClientOriginalExtension();
+            $data['logo']->storeAs('public/discount', $filename);
+            $data['logo'] = $filename;
+        }
         try {
             return $category->update($data);
         } catch (\Throwable $th) {

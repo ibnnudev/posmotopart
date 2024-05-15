@@ -33,6 +33,10 @@
                     <p class="mt-1 text-sm text-gray-900">{{ $data->productCategory->name }}</p>
                 </div>
                 <div>
+                    <label for="note" class="block text-sm font-medium text-gray-700">Merk</label>
+                    <p class="mt-1 text-sm text-gray-900">{{ $data->productMerk->name }}</p>
+                </div>
+                <div>
                     <label for="note" class="block text-sm font-medium text-gray-700">Catatan</label>
                     <p class="mt-1 text-sm text-gray-900">{{ $data->note }}</p>
                 </div>

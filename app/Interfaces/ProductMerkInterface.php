@@ -9,4 +9,6 @@ interface ProductMerkInterface
     public function store($data);
     public function update($id, $data);
     public function destroy(string $id);
+    public function getByStore($storeid);
+    public function getByStoreAndCategory($storeid, $categoryId);
 }

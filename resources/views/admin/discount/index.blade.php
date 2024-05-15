@@ -18,7 +18,7 @@
                     <td>Start Date</td>
                     <td>End Date</td>
                     <td>Status</td>
-                    <td>Type</td>
+                    {{-- <td>Type</td> --}}
                     <td>Action</td>
                 </tr>
             </thead>
@@ -104,25 +104,18 @@
                         {
                             data: 'is_active',
                             name: 'is_active',
-                            render: function(data) {
-                                if (data == 1) {
-                                    return '<span class="text-green-500">Aktif</span>';
-                                } else {
-                                    return '<span class="text-red-500">Non Aktif</span>';
-                                }
-                            }
                         },
-                        {
-                            data: 'type',
-                            name: 'type',
-                            render: function(data) {
-                                if (data == 1) {
-                                    return '<span class="text-green-500">Multi</span>';
-                                } else {
-                                    return '<span class="text-red-500">Single</span>';
-                                }
-                            }
-                        },
+                        // {
+                        //     data: 'type',
+                        //     name: 'type',
+                        //     render: function(data) {
+                        //         if (data == 1) {
+                        //             return '<span class="text-green-500">Multi</span>';
+                        //         } else {
+                        //             return '<span class="text-red-500">Single</span>';
+                        //         }
+                        //     }
+                        // },
                         {
                             data: 'action',
                             name: 'action',

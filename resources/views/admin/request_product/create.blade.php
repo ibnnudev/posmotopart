@@ -10,10 +10,10 @@
                 @csrf
                 <div class="">
                     <div class="space-y-6">
-                        <x-select id="product_category_id" name="product_category_id" label="Kategori Produk" required>
-                            <option value="" disabled>Pilih Kategori Produk</option>
-                            @foreach ($productCategories as $productCategory)
-                                <option value="{{ $productCategory->id }}">{{ $productCategory->name }}</option>
+                        <x-select id="product_merk_id" name="product_merk_id" label="Merk" required>
+                            <option value="" disabled>Pilih Merk</option>
+                            @foreach ($productMerks as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
                         </x-select>
                         <x-input-file id="file" name="file" label="File (.csv)" required accept=".csv" />

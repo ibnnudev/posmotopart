@@ -9,7 +9,7 @@
             <form action="{{ route('admin.discount.store') }}" method="POST" enctype="multipart/form-data"
                 class="space-y-6">
                 @csrf
-                <x-input id="logo" name="logo" label="Logo" type="file" required />
+                <x-input-file id="logo" name="logo" label="Logo" required />
                 <x-input id="name" name="name" label="Nama" type="text" required />
                 <x-input id="code" name="code" label="Code" type="text" required />
                 <x-input id="discount" name="discount" label="Discount" type="number" required min="0"
@@ -20,10 +20,10 @@
                     <option value="1">Aktif</option>
                     <option value="0">Tidak Aktif</option>
                 </x-select>
-                <x-select id="type" name="type" label="Type" required>
+                {{-- <x-select id="type" name="type" label="Type">
                     <option value="1">Multi</option>
                     <option value="2">Single</option>
-                </x-select>
+                </x-select> --}}
                 <div>
                     <x-button type="submit">Simpan</x-button>
                 </div>

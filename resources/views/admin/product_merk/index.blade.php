@@ -25,6 +25,7 @@
     @push('js-internal')
         <script>
             function btnDelete(id) {
+                console.log(id);
                 Swal.fire({
                     title: 'Apakah Anda Yakin?',
                     text: "Data yang dihapus tidak dapat dikembalikan!",

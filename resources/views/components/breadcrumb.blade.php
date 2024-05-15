@@ -1,6 +1,7 @@
 @props(['links' => []])
 
-<div class="mb-4 text-sm">
+<div class="mb-4 text-sm {{ // check if ther's admin in route
+    request()->routeIs('admin.*') ? '' : 'mb-8' }}">
     <p class="text-gray-500 bg-primary p-4 rounded-lg">
         @foreach ($links as $link)
             @if ($loop->last)

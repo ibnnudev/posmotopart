@@ -42,4 +42,9 @@ class RequestProduct extends Model
     {
         return $this->belongsTo(ProductCategory::class);
     }
+
+    public function productMerk()
+    {
+        return $this->belongsTo(ProductMerk::class);
+    }
 }

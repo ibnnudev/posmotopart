@@ -10,24 +10,23 @@
                 class="space-y-6">
                 @csrf
                 @method('PUT')
-                <x-input id="logo" name="logo" label="Logo" type="file" value="{{ $data->logo }}" required />
+                <x-input id="logo" name="logo" label="Logo" type="file" value="{{ $data->logo }}" />
                 <x-input id="name" name="name" label="name" type="text" value="{{ $data->name }}"
                     required />
                 <x-input id="code" name="code" label="code" type="text" value="{{ $data->code }}"
                     required />
                 <x-input id="discount" name="discount" label="Discount (%)" value="{{ $data->discount }}"
                     type="number" min="0" max="100" required />
-                <x-input id="start_date" name="start_date" label="Start Date" type="date"
-                    value="{{ $data->start_date }}" />
-                <x-input id="end_date" name="end_date" label="End Date" type="date" value="{{ $data->end_date }}" />
+                <x-input id="start_date" name="start_date" label="Start Date" type="date" :value="date('Y-m-d', strtotime($data->start_date))" />
+                <x-input id="end_date" name="end_date" label="End Date" type="date" :value="date('Y-m-d', strtotime($data->end_date))" />
                 <x-select id="is_active" name="is_active" label="Status" required>
-                    <option value="1">Aktif</option>
-                    <option value="0">Tidak Aktif</option>
+                    <option value="1" {{ $data->is_active == 1 ? 'selected' : '' }}>Aktif</option>
+                    <option value="0" {{ $data->is_active == 0 ? 'selected' : '' }}>Tidak Aktif</option>
                 </x-select>
-                <x-select id="type" name="type" label="Type" required>
+                {{-- <x-select id="type" name="type" label="Type">
                     <option value="1">Multi</option>
                     <option value="2">Single</option>
-                </x-select>
+                </x-select> --}}
                 <x-button type="submit">Simpan</x-button>
             </form>
         </x-card-container>

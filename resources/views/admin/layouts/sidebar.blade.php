@@ -13,8 +13,14 @@
     aria-label="Sidebar">
     <div class="h-full px-4 py-8 overflow-y-auto bg-primary">
         <ul class="space-y-2">
-            <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
-                active="{{ request()->routeIs('admin.dashboard') }}" />
+            @role('admin|seller')
+                <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
+                    active="{{ request()->routeIs('admin.dashboard') }}" />
+            @endrole
+            @role('buyer')
+                <x-sidebar-item name="Belanja" icon="fas fa-shopping-cart" route="{{ route('product-category.index') }}"
+                    active="{{ request()->routeIs('product-category.index') }}" />
+            @endrole
             @role('admin')
                 <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
                     <span>Master Pengguna</span>
@@ -57,7 +63,7 @@
             @endrole
             @role('seller')
                 <x-sidebar-dropdown title="Master" icon="fas fa-archive" toggle="master-store"
-                    active="{{ request()->routeIs('admin.product.*') || request()->routeIs('admin.request-product.*') }}">
+                    active="{{ request()->routeIs('admin.product.*') || request()->routeIs('admin.request-product.*') || request()->routeIs('admin.product-merk.*') }}">
                     <x-sidebar-submenu name="Variasi Produk" route="{{ route('admin.product-merk.index') }}"
                         active="{{ request()->routeIs('admin.product-merk.*') }}" icon="fas fa-box" />
                     <x-sidebar-submenu name="Produk" route="{{ route('admin.product.index') }}"

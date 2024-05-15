@@ -21,7 +21,9 @@ class DiscountController extends Controller
             return datatables()
                 ->of($discounts)
                 ->addColumn('logo', function ($data) {
-                    return $data->logo;
+                    return view('admin.discount.column.logo', [
+                        'data' => $data
+                    ]);
                 })
                 ->addColumn('name', function ($data) {
                     return $data->name;
@@ -33,17 +35,17 @@ class DiscountController extends Controller
                     return $data->discount . ' %';
                 })
                 ->addColumn('start_date', function ($data) {
-                    return $data->start_date;
+                    return date('d/m/Y', strtotime($data->start_date));
                 })
                 ->addColumn('end_date', function ($data) {
-                    return $data->end_date;
+                    return date('d/m/Y', strtotime($data->end_date));
                 })
                 ->addColumn('is_active', function ($data) {
-                    return $data->is_active;
+                    return $data->is_active == 1 ? 'Aktif' : 'Tidak Aktif';
                 })
-                ->addColumn('type', function ($data) {
-                    return $data->type;
-                })
+                // ->addColumn('type', function ($data) {
+                //     return $data->type;
+                // })
                 ->addColumn('action', function ($data) {
                     return view('admin.discount.column.action', [
                         'id' => $data->id
@@ -55,28 +57,22 @@ class DiscountController extends Controller
         return view('admin.discount.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.discount.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'name' => 'required|string|max:255',
-            'code' => 'required|string|max:255|unique:discounts,code',
-            'discount' => 'required|decimal:0,2|max:100',
+            'logo'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name'       => 'required|string|max:255',
+            'code'       => 'required|string|max:255|unique:discounts,code',
+            'discount'   => 'required|decimal:0,2|max:100',
             'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'is_active' => 'required|in:1,0',
-            'type' => 'required|in:1,2',
+            'end_date'   => 'required|date',
+            'is_active'  => 'required|in:1,0',
+            // 'type'       => 'nullable|in:1,2',
         ]);
 
         try {
@@ -89,37 +85,28 @@ class DiscountController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Discount $discount)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $data = $this->discount->getById($id);
         return view('admin.discount.edit', compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update($id, Request $request)
     {
         $request->validate([
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'name' => 'required|string|max:255',
-            'code' => 'required|string|max:255|unique:discounts,code',
-            'discount' => 'required|decimal:0,2|max:100',
+            'logo'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name'       => 'required|string|max:255',
+            'code'       => 'required|string|max:255|unique:discounts,code,' . $id,
+            'discount'   => 'required|decimal:0,2|max:100',
             'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'is_active' => 'required|in:1,0',
-            'type' => 'required|in:1,2',
+            'end_date'   => 'required|date',
+            'is_active'  => 'required|in:1,0',
+            // 'type'       => 'nullable|in:1,2',
         ]);
 
         try {
@@ -132,9 +119,6 @@ class DiscountController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         try {

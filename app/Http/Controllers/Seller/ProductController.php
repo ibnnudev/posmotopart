@@ -29,6 +29,9 @@ class ProductController extends Controller
                 ->addColumn('sku_seller', function ($data) {
                     return $data->SKU_seller == '' || $data->SKU_seller == null ? '-' : $data->SKU_seller;
                 })
+                ->addColumn('product_merk', function ($data) {
+                    return $data->productMerk->name ?? '-';
+                })
                 ->addColumn('category', function ($data) {
                     return $data->productCategory->name;
                 })

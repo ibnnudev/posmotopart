@@ -23,6 +23,7 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Merk</th>
                     <th>Kategori</th>
                     <th>File</th>
                     <th>Tgl. Upload</th>
@@ -86,6 +87,10 @@
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'product_merk',
+                            name: 'product_merk'
                         },
                         {
                             data: 'product_category',
