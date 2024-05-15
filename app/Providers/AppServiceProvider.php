@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Interfaces\ProductCategoryInterface::class, \App\Repositories\ProductCategoryRepository::class);
         $this->app->bind(\App\Interfaces\ProductMerkInterface::class, \App\Repositories\ProductMerkRepository::class);
         $this->app->bind(\App\Interfaces\DiscountInterface::class, \App\Repositories\DiscountRepository::class);
+        $this->app->bind(\App\Interfaces\CartInterface::class, \App\Repositories\CartRepository::class);
     }
 
     public function boot(): void

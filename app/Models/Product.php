@@ -56,4 +56,9 @@ class Product extends Model
     {
         return $this->belongsTo(ProductMerk::class, 'product_merk_id', 'id');
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'product_id', 'id');
+    }
 }

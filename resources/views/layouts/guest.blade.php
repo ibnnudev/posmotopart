@@ -65,7 +65,11 @@
         </div>
     @endif
 
+
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+
+    <!-- Sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Datatable -->
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
@@ -76,6 +80,9 @@
 
     <!-- Flowbite -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+    @include('sweetalert::alert')
+
 
     @stack('js-internal')
 </body>

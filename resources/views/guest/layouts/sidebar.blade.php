@@ -14,7 +14,10 @@
     <div class="h-full px-4 py-8 overflow-y-auto bg-primary">
         <ul class="space-y-2">
             <x-sidebar-item name="Berdasarkan Kategori" icon="fas fa-th-large"
-                route="{{ route('product-category.index') }}" :active="request()->routeIs('product-category.index') || request()->routeIs('product-category.show')" />
+                route="{{ route('product-category.index') }}" :active="request()->routeIs('product-category.index') ||
+                    request()->routeIs('product-category.show') ||
+                    request()->routeIs('product-category.products') ||
+                    request()->routeIs('cart.*')" />
         </ul>
     </div>
 </aside>

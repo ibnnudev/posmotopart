@@ -6,7 +6,7 @@
     ]" />
     <div class="grid md:grid-cols-4 lg:grid-cols-8 gap-6">
         @forelse ($productMerks as $item)
-            <a href=""
+            <a href="{{ route('product-category.products', $item->id) }}"
                 class="bg-white rounded-md px-6 py-2 h-32 flex justify-between flex-col border border-gray-200 hover:bg-orange-50 hover:shadow-lg">
                 <img src="{{ asset('storage/product-merk/' . $item->image) }}"
                     class="w-auto h-10 object-contain rounded-sm mt-3" alt="{{ $item->name }}">

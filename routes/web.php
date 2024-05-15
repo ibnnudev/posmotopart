@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Guest\CartController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\ProductController as GuestProductController;
 use App\Http\Controllers\Guest\StoreController as GuestStoreController;
@@ -29,6 +30,16 @@ Route::get('store/show/{slug}', [GuestStoreController::class, 'show'])->name('st
 Route::group(['prefix' => 'product-category'], function () {
     Route::get('/', [GuestProductController::class, 'index'])->name('product-category.index');
     Route::get('show/{categoryId}/{storeId}', [GuestProductController::class, 'show'])->name('product-category.show');
+    Route::get('products/{product_merk_id}', [GuestProductController::class, 'products'])->name('product-category.products');
+});
+
+// Cart
+Route::group(['prefix' => 'cart'], function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('update', [CartController::class, 'update'])->name('cart.update');
+    Route::post('delete', [CartController::class, 'delete'])->name('cart.delete');
+    Route::post('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
 
 Route::get('login', function () {

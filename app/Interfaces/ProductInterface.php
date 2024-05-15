@@ -11,4 +11,5 @@ interface ProductInterface
     public function getById($id);
     public function getByStore($id);
     public function getByCategoryAndStore($categoryId, $storeId);
+    public function getProductByMerk($productMerkId);
 }

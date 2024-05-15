@@ -64,4 +64,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProductStockHistory::class, 'created_by', 'id');
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
