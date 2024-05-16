@@ -75,6 +75,10 @@ class ProductRepository implements ProductInterface
         $products = $this->product->where('product_merk_id', $productMerkId)->get()->groupBy('unit');
         foreach ($products as $unit => $product) {
             $product->map(function ($item) {
+                // check if user not authenticated
+                if (!auth()->user()) {
+                    return $item;
+                }
                 $cart = $this->cart->where('product_id', $item->id)->where('user_id', auth()->user()->id)->first();
                 $item->cart = $cart;
                 return $item ?? null;
