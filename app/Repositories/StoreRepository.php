@@ -179,4 +179,9 @@ class StoreRepository implements StoreInterface
 
         dd($productCategory);
     }
+
+    public function getByUserId($id)
+    {
+        return $this->store->where('user_id', $id)->get();
+    }
 }

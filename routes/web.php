@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\DiscountStoreController;
 use App\Http\Controllers\Guest\CartController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\ProductController as GuestProductController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProductStockHistoryController;
 use App\Http\Controllers\RequestProductController;
+use App\Http\Controllers\Seller\DiscountStoreController as SellerDiscountStoreController;
 use App\Http\Controllers\Seller\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -85,7 +87,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     // Product Merks
     Route::resource('product-merk', ProductMerkController::class, ['as' => 'admin'])->middleware('role:seller|admin');
     // Campaign
-    Route::resource('discount', AdminDiscountController::class, ['as' => 'admin'])->middleware('role:admin');
+    Route::resource('discount', AdminDiscountController::class, ['as' => 'admin'])->middleware('role:admin|seller');
+    Route::group(['prefix' => 'discoun-store', 'as' => 'admin.discount-store.'], function () {
+        Route::get('/', [SellerDiscountStoreController::class, 'index'])->name('index')->middleware('role:seller');
+        Route::post('{id}/apply', [SellerDiscountStoreController::class, 'store'])->name('apply')->middleware('role:seller');
+        Route::post('{id}/remove', [SellerDiscountStoreController::class, 'destroy'])->name('remove')->middleware('role:seller');
+    });
 });
 
 require __DIR__ . '/auth.php';

@@ -20,4 +20,9 @@ class Discount extends Model
         'is_active',
         'type',
     ];
+
+    public function discountStores()
+    {
+        return $this->hasMany(DiscountStore::class, 'discount_id', 'id');
+    }
 }

@@ -15,4 +15,6 @@ interface StoreInterface
     public function updateBank($id, $data);
 
     public function getBySlug($slug);
+
+    public function getByUserId($userId);
 }

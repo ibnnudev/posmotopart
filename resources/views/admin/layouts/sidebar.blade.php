@@ -21,6 +21,10 @@
                 <x-sidebar-item name="Belanja" icon="fas fa-shopping-cart" route="{{ route('product-category.index') }}"
                     active="{{ request()->routeIs('product-category.index') }}" />
             @endrole
+            @role('seller')
+                <x-sidebar-item name="Campaign" icon="fas fa-credit-card" route="{{ route('admin.discount.index') }}"
+                    active="{{ request()->routeIs('admin.discount.*') }}" />
+            @endrole
             @role('admin')
                 <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
                     <span>Master Pengguna</span>

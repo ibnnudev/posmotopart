@@ -68,4 +68,9 @@ class DiscountRepository implements DiscountInterface
             throw $th;
         }
     }
+
+    public function getDiscountsNotExpired()
+    {
+        return $this->discount->where('is_active', true)->where('end_date', '>', now())->get();
+    }
 }

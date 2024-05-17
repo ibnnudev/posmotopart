@@ -4,19 +4,24 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\DiscountInterface;
+use App\Interfaces\DiscountStoreInterface;
 use App\Models\Discount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DiscountController extends Controller
 {
     private $discount;
-    public function __construct(DiscountInterface $discount)
+    private $discountStore;
+    public function __construct(DiscountInterface $discount,  DiscountStoreInterface $discountStore)
     {
         $this->discount = $discount;
+        $this->discountStore = $discountStore;
     }
     public function index(Request $request)
     {
-        $discounts = $this->discount->getAll();
+        $userLogin = Auth::user()->roles->pluck('name')->toArray()[0];
+        $discounts = $userLogin == 'admin' ? $this->discount->getAll() : $this->discount->getDiscountsNotExpired();
         if ($request->wantsJson()) {
             return datatables()
                 ->of($discounts)
@@ -43,12 +48,13 @@ class DiscountController extends Controller
                 ->addColumn('is_active', function ($data) {
                     return $data->is_active == 1 ? 'Aktif' : 'Tidak Aktif';
                 })
-                // ->addColumn('type', function ($data) {
-                //     return $data->type;
-                // })
+                ->addColumn('condition', function ($data) {
+                    return $this->discountStore->discountIsExist($data->id, auth()->user()->store->id) ? 'Sudah Terdaftar' : 'Belum Terdaftar';
+                })
                 ->addColumn('action', function ($data) {
                     return view('admin.discount.column.action', [
-                        'id' => $data->id
+                        'id' => $data->id,
+                        'isApplied' => $this->discountStore->discountIsExist($data->id, auth()->user()->store->id),
                     ]);
                 })
                 ->addIndexColumn()

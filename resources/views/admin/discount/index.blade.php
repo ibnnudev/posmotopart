@@ -4,9 +4,11 @@
         ['name' => 'Campaign', 'url' => route('admin.discount.index')],
     ]" />
     <x-card-container>
-        <div class="text-end my-4">
-            <a href="{{ route('admin.discount.create') }}" class="px-4 py-2 bg-primary text-white rounded-md">Tambah</a>
-        </div>
+        @role('admin')
+            <div class="text-end my-4">
+                <a href="{{ route('admin.discount.create') }}" class="px-4 py-2 bg-primary text-white rounded-md">Tambah</a>
+            </div>
+        @endrole
         <table>
             <thead>
                 <tr>
@@ -18,7 +20,7 @@
                     <td>Start Date</td>
                     <td>End Date</td>
                     <td>Status</td>
-                    {{-- <td>Type</td> --}}
+                    <td>Kondisi</td>
                     <td>Action</td>
                 </tr>
             </thead>
@@ -105,17 +107,10 @@
                             data: 'is_active',
                             name: 'is_active',
                         },
-                        // {
-                        //     data: 'type',
-                        //     name: 'type',
-                        //     render: function(data) {
-                        //         if (data == 1) {
-                        //             return '<span class="text-green-500">Multi</span>';
-                        //         } else {
-                        //             return '<span class="text-red-500">Single</span>';
-                        //         }
-                        //     }
-                        // },
+                        {
+                            data: 'condition',
+                            name: 'condition',
+                        },
                         {
                             data: 'action',
                             name: 'action',
