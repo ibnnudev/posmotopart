@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class RequestProduct extends Model
 {
+
+    const STATUS_PENDING = 'menunggu';
+    const STATUS_ACCEPTED = 'diterima';
+    const STATUS_REJECTED = 'ditolak';
+
     use HasFactory, UUID, HasUuids;
 
     public $table = 'request_products';

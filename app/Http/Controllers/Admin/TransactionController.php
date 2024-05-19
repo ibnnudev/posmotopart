@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Interfaces\TransactionInterface;
 use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -18,9 +19,10 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
+        $transactions = Auth::user()->hasRole('admin') ? $this->transaction->getAll() : $this->transaction->getAll()->where('status', TransactionDetail::PROCESS_BY_MERCHANT)->where('store_id', auth()->user()->store->id);
         if ($request->wantsJson()) {
             return datatables()
-                ->of($this->transaction->getAll()->where('status', TransactionDetail::PROCESS_BY_MERCHANT)->where('store_id', auth()->user()->store->id))
+                ->of($transactions)
                 ->addColumn('code', function ($data) {
                     return $data->transaction_code;
                 })

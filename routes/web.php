@@ -114,8 +114,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     });
     // Transaction
     Route::group(['prefix' => 'transaction', 'as' => 'admin.transaction.'], function () {
-        Route::get('/', [AdminTransactionController::class, 'index'])->name('index')->middleware('role:seller');
-        Route::get('show/{id}', [AdminTransactionController::class, 'show'])->name('show')->middleware('role:seller');
+        Route::get('/', [AdminTransactionController::class, 'index'])->name('index')->middleware('role:seller|admin');
+        Route::get('show/{id}', [AdminTransactionController::class, 'show'])->name('show')->middleware('role:seller|admin');
         Route::post('change-status/{id}', [AdminTransactionController::class, 'changeStatus'])->name('change-status')->middleware('role:seller');
     });
     // Paylater

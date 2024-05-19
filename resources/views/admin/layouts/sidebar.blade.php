@@ -25,7 +25,7 @@
                 <x-sidebar-item name="Campaign" icon="fas fa-credit-card" route="{{ route('admin.discount.index') }}"
                     active="{{ request()->routeIs('admin.discount.*') }}" />
             @endrole
-            @role('seller')
+            @role('seller|admin')
                 <x-sidebar-item name="Laporan Penjualan" icon="fas fa-chart-line"
                     route="{{ route('admin.transaction.index') }}"
                     active="{{ request()->routeIs('admin.transaction.*') }}" />
