@@ -28,7 +28,7 @@ class CartRepository implements CartInterface
         $data['user_id']         = auth()->user()->id;
         $data['store_id']        = $product->store_id;
         $data['product_merk_id'] = $product->product_merk_id;
-        $data['discount']        = $product->discount ?? 0;
+        $data['discount_price']  = $product->discount ?? 0;
         $data['price']           = $product->price;
         $data['total_price']     = $product->discount ? $product->price - ($product->price * $product->discount / 100) * $data['qty'] : $product->price * $data['qty'];
 

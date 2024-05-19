@@ -20,6 +20,7 @@ class Cart extends Model
         'product_merk_id',
         'qty',
         'price',
+        'discount_price',
         'total_price'
     ];
 

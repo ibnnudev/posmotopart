@@ -15,6 +15,11 @@ class DestinationOrder extends Model
         'latitude',
         'longitude',
         'is_default',
+        'district',
+        'regency',
+        'province',
+        'postal_code',
+        'plus_code',
         'is_active',
     ];
 

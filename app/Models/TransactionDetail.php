@@ -68,4 +68,9 @@ class TransactionDetail extends Model
     {
         return $this->belongsTo(DestinationOrder::class, 'destination_order_id');
     }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

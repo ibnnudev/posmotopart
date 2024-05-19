@@ -47,4 +47,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(PaymentOption::class);
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

@@ -93,7 +93,9 @@
             </div>
         </x-card-container>
     </div>
-    <x-footer-form title="Proses Pembayaran" :isLeft="false" />
+    @if ($destinationOrders->count() != 0)
+        <x-footer-form title="Proses Pembayaran" :isLeft="false" />
+    @endif
     </form>
 
     <!-- Main modal -->
@@ -122,15 +124,22 @@
                 <div class="p-4">
                     <form class="space-y-6" action="{{ route('checkout.add-shipping') }}" method="POST">
                         @csrf
+                        <x-input id="province" label="Provinsi" name="province" type="text" required />
+                        <x-input id="regency" label="Kota/Kabupaten" name="regency" type="text" required />
+                        <x-input id="district" label="Kecamatan" name="district" type="text" required />
+                        <div class="grid lg:grid-cols-2 gap-6">
+                            <x-input id="postal_code" label="Kode Pos" name="postal_code" type="text" />
+                            <x-input id="plus_code" label="Kode Plus" name="plus_code" type="text" />
+                        </div>
                         <x-textarea id="address" label="Alamat" name="address" required />
                         <div class="grid grid-cols-2 gap-6">
                             <x-input id="latitude" label="Latitude" name="latitude" type="text" required />
                             <x-input id="longitude" label="Longitude" name="longitude" type="text" required />
                         </div>
-                        <x-select id="is_default" name="is_default" label="Jadikan alamat utama">
+                        {{-- <x-select id="is_default" name="is_default" label="Jadikan alamat utama">
                             <option value="1">Ya</option>
                             <option value="0">Tidak</option>
-                        </x-select>
+                        </x-select> --}}
                         <x-footer-form :backButton="false" />
                     </form>
                 </div>

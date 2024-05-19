@@ -54,6 +54,14 @@ class UserRepository implements UserInterface
 
         try {
             $user = $this->user->find($id);
+
+            if ($user->email != null && $user->phone != null && $user->card_number != null && $user->bank_name != null && $user->owner_name != null && $user->province != null && $user->regency != null && $user->district != null && $user->zip_code != null && $user->address != null && $user->nik != null) {
+                $data['profile_filled'] = true;
+            } else {
+                $data['profile_filled'] = false;
+            }
+
+
             $user->update($data);
         } catch (\Throwable $th) {
             DB::rollBack();

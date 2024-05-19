@@ -12,6 +12,7 @@ class DashboardController extends Controller
         if (auth()->user()->hasRole('buyer')) {
             return redirect()->route('product-category.index');
         }
+
         return view('dashboard');
     }
 }

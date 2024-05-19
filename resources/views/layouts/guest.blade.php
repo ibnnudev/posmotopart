@@ -58,7 +58,7 @@
     @else
         @include('guest.layouts.sidebar')
         @include('guest.layouts.header')
-        <div class="p-4 sm:ml-64 h-screen overflow-y-auto bg-gray-50">
+        <div class="p-4 sm:ml-64 min-h-screen overflow-y-auto bg-gray-50">
             <div class="p-4 mb-12">
                 {{ $slot }}
             </div>

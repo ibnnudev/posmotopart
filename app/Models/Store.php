@@ -55,4 +55,9 @@ class Store extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function transactionDetail()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
 }

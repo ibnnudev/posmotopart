@@ -25,14 +25,12 @@
                 <x-sidebar-item name="Campaign" icon="fas fa-credit-card" route="{{ route('admin.discount.index') }}"
                     active="{{ request()->routeIs('admin.discount.*') }}" />
             @endrole
+            @role('seller')
+                <x-sidebar-item name="Laporan Penjualan" icon="fas fa-chart-line"
+                    route="{{ route('admin.transaction.index') }}"
+                    active="{{ request()->routeIs('admin.transaction.*') }}" />
+            @endrole
             @role('admin')
-                <x-sidebar-dropdown title="Laporan Penjualan" icon="fas fa-chart-line" toggle="report-sales"
-                    active="{{ request()->routeIs('admin.transaction.*') }}">
-                    <x-sidebar-submenu name="Proses Oleh Merchant"
-                        route="{{ route('admin.transaction.process-by-merchant') }}"
-                        active="{{ request()->routeIs('admin.transaction.process-by-merchant') || request()->routeIs('admin.transaction.show') }}"
-                        icon="fas fa-circle-notch" />
-                </x-sidebar-dropdown>
                 <x-sidebar-dropdown title="Manajemen Pengguna" icon="fas fa-users" toggle="master-users"
                     active="{{ request()->routeIs('admin.permission.*') || request()->routeIs('admin.user.*') || request()->routeIs('admin.role.*') }}">
                     <x-sidebar-submenu name="Permission" route="{{ route('admin.permission.index') }}"

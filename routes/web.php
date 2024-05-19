@@ -86,10 +86,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::post('request-product/change-status/{id}', [RequestProductController::class, 'changeStatus'])->name('admin.request-product.change-status')->middleware('role:admin');
     Route::post('request-product/import', [RequestProductController::class, 'import'])->name('admin.request-product.import')->middleware('role:admin|seller');
     Route::get('request-product/change-status-form/{id}', [RequestProductController::class, 'changeStatusForm'])->name('admin.request-product.change-status-form')->middleware('role:admin');
-    Route::resource('request-product', RequestProductController::class, ['as' => 'admin'])->middleware('role:admin|seller');
+    Route::resource('request-product', RequestProductController::class, ['as' => 'admin'])->middleware(['role:admin|seller', 'profileFilled']);
     // Product
-    Route::post('product/import', [ProductController::class, 'import'])->name('admin.product.import')->middleware('role:seller');
-    Route::resource('product', ProductController::class, ['as' => 'admin'])->middleware('role:seller');
+    Route::post('product/import', [ProductController::class, 'import'])->name('admin.product.import')->middleware(['role:seller', 'profileFilled']);
+    Route::resource('product', ProductController::class, ['as' => 'admin'])->middleware(['role:seller', 'profileFilled']);
     // Product Stock History
     Route::post('product-stock-history/import', [ProductStockHistoryController::class, 'import'])->name('admin.product-stock-history.import')->middleware('role:seller|admin');
     Route::get('product-stock-history/download-template', [ProductStockHistoryController::class, 'downloadTemplate'])->name('admin.product-stock-history.download-template')->middleware('role:seller|admin');
@@ -114,10 +114,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     });
     // Transaction
     Route::group(['prefix' => 'transaction', 'as' => 'admin.transaction.'], function () {
-        Route::get('process-by-merchant', [AdminTransactionController::class, 'processByMerchant'])->name('process-by-merchant');
-        Route::get('show/{id}', [AdminTransactionController::class, 'show'])->name('show');
-        Route::post('change-status/{id}', [AdminTransactionController::class, 'changeStatus'])->name('change-status');
-    })->middleware('role:admin');
+        Route::get('/', [AdminTransactionController::class, 'index'])->name('index')->middleware('role:seller');
+        Route::get('show/{id}', [AdminTransactionController::class, 'show'])->name('show')->middleware('role:seller');
+        Route::post('change-status/{id}', [AdminTransactionController::class, 'changeStatus'])->name('change-status')->middleware('role:seller');
+    });
     // Paylater
     Route::resource('wallet', AdminWalletController::class, ['as' => 'admin'])->middleware('role:admin|buyer');
 });

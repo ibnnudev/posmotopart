@@ -16,13 +16,16 @@ class TransactionController extends Controller
         $this->transaction = $transaction;
     }
 
-    public function processByMerchant(Request $request)
+    public function index(Request $request)
     {
         if ($request->wantsJson()) {
             return datatables()
-                ->of($this->transaction->getAll()->where('status', TransactionDetail::PROCESS_BY_MERCHANT))
+                ->of($this->transaction->getAll()->where('status', TransactionDetail::PROCESS_BY_MERCHANT)->where('store_id', auth()->user()->store->id))
                 ->addColumn('code', function ($data) {
                     return $data->transaction_code;
+                })
+                ->addColumn('store', function ($data) {
+                    return $data->store->name;
                 })
                 ->addColumn('created_at', function ($data) {
                     return date('d/m/Y', strtotime($data->created_at));
@@ -43,17 +46,15 @@ class TransactionController extends Controller
                 ->make(true);
         }
 
-        return view('admin.transaction.process_by_merchant');
+        return view('admin.transaction.index');
     }
 
     public function show($transactionCode)
     {
-        $data = $this->transaction->groupByStore($transactionCode);
-        return view('admin.transaction.show', [
-            'transactions' => $data['transactions'],
-            'customer'     => $data['customer'],
-            'transaction'  => $data['transaction']
-        ]);
+        $transactions = $this->transaction->getByTransactionCode($transactionCode);
+        $customer = $transactions->first()->customer;
+        dd($transactions, $customer);
+        return view('admin.transaction.show', []);
     }
 
     public function changeStatus($id, Request $request)
