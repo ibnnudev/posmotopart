@@ -10,4 +10,5 @@ interface DiscountStoreInterface
     public function destroy($id);
     public function discountIsExist($discount_id, $store_id);
     public function getByDiscountAndStore($discount_id, $store_id);
+    public function getByDiscountId($discount_id);
 }

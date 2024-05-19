@@ -21,13 +21,13 @@ class DiscountController extends Controller
     public function index(Request $request)
     {
         $userLogin = Auth::user()->roles->pluck('name')->toArray()[0];
-        $discounts = $userLogin == 'admin' ? $this->discount->getAll() : $this->discount->getDiscountsNotExpired();
+        $discounts =  $this->discount->getAll();
         if ($request->wantsJson()) {
-            return datatables()
+            $dataTable = datatables()
                 ->of($discounts)
                 ->addColumn('logo', function ($data) {
                     return view('admin.discount.column.logo', [
-                        'data' => $data
+                        'logo' => $data->logo ? 'storage/discount/' . $data->logo : null
                     ]);
                 })
                 ->addColumn('name', function ($data) {
@@ -45,20 +45,22 @@ class DiscountController extends Controller
                 ->addColumn('end_date', function ($data) {
                     return date('d/m/Y', strtotime($data->end_date));
                 })
-                ->addColumn('is_active', function ($data) {
-                    return $data->is_active == 1 ? 'Aktif' : 'Tidak Aktif';
-                })
-                ->addColumn('condition', function ($data) {
-                    return $this->discountStore->discountIsExist($data->id, auth()->user()->store->id) ? 'Sudah Terdaftar' : 'Belum Terdaftar';
-                })
+
                 ->addColumn('action', function ($data) {
+                    $isAppalied = Auth::user()->hasRole('seller') ? $this->discountStore->discountIsExist($data->id, auth()->user()->store->id) : false;
                     return view('admin.discount.column.action', [
-                        'id' => $data->id,
-                        'isApplied' => $this->discountStore->discountIsExist($data->id, auth()->user()->store->id),
+                        'data'      => $data,
+                        'isApplied' => $isAppalied
                     ]);
                 })
-                ->addIndexColumn()
-                ->make(true);
+                ->addIndexColumn();
+
+            if ($userLogin == 'seller') {
+                $dataTable->addColumn('condition', function ($data) {
+                    return $this->discountStore->discountIsExist($data->id, auth()->user()->store->id) ? 'Sudah Terdaftar' : 'Belum Terdaftar';
+                });
+            }
+            return $dataTable->make(true);
         }
         return view('admin.discount.index');
     }
@@ -91,9 +93,38 @@ class DiscountController extends Controller
         }
     }
 
-    public function show(Discount $discount)
+    public function show($id, Request $request)
     {
-        //
+        $discountStores = $this->discountStore->getByDiscountId($id);
+        $discount = $this->discount->getById($id);
+
+        if ($request->wantsJson()) {
+            return datatables()
+                ->of($discountStores)
+                ->addColumn('logo', function ($data) {
+                    return view('admin.discount.column.logo', [
+                        'logo' => $data->store->logo ? 'storage/store/' . $data->store->logo : null
+                    ]);
+                })
+                ->addColumn('name', function ($data) {
+                    return $data->store->name;
+                })
+                ->addColumn('owner', function ($data) {
+                    return $data->store->user->name;
+                })
+                ->addColumn('address', function ($data) {
+                    return $data->store->address;
+                })
+                ->addColumn('phone', function ($data) {
+                    return $data->store->phone;
+                })
+                ->addColumn('status', function ($data) {
+                    return $data->store->status == 1 ? 'Aktif' : 'Tidak Aktif';
+                })
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('admin.discount.show', compact('discount'));
     }
 
     public function edit($id)

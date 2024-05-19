@@ -9,7 +9,7 @@
                 <a href="{{ route('admin.discount.create') }}" class="px-4 py-2 bg-primary text-white rounded-md">Tambah</a>
             </div>
         @endrole
-        <table>
+        <table id="discountTable">
             <thead>
                 <tr>
                     <td>#</td>
@@ -19,8 +19,9 @@
                     <td>Discount</td>
                     <td>Start Date</td>
                     <td>End Date</td>
-                    <td>Status</td>
-                    <td>Kondisi</td>
+                    @if (auth()->user()->hasRole('seller'))
+                        <td>Kondisi</td>
+                    @endif
                     <td>Action</td>
                 </tr>
             </thead>
@@ -64,60 +65,60 @@
                     }
                 });
             }
-
             $(function() {
-                $('table').DataTable({
+                var columns = [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'logo',
+                        name: 'logo',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'name',
+                        name: 'name',
+                    },
+                    {
+                        data: 'code',
+                        name: 'code',
+                    },
+                    {
+                        data: 'discount',
+                        name: 'discount',
+                    },
+                    {
+                        data: 'start_date',
+                        name: 'start_date',
+                    },
+                    {
+                        data: 'end_date',
+                        name: 'end_date',
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ];
+
+                @if (Auth::user()->hasRole('seller'))
+                    columns.splice(7, 0, {
+                        data: 'condition',
+                        name: 'condition',
+                    });
+                @endif
+
+                $('#discountTable').DataTable({
                     processing: true,
                     autoWidth: false,
                     responsive: true,
                     ajax: '{{ route('admin.discount.index') }}',
-                    columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex',
-                            orderable: false,
-                            searchable: false
-                        },
-                        {
-                            data: 'logo',
-                            name: 'logo',
-                            orderable: false,
-                            searchable: false
-                        },
-                        {
-                            data: 'name',
-                            name: 'name',
-                        },
-                        {
-                            data: 'code',
-                            name: 'code',
-                        },
-                        {
-                            data: 'discount',
-                            name: 'discount',
-                        },
-                        {
-                            data: 'start_date',
-                            name: 'start_date',
-                        },
-                        {
-                            data: 'end_date',
-                            name: 'end_date',
-                        },
-                        {
-                            data: 'is_active',
-                            name: 'is_active',
-                        },
-                        {
-                            data: 'condition',
-                            name: 'condition',
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false
-                        }
-                    ]
+                    columns: columns
                 });
             });
         </script>
