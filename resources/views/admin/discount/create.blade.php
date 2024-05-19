@@ -30,4 +30,23 @@
             </form>
         </x-card-container>
     </div>
+
+    @push('js-internal')
+        <script>
+            $(function() {
+                // if end date is less than start date, show aler
+                $('input#end_date').on('change', function() {
+                    const startDate = new Date($('input#start_date').val());
+                    const endDate = new Date($('input#end_date').val());
+                    if (endDate < startDate) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Tanggal berakhir tidak boleh kurang dari tanggal mulai!',
+                        });
+                    }
+                });
+            });
+        </script>
+    @endpush
 </x-app-layout>

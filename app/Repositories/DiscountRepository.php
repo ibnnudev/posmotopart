@@ -43,11 +43,9 @@ class DiscountRepository implements DiscountInterface
     {
         $category = $this->discount->find($id);
         if (isset($data['logo'])) {
-
             if ($category->logo != null) {
                 Storage::delete('public/discount/' . $category->logo);
             }
-
             $filename = uniqid() . '.' . $data['logo']->getClientOriginalExtension();
             $data['logo']->storeAs('public/discount', $filename);
             $data['logo'] = $filename;
@@ -63,6 +61,8 @@ class DiscountRepository implements DiscountInterface
     {
         try {
             $category = $this->discount->find($id);
+            if ($category->logo != null)
+                Storage::delete('public/discount/' . $category->logo);
             return $category->delete();
         } catch (\Throwable $th) {
             throw $th;
