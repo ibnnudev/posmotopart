@@ -29,38 +29,34 @@ class TransactionRepository implements TransactionInterface
     {
         DB::beginTransaction();
         try {
-            $carts = $this->cart->getByUserId(auth()->user()->id);
-
-            // add to transaction
-            foreach ($carts as $cart) {
-                $transaction = $this->transaction->create([
-                    'user_id'       => auth()->user()->id,
-                    'store_id'      => $this->product->getById($cart->product_id)->store_id,
-                    'product_id'    => $cart->product_id,
-                    'requested_qty' => $cart->qty,
-                    'price'         => $cart->price,
-                    'total_price'   => $cart->total_price,
-                    'status'        => 'pending', // waiting for seller approval the stock
-                ]);
-            }
-
-            $this->transactionDetail->create([
-                'transaction_id'       => $transaction->id,
-                'user_id'              => auth()->user()->id,
-                'qty'                  => $carts->sum('qty'),
-                'total_price'          => $carts->sum('total_price'),
-                'admin_fee'            => $carts->sum('total_price') * 0.1,
-                'status'               => $this->transactionDetail::PROCESS_BY_MERCHANT,
-                'payment_option_id'    => $data['payment_option_id'],
-                'destination_order_id' => $data['address_id']
-            ]);
+            $carts           = $this->cart->getByUserId(auth()->user()->id);
+            $transactionCode = 'TRX' . time();
 
             $carts->each->delete();
-
             DB::commit();
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();
         }
+    }
+
+    public function getAll()
+    {
+        return $this->transactionDetail->with(['transactions', 'paymentOption', 'destinationOrder'])->get();
+    }
+
+    public function getById($id)
+    {
+        return $this->transactionDetail->with(['transactions', 'paymentOption', 'destinationOrder'])->find($id);
+    }
+
+    public function groupByStore($transactionCode)
+    {
+        $data = $this->transaction->with('store', 'product')->where('transaction_code', $transactionCode)->get()->groupBy('store.name');
+        return [
+            'transactions' => $data,
+            'customer'     => $this->transactionDetail->with('customer')->where('transaction_code', $transactionCode)->first()->customer,
+            'transaction'  => $this->transactionDetail->where('transaction_code', $transactionCode)->first()
+        ];
     }
 }

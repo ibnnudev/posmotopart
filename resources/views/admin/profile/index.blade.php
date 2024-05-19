@@ -1,5 +1,10 @@
 <x-app-layout>
-    <x-breadcrumb :links="[['name' => 'Dashboard', 'url' => route('admin.dashboard')], ['name' => 'Profil', 'url' => '#']]" />
+    @role('admin|seller')
+        <x-breadcrumb :links="[['name' => 'Dashboard', 'url' => route('admin.dashboard')], ['name' => 'Profil', 'url' => '#']]" />
+    @endrole
+    @role('buyer')
+        <x-breadcrumb :links="[['name' => 'Profil', 'url' => '#']]" />
+    @endrole
     <x-card-container>
         <div>
             <div class="md:flex items-center justify-between gap-2">

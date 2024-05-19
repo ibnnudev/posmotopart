@@ -1,6 +1,6 @@
 <x-guest-layout>
     <x-breadcrumb :links="[
-        ['name' => 'Berdasarkan Kategori', 'url' => route('product-category.index')],
+        ['name' => 'Belanja', 'url' => route('product-category.index')],
         ['name' => 'Grosir', 'url' => route('product-category.index')],
     ]" />
     <div class="space-y-6">

@@ -22,7 +22,8 @@ class TransactionDetail extends Model
     use HasFactory;
     public    $table    = 'transaction_details';
     protected $fillable = [
-        'transaction_id',
+        'store_id',
+        'transaction_code',
         'user_id',
         'qty', // total semua barang yang dibeli
         'total_price',
@@ -38,9 +39,9 @@ class TransactionDetail extends Model
         'receive_by',  // null
     ];
 
-    public function transaction()
+    public function transactions()
     {
-        return $this->belongsTo(Transaction::class);
+        return $this->hasMany(Transaction::class, 'id', 'transaction_id');
     }
 
     public function user()
@@ -56,5 +57,15 @@ class TransactionDetail extends Model
     public function paymentOption()
     {
         return $this->belongsTo(PaymentOption::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function destinationOrder()
+    {
+        return $this->belongsTo(DestinationOrder::class, 'destination_order_id');
     }
 }

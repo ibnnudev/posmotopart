@@ -55,6 +55,9 @@
             <div class="p-4 mb-12">
                 {{ $slot }}
             </div>
+            {{-- <small class="text-gray-500 text-center block mb-4 mt-auto">©{{ date('Y') . ' ' . config('app.name') }}. All
+                rights
+                reserved.</small> --}}
         </div>
     </div>
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductMerkController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreController;
+use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DiscountStoreController;
 use App\Http\Controllers\Guest\CartController;
@@ -109,6 +110,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('{id}/apply', [SellerDiscountStoreController::class, 'store'])->name('apply')->middleware('role:seller');
         Route::post('{id}/remove', [SellerDiscountStoreController::class, 'destroy'])->name('remove')->middleware('role:seller');
     });
+    // Transaction
+    Route::group(['prefix' => 'transaction', 'as' => 'admin.transaction.'], function () {
+        Route::get('process-by-merchant', [AdminTransactionController::class, 'processByMerchant'])->name('process-by-merchant');
+        Route::get('show/{id}', [AdminTransactionController::class, 'show'])->name('show');
+        Route::post('change-status/{id}', [AdminTransactionController::class, 'changeStatus'])->name('change-status');
+    })->middleware('role:admin');
 });
 
 require __DIR__ . '/auth.php';

@@ -17,18 +17,22 @@
                 <x-sidebar-item name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
                     active="{{ request()->routeIs('admin.dashboard') }}" />
             @endrole
-            @role('buyer')
+            {{-- @role('buyer')
                 <x-sidebar-item name="Belanja" icon="fas fa-shopping-cart" route="{{ route('product-category.index') }}"
                     active="{{ request()->routeIs('product-category.index') }}" />
-            @endrole
+            @endrole --}}
             @role('seller')
                 <x-sidebar-item name="Campaign" icon="fas fa-credit-card" route="{{ route('admin.discount.index') }}"
                     active="{{ request()->routeIs('admin.discount.*') }}" />
             @endrole
             @role('admin')
-                <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
-                    <span>Master Pengguna</span>
-                </li>
+                <x-sidebar-dropdown title="Laporan Penjualan" icon="fas fa-chart-line" toggle="report-sales"
+                    active="{{ request()->routeIs('admin.transaction.*') }}">
+                    <x-sidebar-submenu name="Proses Oleh Merchant"
+                        route="{{ route('admin.transaction.process-by-merchant') }}"
+                        active="{{ request()->routeIs('admin.transaction.process-by-merchant') || request()->routeIs('admin.transaction.show') }}"
+                        icon="fas fa-circle-notch" />
+                </x-sidebar-dropdown>
                 <x-sidebar-dropdown title="Manajemen Pengguna" icon="fas fa-users" toggle="master-users"
                     active="{{ request()->routeIs('admin.permission.*') || request()->routeIs('admin.user.*') || request()->routeIs('admin.role.*') }}">
                     <x-sidebar-submenu name="Permission" route="{{ route('admin.permission.index') }}"
@@ -38,10 +42,6 @@
                     <x-sidebar-submenu name="Pengguna" route="{{ route('admin.user.index') }}"
                         active="{{ request()->routeIs('admin.user.*') }}" icon="fas fa-user" />
                 </x-sidebar-dropdown>
-
-                <li class="flex items-center justify-between px-3 py-2 font-normal text-xs text-white uppercase rounded-md">
-                    <span>Master Data</span>
-                </li>
                 <x-sidebar-item name="Daftar Toko" icon="fas fa-store" route="{{ route('admin.store.index') }}"
                     active="{{ request()->routeIs('admin.store.*') }}" />
                 <x-sidebar-item name="Kategori Produk" icon="fas fa-list"

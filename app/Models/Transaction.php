@@ -11,6 +11,7 @@ class Transaction extends Model
     public $table = 'transactions';
 
     protected $fillable = [
+        'transaction_code',
         'user_id',
         'store_id',
         'product_id',
@@ -22,7 +23,6 @@ class Transaction extends Model
         'total_price',
         'status',
     ];
-
     public function transactionDetail()
     {
         return $this->hasMany(TransactionDetail::class);
