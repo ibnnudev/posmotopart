@@ -31,14 +31,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [GuestProductController::class, 'index'])->name('home');
 
 // Store
-Route::get('store/show/{slug}', [GuestStoreController::class, 'show'])->name('store.show');
+Route::get('store/show/{slug}', [GuestStoreController::class, 'show'])->name('store.show')->middleware('auth', 'role:buyer');
 
 // Product By Category
 Route::group(['prefix' => 'product-category'], function () {
     Route::get('/', [GuestProductController::class, 'index'])->name('product-category.index');
     Route::get('show/{categoryId}/{storeId}', [GuestProductController::class, 'show'])->name('product-category.show');
     Route::get('products/{product_merk_id}', [GuestProductController::class, 'products'])->name('product-category.products');
-});
+})->middleware('auth', 'role:buyer');
 
 // Cart
 Route::group(['prefix' => 'cart'], function () {
@@ -49,19 +49,19 @@ Route::group(['prefix' => 'cart'], function () {
     Route::post('reduceQty', [CartController::class, 'reduceQty'])->name('cart.reduceQty');
     Route::post('delete', [CartController::class, 'delete'])->name('cart.delete');
     Route::post('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-})->middleware('auth');
+})->middleware('auth', 'role:buyer');
 
 // Checkout
 Route::group(['prefix' => 'checkout'], function () {
     Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('add-shipping', [CheckoutController::class, 'addShipping'])->name('checkout.add-shipping');
     Route::post('store', [CheckoutController::class, 'store'])->name('checkout.store');
-})->middleware('auth');
+})->middleware('auth', 'role:buyer');
 
 // Transaction
 Route::group(['prefix' => 'transaction'], function () {
     Route::get('/', [TransactionController::class, 'index'])->name('transaction.index');
-});
+})->middleware('auth', 'role:buyer');
 
 Route::get('login', function () {
     return view('auth.login');

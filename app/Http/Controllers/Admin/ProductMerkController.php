@@ -25,7 +25,7 @@ class ProductMerkController extends Controller
     {
         if ($request->wantsJson()) {
             return datatables()
-                ->of($this->productMerk->getAll())
+                ->of($this->productMerk->getAll()->where('store_id', auth()->user()->store->id))
                 ->addColumn('name', function ($data) {
                     return $data->name;
                 })

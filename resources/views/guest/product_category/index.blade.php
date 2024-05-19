@@ -19,8 +19,13 @@
                 @forelse ($category->stores as $store)
                     <a href="{{ route('product-category.show', ['categoryId' => $category->id, 'storeId' => $store->id]) }}"
                         class="bg-white rounded-md px-6 py-2 h-28 flex justify-between flex-col border border-gray-200 hover:bg-orange-50 hover:shadow-lg">
-                        <img src="{{ asset('storage/store/' . $store->logo) }}"
-                            class="w-auto h-7 object-contain rounded-sm mt-3" alt="{{ $store->name }}">
+                        @if ($store->logo)
+                            <img src="{{ asset('storage/store/' . $store->logo) }}"
+                                class="w-auto h-7 object-contain rounded-sm mt-3" alt="{{ $store->name }}">
+                        @else
+                            <img src="https://placehold.co/600x400?text={{ $store->name }}"
+                                class="w-auto h-7 object-contain mt-3 rounded-full" alt="{{ $store->name }}">
+                        @endif
                         <p class="text-center text-sm line-clamp-3 mb-2 font-medium">{{ $store->name }}</p>
                     </a>
                 @empty
