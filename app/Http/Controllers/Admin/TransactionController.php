@@ -51,10 +51,13 @@ class TransactionController extends Controller
 
     public function show($transactionCode)
     {
-        $transactions = $this->transaction->getByTransactionCode($transactionCode);
+        $transactions = $this->transaction->getByTransactionCode($transactionCode); // get list of transaction by transaction code
+        dd($transactions->first());
         $customer = $transactions->first()->customer;
-        dd($transactions, $customer);
-        return view('admin.transaction.show', []);
+        return view('admin.transaction.show', [
+            'transactions' => $transactions,
+            'customer' => $customer
+        ]);
     }
 
     public function changeStatus($id, Request $request)

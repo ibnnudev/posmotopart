@@ -75,35 +75,31 @@
 
     <form action="{{ route('admin.transaction.change-status', $transaction->id) }}" method="POST">
         @csrf
-        @foreach ($transactions as $key => $val)
-            <x-card-container>
-                <p class="uppercase font-medium mb-3 pb-2 border-b border-b-gray-200">{{ $key }}</p>
-                <div class="grid grid-cols-6 py-5 text-gray-500">
-                    <p class="font-medium">Nama Produk</p>
-                    <p class="font-medium">SKU</p>
-                    <p class="font-medium">Jumlah Diminta</p>
-                    <p class="font-medium">Jumlah Ditolak</p>
-                    <p class="font-medium">Total Harga</p>
-                    <p></p>
-                </div>
-                @foreach ($val as $item)
-                    <div class="grid grid-cols-6 py-5 items-center">
-                        <p>{{ $item->product->name }}</p>
-                        <p>{{ $item->product->SKU }}</p>
-                        <p>{{ $item->requested_qty }}</p>
-                        <p>{{ $item->rejected_qty }}</p>
-                        <p>Rp {{ number_format($item->total_price) }}</p>
-                        <div>
-                            <input type="number" id="reject-qty-{{ $item->id }}"
-                                name="reject-qty-{{ $item->id }}"
-                                oninput="rejectQty({{ $item->id }}, {{ $item->requested_qty }})"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
-                                placeholder="Jumlah Ditolak" />
-                        </div>
+        <x-card-container>
+            <div class="grid grid-cols-6 py-5 text-gray-500">
+                <p class="font-medium">Nama Produk</p>
+                <p class="font-medium">SKU</p>
+                <p class="font-medium">Jumlah Diminta</p>
+                <p class="font-medium">Jumlah Ditolak</p>
+                <p class="font-medium">Total Harga</p>
+                <p></p>
+            </div>
+            @foreach ($transactions as $item)
+                <div class="grid grid-cols-6 py-5 items-center">
+                    <p>{{ $item->product->name }}</p>
+                    <p>{{ $item->product->SKU }}</p>
+                    <p>{{ $item->requested_qty }}</p>
+                    <p>{{ $item->rejected_qty }}</p>
+                    <p>Rp {{ number_format($item->total_price) }}</p>
+                    <div>
+                        <input type="number" id="reject-qty-{{ $item->id }}" name="reject-qty-{{ $item->id }}"
+                            oninput="rejectQty({{ $item->id }}, {{ $item->requested_qty }})"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+                            placeholder="Jumlah Ditolak" />
                     </div>
-                @endforeach
-            </x-card-container>
-        @endforeach
+                </div>
+            @endforeach
+        </x-card-container>
         <x-footer-form title="Konfirmasi Pesanan oleh Admin" :backButton="false" :isLeft="false" />
     </form>
     @push('js-internal')

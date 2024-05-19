@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS `carts` (
   CONSTRAINT `carts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.carts: ~5 rows (lebih kurang)
+-- Membuang data untuk tabel posparts.carts: ~0 rows (lebih kurang)
+DELETE FROM `carts`;
 
 -- membuang struktur untuk table posparts.categories
 CREATE TABLE IF NOT EXISTS `categories` (
@@ -53,8 +54,9 @@ CREATE TABLE IF NOT EXISTS `categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.categories: ~6 rows (lebih kurang)
-REPLACE INTO `categories` (`id`, `logo`, `name`, `deleted_at`, `created_at`, `updated_at`) VALUES
+-- Membuang data untuk tabel posparts.categories: ~8 rows (lebih kurang)
+DELETE FROM `categories`;
+INSERT INTO `categories` (`id`, `logo`, `name`, `deleted_at`, `created_at`, `updated_at`) VALUES
 	(1, '662fbed8e56f3_715f6c194126171.65f74f860db32.png', 'Oli Motor', '2024-04-29 08:42:42', '2024-04-29 08:15:02', '2024-04-29 08:42:42'),
 	(2, NULL, 'Ban', NULL, '2024-04-29 08:15:02', '2024-04-29 08:15:02'),
 	(3, NULL, 'Aki', '2024-04-29 08:27:12', '2024-04-29 08:15:02', '2024-04-29 08:27:12'),
@@ -85,8 +87,9 @@ CREATE TABLE IF NOT EXISTS `destination_orders` (
   CONSTRAINT `destination_orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.destination_orders: ~0 rows (lebih kurang)
-REPLACE INTO `destination_orders` (`id`, `user_id`, `address`, `latitude`, `longitude`, `is_default`, `is_active`, `created_at`, `updated_at`, `district`, `regency`, `province`, `postal_code`, `plus_code`) VALUES
+-- Membuang data untuk tabel posparts.destination_orders: ~1 rows (lebih kurang)
+DELETE FROM `destination_orders`;
+INSERT INTO `destination_orders` (`id`, `user_id`, `address`, `latitude`, `longitude`, `is_default`, `is_active`, `created_at`, `updated_at`, `district`, `regency`, `province`, `postal_code`, `plus_code`) VALUES
 	(3, '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', 'Sumber Sari, Jember, Jawa Timur', '7.7922', '113.3125', 0, 1, '2024-05-19 06:26:17', '2024-05-19 06:26:17', 'Sumber Sari', 'Kab. Jember', 'Jawa Timur', '68121', NULL);
 
 -- membuang struktur untuk table posparts.discounts
@@ -108,7 +111,8 @@ CREATE TABLE IF NOT EXISTS `discounts` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.discounts: ~1 rows (lebih kurang)
-REPLACE INTO `discounts` (`id`, `logo`, `name`, `code`, `discount`, `is_active`, `start_date`, `end_date`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
+DELETE FROM `discounts`;
+INSERT INTO `discounts` (`id`, `logo`, `name`, `code`, `discount`, `is_active`, `start_date`, `end_date`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, '6644b0ba51a4b.png', 'DISKON 5.5', 'ABIABI', 10, 1, '2022-08-22 17:00:00', '2020-07-01 17:00:00', '1', '2024-05-15 05:55:22', '2024-05-19 06:10:18', '2024-05-19 06:10:18');
 
 -- membuang struktur untuk table posparts.discount_stores
@@ -127,6 +131,7 @@ CREATE TABLE IF NOT EXISTS `discount_stores` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.discount_stores: ~0 rows (lebih kurang)
+DELETE FROM `discount_stores`;
 
 -- membuang struktur untuk table posparts.failed_jobs
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
@@ -142,6 +147,7 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.failed_jobs: ~0 rows (lebih kurang)
+DELETE FROM `failed_jobs`;
 
 -- membuang struktur untuk table posparts.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
@@ -151,8 +157,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.migrations: ~19 rows (lebih kurang)
-REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
+-- Membuang data untuk tabel posparts.migrations: ~45 rows (lebih kurang)
+DELETE FROM `migrations`;
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_000000_create_users_table', 1),
 	(2, '2014_10_12_100000_create_password_reset_tokens_table', 1),
 	(3, '2019_08_19_000000_create_failed_jobs_table', 1),
@@ -210,6 +217,7 @@ CREATE TABLE IF NOT EXISTS `model_has_permissions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.model_has_permissions: ~0 rows (lebih kurang)
+DELETE FROM `model_has_permissions`;
 
 -- membuang struktur untuk table posparts.model_has_roles
 CREATE TABLE IF NOT EXISTS `model_has_roles` (
@@ -221,8 +229,9 @@ CREATE TABLE IF NOT EXISTS `model_has_roles` (
   CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.model_has_roles: ~14 rows (lebih kurang)
-REPLACE INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
+-- Membuang data untuk tabel posparts.model_has_roles: ~17 rows (lebih kurang)
+DELETE FROM `model_has_roles`;
+INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 	(1, 'App\\Models\\User', '9bec89f4-56d2-4b84-a857-d785c1dfd015'),
 	(2, 'App\\Models\\User', '9bec89f4-9738-4029-806f-a6ac2d23e571'),
 	(3, 'App\\Models\\User', '9bec89f4-b991-49fe-8326-c5b162bac9fc'),
@@ -250,6 +259,7 @@ CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.password_reset_tokens: ~0 rows (lebih kurang)
+DELETE FROM `password_reset_tokens`;
 
 -- membuang struktur untuk table posparts.payment_options
 CREATE TABLE IF NOT EXISTS `payment_options` (
@@ -266,7 +276,8 @@ CREATE TABLE IF NOT EXISTS `payment_options` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.payment_options: ~3 rows (lebih kurang)
-REPLACE INTO `payment_options` (`id`, `name`, `description`, `status`, `admin_fee`, `duration`, `deleted_at`, `created_at`, `updated_at`) VALUES
+DELETE FROM `payment_options`;
+INSERT INTO `payment_options` (`id`, `name`, `description`, `status`, `admin_fee`, `duration`, `deleted_at`, `created_at`, `updated_at`) VALUES
 	(2, 'COD (Cash On Delivery)', 'Pembayaran dilokasi', '1', 10, NULL, NULL, '2024-05-06 16:43:59', '2024-05-06 16:43:59'),
 	(3, 'Transfer Bank', 'Transfer ke nomer rekening tertera', '1', 10, NULL, NULL, '2024-05-16 09:42:28', '2024-05-16 09:42:28'),
 	(4, 'Paylater', 'pembayaran cicilan', '1', 10, NULL, NULL, '2024-05-16 09:42:43', '2024-05-16 09:42:43');
@@ -282,8 +293,9 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.permissions: ~24 rows (lebih kurang)
-REPLACE INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+-- Membuang data untuk tabel posparts.permissions: ~25 rows (lebih kurang)
+DELETE FROM `permissions`;
+INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
 	(1, 'create_user', 'web', NULL, NULL),
 	(2, 'read_user', 'web', NULL, NULL),
 	(3, 'update_user', 'web', NULL, NULL),
@@ -328,6 +340,7 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.personal_access_tokens: ~0 rows (lebih kurang)
+DELETE FROM `personal_access_tokens`;
 
 -- membuang struktur untuk table posparts.products
 CREATE TABLE IF NOT EXISTS `products` (
@@ -362,8 +375,9 @@ CREATE TABLE IF NOT EXISTS `products` (
   CONSTRAINT `products_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.products: ~51 rows (lebih kurang)
-REPLACE INTO `products` (`id`, `store_id`, `user_id`, `SKU`, `SKU_seller`, `name`, `type`, `machine_name`, `SAE`, `manufacturer`, `merk`, `stock`, `size`, `unit`, `price`, `discount`, `created_at`, `updated_at`, `product_category_id`, `product_merk_id`) VALUES
+-- Membuang data untuk tabel posparts.products: ~63 rows (lebih kurang)
+DELETE FROM `products`;
+INSERT INTO `products` (`id`, `store_id`, `user_id`, `SKU`, `SKU_seller`, `name`, `type`, `machine_name`, `SAE`, `manufacturer`, `merk`, `stock`, `size`, `unit`, `price`, `discount`, `created_at`, `updated_at`, `product_category_id`, `product_merk_id`) VALUES
 	('0a9eb793-be80-45ee-8f46-79cad4267db0', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1201', '', 'IRC BAN MOTOR 120/70-17 RX 01 TUBELESS', 'RX', '-', '-', '-', NULL, 0, '120/70-17', 'PCS', 347625.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
 	('0c00e2b7-cba3-4733-b073-27be5deed5a4', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'MAI-1101', '', 'IRC BAN MOTOR 110/70-17 RX-02 TUBELESS', 'RX-02', '-', '-', '-', NULL, 9, '110/70-17', 'PCS', 334125.00, 10.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
 	('0d252ee5-8771-41a4-9203-e0bf8baff664', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1101', '', 'IRC BAN MOTOR 110/70-17 RX-01 TUBELESS', 'RX-01', '-', '-', '-', NULL, 34, '110/70-17', 'PCS', 329400.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
@@ -440,7 +454,8 @@ CREATE TABLE IF NOT EXISTS `product_categories` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.product_categories: ~5 rows (lebih kurang)
-REPLACE INTO `product_categories` (`id`, `name`, `image`, `is_active`, `created_at`, `updated_at`) VALUES
+DELETE FROM `product_categories`;
+INSERT INTO `product_categories` (`id`, `name`, `image`, `is_active`, `created_at`, `updated_at`) VALUES
 	(1, 'Ban Motor', '664101537ab1a.png', 1, NULL, '2024-05-12 10:50:11'),
 	(2, 'Oli Motor', '664101647957c.png', 1, NULL, '2024-05-12 10:50:28'),
 	(3, 'Oli Transmisi Dan Oli Samping', '6641018cf0f5b.png', 1, NULL, '2024-05-12 10:51:08'),
@@ -464,8 +479,9 @@ CREATE TABLE IF NOT EXISTS `product_merks` (
   CONSTRAINT `product_merks_store_id_foreign` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.product_merks: ~2 rows (lebih kurang)
-REPLACE INTO `product_merks` (`id`, `store_id`, `name`, `image`, `is_active`, `created_at`, `updated_at`, `product_category_id`) VALUES
+-- Membuang data untuk tabel posparts.product_merks: ~3 rows (lebih kurang)
+DELETE FROM `product_merks`;
+INSERT INTO `product_merks` (`id`, `store_id`, `name`, `image`, `is_active`, `created_at`, `updated_at`, `product_category_id`) VALUES
 	(3, 6, 'IRC Ban Luar', '1715778349_PP-MT-BL-IRC.jpeg', 1, '2024-05-15 06:05:49', '2024-05-15 06:07:29', 1),
 	(4, 6, 'IRC Tubeless', '1715778699_Icon_Ban Motor_256px.png', 1, '2024-05-15 06:11:39', '2024-05-15 06:11:39', 1),
 	(5, 7, 'Evalube', '1716123831_Icon_Oli Motor_256px.png', 1, '2024-05-19 06:03:51', '2024-05-19 06:03:51', 2);
@@ -490,8 +506,9 @@ CREATE TABLE IF NOT EXISTS `product_stock_histories` (
   CONSTRAINT `product_stock_histories_store_id_foreign` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.product_stock_histories: ~51 rows (lebih kurang)
-REPLACE INTO `product_stock_histories` (`id`, `product_id`, `store_id`, `in_stock`, `out_stock`, `final_stock`, `created_by`, `created_at`, `updated_at`) VALUES
+-- Membuang data untuk tabel posparts.product_stock_histories: ~63 rows (lebih kurang)
+DELETE FROM `product_stock_histories`;
+INSERT INTO `product_stock_histories` (`id`, `product_id`, `store_id`, `in_stock`, `out_stock`, `final_stock`, `created_by`, `created_at`, `updated_at`) VALUES
 	('04ba8c57-e523-4947-912d-c5918597d213', 'b5e8c7e3-00e4-4de3-a7b6-557716ea3f95', 6, 45, 0, 45, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
 	('0dc65fad-5e49-4491-9c52-b595e3aca300', 'c439ad18-cd6a-4c9e-83c5-c99f62616593', 7, 25, 0, 25, '9c149d7f-c031-4c2b-8869-2a62afbd5d5f', '2024-05-19 06:04:37', '2024-05-19 06:04:37'),
 	('0ed67994-4fa1-4968-bf0d-d8442458445d', '271395e3-779f-4e76-b11e-5cc14ec19dcf', 6, 9, 0, 9, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
@@ -582,8 +599,9 @@ CREATE TABLE IF NOT EXISTS `request_products` (
   CONSTRAINT `request_products_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.request_products: ~2 rows (lebih kurang)
-REPLACE INTO `request_products` (`id`, `store_id`, `user_id`, `file`, `status`, `feedback`, `reviewed_by`, `created_at`, `updated_at`, `product_category_id`, `product_merk_id`) VALUES
+-- Membuang data untuk tabel posparts.request_products: ~3 rows (lebih kurang)
+DELETE FROM `request_products`;
+INSERT INTO `request_products` (`id`, `store_id`, `user_id`, `file`, `status`, `feedback`, `reviewed_by`, `created_at`, `updated_at`, `product_category_id`, `product_merk_id`) VALUES
 	('2783fc34-5428-4cbd-9dae-1180ed50f58c', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'PR-20240515132050.csv', 'diterima', 'file bagus', '9c03cf8f-f3cc-4fd0-a226-35df7556fcc7', '2024-05-15 06:20:50', '2024-05-15 06:24:38', 1, 3),
 	('d4be63b3-d925-428c-b576-6c56580ec99d', 7, '9c149d7f-c031-4c2b-8869-2a62afbd5d5f', 'PR-20240519130404.csv', 'diterima', 'tes import oli', '9c03cf8f-f3cc-4fd0-a226-35df7556fcc7', '2024-05-19 06:04:04', '2024-05-19 06:04:37', 2, 5),
 	('d66dd835-1ef5-4b0f-a61f-b07101664ac7', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'PR-20240515132950.csv', 'diterima', 'bagus gais', '9c03cf8f-f3cc-4fd0-a226-35df7556fcc7', '2024-05-15 06:29:51', '2024-05-15 06:30:14', 1, 4);
@@ -600,7 +618,8 @@ CREATE TABLE IF NOT EXISTS `roles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.roles: ~3 rows (lebih kurang)
-REPLACE INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+DELETE FROM `roles`;
+INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
 	(1, 'admin', 'web', NULL, NULL),
 	(2, 'seller', 'web', NULL, NULL),
 	(3, 'buyer', 'web', NULL, NULL);
@@ -616,7 +635,8 @@ CREATE TABLE IF NOT EXISTS `role_has_permissions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.role_has_permissions: ~26 rows (lebih kurang)
-REPLACE INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
+DELETE FROM `role_has_permissions`;
+INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 	(1, 1),
 	(2, 1),
 	(3, 1),
@@ -663,7 +683,8 @@ CREATE TABLE IF NOT EXISTS `stores` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.stores: ~2 rows (lebih kurang)
-REPLACE INTO `stores` (`id`, `name`, `slug`, `user_id`, `address`, `phone`, `logo`, `status`, `created_at`, `updated_at`) VALUES
+DELETE FROM `stores`;
+INSERT INTO `stores` (`id`, `name`, `slug`, `user_id`, `address`, `phone`, `logo`, `status`, `created_at`, `updated_at`) VALUES
 	(6, 'Toko Ibnu', 'toko-ibnu', '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'Sumber Sari, Jember, Jawa Timur', '081515144982', 'VpZBio5RAG.png', 1, '2024-05-10 21:36:56', '2024-05-11 06:14:00'),
 	(7, 'Toko Torik Ini', 'toko-torik-ini', '9c149d7f-c031-4c2b-8869-2a62afbd5d5f', 'Sumber Sari, Jember, Jawa Timur', '0832897345', NULL, 1, '2024-05-19 05:59:16', '2024-05-19 07:25:20');
 
@@ -693,7 +714,8 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.transactions: ~5 rows (lebih kurang)
-REPLACE INTO `transactions` (`id`, `transaction_code`, `user_id`, `store_id`, `product_id`, `requested_qty`, `rejected_qty`, `approved_qty`, `discount_price`, `price`, `total_price`, `status`, `created_at`, `updated_at`) VALUES
+DELETE FROM `transactions`;
+INSERT INTO `transactions` (`id`, `transaction_code`, `user_id`, `store_id`, `product_id`, `requested_qty`, `rejected_qty`, `approved_qty`, `discount_price`, `price`, `total_price`, `status`, `created_at`, `updated_at`) VALUES
 	(41, 'TRX1716127544-6', '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', 6, '0c00e2b7-cba3-4733-b073-27be5deed5a4', 2, NULL, NULL, 10.00, 334125.00, 668250.00, 'pending', '2024-05-19 07:05:44', '2024-05-19 07:05:44'),
 	(42, 'TRX1716127544-6', '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', 6, '0d252ee5-8771-41a4-9203-e0bf8baff664', 2, NULL, NULL, 0.00, 329400.00, 658800.00, 'pending', '2024-05-19 07:05:44', '2024-05-19 07:05:44'),
 	(43, 'TRX1716127544-7', '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', 7, '282d48eb-ef5e-43b6-8479-ff2f4b6112de', 3, NULL, NULL, 0.00, 674960.00, 2024880.00, 'pending', '2024-05-19 07:05:44', '2024-05-19 07:05:44'),
@@ -732,7 +754,8 @@ CREATE TABLE IF NOT EXISTS `transaction_details` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.transaction_details: ~2 rows (lebih kurang)
-REPLACE INTO `transaction_details` (`id`, `store_id`, `transaction_code`, `destination_order_id`, `user_id`, `qty`, `total_price`, `admin_fee`, `status`, `shipping_date`, `payment_option_id`, `payment_proof`, `confirm_date`, `receive_date`, `receive_proof`, `receive_by`, `created_at`, `updated_at`) VALUES
+DELETE FROM `transaction_details`;
+INSERT INTO `transaction_details` (`id`, `store_id`, `transaction_code`, `destination_order_id`, `user_id`, `qty`, `total_price`, `admin_fee`, `status`, `shipping_date`, `payment_option_id`, `payment_proof`, `confirm_date`, `receive_date`, `receive_proof`, `receive_by`, `created_at`, `updated_at`) VALUES
 	(11, 6, 'TRX1716127544-6', 3, '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', 4, 1327050.00, 132705.00, 'process_by_merchant', NULL, 2, NULL, NULL, NULL, NULL, NULL, '2024-05-19 07:05:44', '2024-05-19 07:05:44'),
 	(12, 7, 'TRX1716127544-7', 3, '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', 8, 3105672.00, 310567.20, 'process_by_merchant', NULL, 2, NULL, NULL, NULL, NULL, NULL, '2024-05-19 07:05:44', '2024-05-19 07:05:44');
 
@@ -764,7 +787,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.users: ~6 rows (lebih kurang)
-REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `store_name`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `card_number`, `bank_name`, `owner_name`, `province`, `regency`, `district`, `zip_code`, `address`, `nik`, `profile_filled`) VALUES
+DELETE FROM `users`;
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `store_name`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `card_number`, `bank_name`, `owner_name`, `province`, `regency`, `district`, `zip_code`, `address`, `nik`, `profile_filled`) VALUES
 	('9c03cf8f-f3cc-4fd0-a226-35df7556fcc7', 'Admin', 'admin@moto.com', NULL, '$2y$10$OvuTTNTNvxYuAxwer7JZD.NItWykYZKU.zbFUl/zz5AW94DqqVSbC', NULL, NULL, NULL, '2024-05-10 21:30:11', '2024-05-10 21:30:11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	('9c03cf90-1ff5-42a9-9240-d9a344c82fc2', 'Seller', 'seller@moto.com', NULL, '$2y$10$OTxiGrC7KZCjeE9FcToANOahpGzCie/1M3mRCglSgNYmoFlLfOMci', NULL, NULL, NULL, '2024-05-10 21:30:11', '2024-05-10 21:30:11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	('9c03cf90-46f3-4a38-9808-6d8077e80c4e', 'Buyer', 'buyer@moto.com', NULL, '$2y$10$hZQ450e1ctC/5ieAPCo6FuEaspHHLR0dxzREblaIJrT0Pxt4GG6J.', NULL, NULL, NULL, '2024-05-10 21:30:11', '2024-05-10 21:30:11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -787,6 +811,7 @@ CREATE TABLE IF NOT EXISTS `wallets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.wallets: ~0 rows (lebih kurang)
+DELETE FROM `wallets`;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
