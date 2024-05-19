@@ -12,8 +12,36 @@
         ['name' => $productMerk->name, 'url' => ''],
     ]" />
 
-
     <div class="justify-center w-full">
+        @guest
+            <div id="alert-additional-content-5 mb-8"
+                class="p-4 border border-gray-300 rounded-lg bg-gray-50 dark:border-gray-600 dark:bg-gray-800" role="alert">
+                <div class="flex items-center">
+                    <svg class="flex-shrink-0 w-4 h-4 me-2 dark:text-gray-300" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <h3 class="text-lg font-medium text-gray-800 dark:text-gray-300">Anda belum login!</h3>
+                </div>
+                <div class="mt-2 mb-4 text-sm text-gray-800 dark:text-gray-300">
+                    Silahkan masuk untuk mulai belanja
+                </div>
+                <div class="flex">
+                    <a href="{{ route('login') }}" type="button"
+                        class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-800">
+                        Silahkan Login!
+                    </a>
+                    <button type="button"
+                        class="text-gray-800 bg-transparent border border-gray-700 hover:bg-gray-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:border-gray-600 dark:hover:bg-gray-600 dark:focus:ring-gray-800 dark:text-gray-300 dark:hover:text-white"
+                        data-dismiss-target="#alert-additional-content-5" aria-label="Close">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+            <br>
+        @endguest
         <div class="justify-start w-full text-left">
             <div x-data="{ tab: 'tab' }" x-init="tab = 'tab-{{ $products->keys()->first() }}'">
                 <ul class="flex gap-3 text-gray-500">
@@ -74,26 +102,28 @@
                                                 </button>
                                             </div>
                                         </div> --}}
-                                        @if ($data->stock != 0 || $data->stock != null)
-                                            @if ($data->cart)
-                                                <div class="lg:flex justify-end items-center mt-6">
-                                                    {{-- <span class="text-gray-500">Keranjang</span> --}}
-                                                    <x-link-button title="Lihat Keranjang" class="text-center"
-                                                        icon="fas fa-info-circle" href="{{ route('cart.index') }}" />
-                                                </div>
+                                        @auth
+                                            @if ($data->stock != 0 || $data->stock != null)
+                                                @if ($data->cart)
+                                                    <div class="lg:flex justify-end items-center mt-6">
+                                                        {{-- <span class="text-gray-500">Keranjang</span> --}}
+                                                        <x-link-button title="Lihat Keranjang" class="text-center"
+                                                            icon="fas fa-info-circle" href="{{ route('cart.index') }}" />
+                                                    </div>
+                                                @else
+                                                    <div class="lg:flex justify-end items-center mt-6">
+                                                        {{-- <span class="text-gray-500">Keranjang</span> --}}
+                                                        <x-link-button title="Keranjang" primary class="text-center"
+                                                            onclick="addToCart('{{ $data->id }}')"
+                                                            icon="fas fa-shopping-cart" />
+                                                    </div>
+                                                @endif
                                             @else
                                                 <div class="lg:flex justify-end items-center mt-6">
-                                                    {{-- <span class="text-gray-500">Keranjang</span> --}}
-                                                    <x-link-button title="Keranjang" primary class="text-center"
-                                                        onclick="addToCart('{{ $data->id }}')"
-                                                        icon="fas fa-shopping-cart" />
+                                                    <span class="text-red-500">Stok Habis</span>
                                                 </div>
                                             @endif
-                                        @else
-                                            <div class="lg:flex justify-end items-center mt-6">
-                                                <span class="text-red-500">Stok Habis</span>
-                                            </div>
-                                        @endif
+                                        @endauth
                                     </x-card-container>
                                 @empty
                                     <x-card-container>

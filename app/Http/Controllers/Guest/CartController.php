@@ -39,4 +39,43 @@ class CartController extends Controller
             return response()->json(['status' => false, 'message' => $th->getMessage()]);
         }
     }
+
+    public function update(Request $request)
+    {
+        try {
+            $this->cart->update($request->except('_token'));
+            $currentTotalPrice = $this->cart->getByUserId(auth()->user()->id)->sum('total_price');
+            return response()->json(['status' => true, 'message' => 'Keranjang berhasil diupdate', 'currentTotalPrice' => $currentTotalPrice]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
+    }
+
+    public function addQty(Request $request)
+    {
+        try {
+            $cart = $this->cart->getByUserId(auth()->user()->id)->where('id', $request->id)->first();
+            $cart->qty += 1;
+            $cart->total_price = $cart->price * $cart->qty;
+            $cart->save();
+            $currentTotalPrice = $this->cart->getByUserId(auth()->user()->id)->sum('total_price');
+            return response()->json(['status' => true, 'message' => 'Keranjang berhasil diupdate', 'currentTotalPrice' => $currentTotalPrice]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
+    }
+
+    public function reduceQty(Request $request)
+    {
+        try {
+            $cart = $this->cart->getByUserId(auth()->user()->id)->where('id', $request->id)->first();
+            $cart->qty -= 1;
+            $cart->total_price = $cart->price * $cart->qty;
+            $cart->save();
+            $currentTotalPrice = $this->cart->getByUserId(auth()->user()->id)->sum('total_price');
+            return response()->json(['status' => true, 'message' => 'Keranjang berhasil diupdate', 'currentTotalPrice' => $currentTotalPrice]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
+    }
 }

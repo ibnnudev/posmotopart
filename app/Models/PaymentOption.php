@@ -18,4 +18,14 @@ class PaymentOption extends Model
         'admin_fee',
         'duration',
     ];
+
+    public function transactionDetail()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

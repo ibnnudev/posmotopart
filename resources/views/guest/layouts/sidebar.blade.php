@@ -13,11 +13,31 @@
     aria-label="Sidebar">
     <div class="h-full px-4 py-8 overflow-y-auto bg-primary">
         <ul class="space-y-2">
-            <x-sidebar-item name="Berdasarkan Kategori" icon="fas fa-th-large"
-                route="{{ route('product-category.index') }}" :active="request()->routeIs('product-category.index') ||
+            <x-sidebar-item name="Belanja" icon="fas fa-shopping-cart" route="{{ route('product-category.index') }}"
+                active="{{ request()->routeIs('product-category.index') ||
+                    request()->routeIs('product-category.index') ||
                     request()->routeIs('product-category.show') ||
                     request()->routeIs('product-category.products') ||
-                    request()->routeIs('cart.*')" />
+                    request()->routeIs('home') ||
+                    request()->routeIs('cart.*') ||
+                    request()->routeIs('checkout.*') }}" />
+            @auth
+                <x-sidebar-dropdown title="Riwayat Transaksi" icon="fas fa-poll-h" toggle="transaction">
+
+                </x-sidebar-dropdown>
+                <x-sidebar-item name="Profil" icon="fas fa-user" route="{{ route('admin.profile.index') }}"
+                    active="{{ request()->routeIs('admin.profile.*') }}" />
+                <li>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                            class="flex w-full items-center p-3 text-sm text-white rounded-md  hover:bg-gray-100 hover:text-primary">
+                            <i class="fas fa-sign-out-alt w-4 h-4 transition duration-75 hover:text-primary"></i>
+                            <span class="ml-3">Keluar</span>
+                        </button>
+                    </form>
+                </li>
+            @endauth
         </ul>
     </div>
 </aside>

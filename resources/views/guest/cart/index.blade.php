@@ -18,46 +18,29 @@
                                         quantity:</label>
                                     <div class="flex items-center justify-between md:order-3 md:justify-end">
                                         <div class="flex items-center" id="counter-{{ $item->id }}">
-                                            <button type="button" id="decrement-button"
-                                                data-input-counter-decrement="counter-input-{{ $item->id }}"
-                                                class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
-                                                <svg class="h-2.5 w-2.5 text-gray-900 dark:text-white"
-                                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 18 2">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
-                                                </svg>
-                                            </button>
-                                            <input type="text" id="counter-input-{{ $item->id }}"
-                                                data-input-counter
-                                                class="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white"
-                                                placeholder="" value="{{ $item->qty }}" readonly />
-                                            <button type="button" id="increment-button"
-                                                data-input-counter-increment="counter-input-{{ $item->id }}"
-                                                class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
-                                                <svg class="h-2.5 w-2.5 text-gray-900 dark:text-white"
-                                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 18 18">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                                                </svg>
-                                            </button>
+                                            <button
+                                                onclick="decrementQty('{{ $item->id }}', '{{ $item->product->price }}', '{{ $item->product->discount }}')"
+                                                class="increment flex justify-center items-center p-4 h-8 w-8 rounded-lg text-lg bg-gray-100 font-medium text-center">-</button>
+                                            <span class="item-quantity px-4 text-base">{{ $item->qty }}</span>
+                                            <button
+                                                onclick="addQty('{{ $item->id }}', '{{ $item->product->price }}', '{{ $item->product->discount }}')"
+                                                class="decrement flex justify-center items-center p-4 h-8 w-8 rounded-lg text-lg bg-gray-100 font-medium text-center">+</button>
                                         </div>
                                         <div class="text-end md:order-4 md:w-32">
                                             @if ($item->product->discount != 0)
-                                                <p class="text-lg font-medium text-gray-900 dark:text-white"
+                                                <p class="text-md font-medium text-gray-900"
                                                     id="discountPrice-{{ $item->id }}">
                                                     Rp{{ number_format(($item->product->price * $item->product->discount) / 100, 0, ',', '.') }}
                                                 </p>
                                                 <p class="text-sm font-normal text-gray-500 dark:text-gray-400"
                                                     id="price-{{ $item->id }}">
                                                     <span
-                                                        class="line-through">Rp{{ number_format($item->product->price, 0, ',', '.') }}</span>
+                                                        class="line-through value">Rp{{ number_format($item->product->price, 0, ',', '.') }}</span>
                                                     <span
                                                         class="text-primary">({{ number_format($item->product->discount, 0, ',', '.') }}%)</span>
                                                 </p>
                                             @else
-                                                <p class="text-lg font-medium text-gray-900 dark:text-white"
+                                                <p class="text-md font-medium text-gray-900"
                                                     id="price-{{ $item->id }}">
                                                     Rp{{ number_format($item->product->price, 0, ',', '.') }}</p>
                                             @endif
@@ -100,7 +83,7 @@
                             <div
                                 class="rounded-lg border border-gray-200 bg-white py-2 px-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                                 <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                                    <p class="text-md font-semibold text-gray-900 dark:text-white">Your cart is empty
+                                    <p class="text-md font-semibold text-gray-900">Your cart is empty
                                     </p>
 
                                     <a href="{{ route('product-category.index') }}"
@@ -115,41 +98,19 @@
                     <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
                         <div
                             class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
-                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Detail Pembelian</p>
+                            <p class="text-sm font-semibold text-gray-900">Detail Pembelian</p>
 
                             <div class="space-y-4">
-                                {{-- <div class="space-y-2">
-                                    <dl class="flex items-center justify-between gap-4">
-                                        <dt class="text-sm font-normal text-gray-500 dark:text-gray-400">Tax</dt>
-                                        <dd class="text-sm font-medium text-gray-900 dark:text-white">$799</dd>
-                                    </dl>
-                                </div> --}}
-
                                 <dl
                                     class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
-                                    <dt class="text-sm font-bold text-gray-900 dark:text-white">Total Harga</dt>
-                                    <dd class="text-sm font-bold text-gray-900 dark:text-white" id="totalPrice">
+                                    <dt class="text-sm text-gray-900">Total Harga</dt>
+                                    <dd class="text-md font-bold text-gray-900" id="totalSumPrice">
                                         Rp{{ number_format($carts->sum('total_price'), 0, ',', '.') }}
                                     </dd>
                                 </dl>
                             </div>
-
-                            <a href="#"
-                                class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Proceed
-                                to Checkout</a>
-
-                            <div class="flex items-center justify-center gap-2">
-                                <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
-                                <a href="#" title=""
-                                    class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
-                                    Continue Shopping
-                                    <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
-                                    </svg>
-                                </a>
-                            </div>
+                            <x-link-button href="{{ route('checkout.index') }}" title="Proses Checkout" primary
+                                class="w-full text-center" />
                         </div>
                     </div>
                 @endif
@@ -190,6 +151,105 @@
                         }
                     }
                 });
+            }
+
+            let totalPrice = 0;
+
+            function addQty(id, price, discount) {
+                let qty = parseInt($(`#counter-${id} .item-quantity`).text());
+                qty += 1;
+                $(`#counter-${id} .item-quantity`).text(qty);
+                if (discount != 0 && discount != null) {
+                    totalPrice += (price - (price * discount / 100)) * qty;
+                    $(`#discountPrice-${id}`).text(`Rp${((price - (price * discount / 100)) * qty).toLocaleString()}`);
+                } else {
+                    totalPrice += price * qty;
+                    $(`#totalPrice`).text(`Rp${totalPrice.toLocaleString()}`);
+                }
+
+                if (discount != 0 && discount != null) {
+                    $(`#price-${id} .value`).text(`Rp${(price * qty).toLocaleString()}`);
+                } else {
+                    $('#price-' + id).text('Rp' + (price * qty).toLocaleString());
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('cart.addQty') }}",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id,
+                        qty: qty,
+                        price: price,
+                        total_price: totalPrice
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            $('#totalSumPrice').text('Rp' + response.currentTotalPrice.toLocaleString());
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 500
+                            });
+                        }
+                    }
+                });
+            }
+
+            function decrementQty(id, price, discount) {
+                let qty = parseInt($(`#counter-${id} .item-quantity`).text());
+                if (qty > 1) {
+                    qty -= 1;
+                    $(`#counter-${id} .item-quantity`).text(qty);
+                    if (discount != 0 && discount != null) {
+                        totalPrice -= (price - (price * discount / 100)) * qty;
+                        $(`#discountPrice-${id}`).text(`Rp${((price - (price * discount / 100)) * qty).toLocaleString()}`);
+                    } else {
+                        totalPrice -= price * qty;
+                        $(`#totalPrice`).text(`Rp${totalPrice.toLocaleString()}`);
+                    }
+
+                    if (discount != 0 && discount != null) {
+                        $(`#price-${id} .value`).text(`Rp${(price * qty).toLocaleString()}`);
+                    } else {
+                        $('#price-' + id).text('Rp' + (price * qty).toLocaleString());
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('cart.reduceQty') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id: id,
+                            qty: qty,
+                            price: price,
+                            total_price: totalPrice
+                        },
+                        success: function(response) {
+                            if (response.status) {
+                                $('#totalSumPrice').text('Rp' + response.currentTotalPrice.toLocaleString());
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 500
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Jumlah tidak boleh kurang dari 1',
+                        showConfirmButton: false,
+                    });
+                }
             }
         </script>
     @endpush

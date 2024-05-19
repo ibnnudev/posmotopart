@@ -1,5 +1,5 @@
 @props(['active' => false, 'title' => '', 'icon' => '', 'toggle' => ''])
-<li>
+<li class="text-sm">
     <button type="button" class="flex w-full items-center px-3 py-3 rounded-md text-white"
         aria-controls="{{ $toggle }}" data-collapse-toggle="{{ $toggle }}">
         <i

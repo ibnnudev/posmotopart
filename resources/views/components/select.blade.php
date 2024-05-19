@@ -15,7 +15,7 @@
     <div>
         <select id="{{ $id }}" name="{{ $name }}" {{ $required ? 'required' : '' }}
             {{ $disabled ? 'disabled' : '' }} {{ $multiple ? 'multiple="multiple"' : '' }}
-            class="block w-full py-2.5 pl-3 pr-10 text-base bg-gray-50 border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md select-input">
+            class="block w-full py-2.5 pl-3 pr-10 text-base bg-gray-50 border-gray-300 focus:outline-none focus:ring-primary focus:border-primary text-sm rounded-md select-input">
             {{ $slot }}
         </select>
     </div>

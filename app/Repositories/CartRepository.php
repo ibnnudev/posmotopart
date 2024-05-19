@@ -43,6 +43,7 @@ class CartRepository implements CartInterface
 
     public function update($data)
     {
+        $data['total_price'] = $data['price'] * $data['qty'];
         return $this->cart->where('id', $data['id'])->update($data);
     }
 

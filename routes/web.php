@@ -12,9 +12,11 @@ use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DiscountStoreController;
 use App\Http\Controllers\Guest\CartController;
+use App\Http\Controllers\Guest\CheckoutController;
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\ProductController as GuestProductController;
 use App\Http\Controllers\Guest\StoreController as GuestStoreController;
+use App\Http\Controllers\Guest\TransactionController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProductStockHistoryController;
@@ -23,7 +25,7 @@ use App\Http\Controllers\Seller\DiscountStoreController as SellerDiscountStoreCo
 use App\Http\Controllers\Seller\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [GuestProductController::class, 'index'])->name('home');
 
 // Store
 Route::get('store/show/{slug}', [GuestStoreController::class, 'show'])->name('store.show');
@@ -40,8 +42,22 @@ Route::group(['prefix' => 'cart'], function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::post('add', [CartController::class, 'add'])->name('cart.add');
     Route::post('update', [CartController::class, 'update'])->name('cart.update');
+    Route::post('addQty', [CartController::class, 'addQty'])->name('cart.addQty');
+    Route::post('reduceQty', [CartController::class, 'reduceQty'])->name('cart.reduceQty');
     Route::post('delete', [CartController::class, 'delete'])->name('cart.delete');
     Route::post('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+})->middleware('auth');
+
+// Checkout
+Route::group(['prefix' => 'checkout'], function () {
+    Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('add-shipping', [CheckoutController::class, 'addShipping'])->name('checkout.add-shipping');
+    Route::post('store', [CheckoutController::class, 'store'])->name('checkout.store');
+})->middleware('auth');
+
+// Transaction
+Route::group(['prefix' => 'transaction'], function () {
+    Route::get('/', [TransactionController::class, 'index'])->name('transaction.index');
 });
 
 Route::get('login', function () {

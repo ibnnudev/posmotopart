@@ -9,6 +9,9 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
+        if (auth()->user()->hasRole('buyer')) {
+            return redirect()->route('product-category.index');
+        }
         return view('dashboard');
     }
 }

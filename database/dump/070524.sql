@@ -16,12 +16,36 @@
 
 
 -- Membuang struktur basisdata untuk posparts
-DROP DATABASE IF EXISTS `posparts`;
 CREATE DATABASE IF NOT EXISTS `posparts` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `posparts`;
 
+-- membuang struktur untuk table posparts.carts
+CREATE TABLE IF NOT EXISTS `carts` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_merk_id` bigint unsigned NOT NULL,
+  `qty` int NOT NULL,
+  `price` decimal(15,2) NOT NULL,
+  `total_price` decimal(15,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `carts_user_id_foreign` (`user_id`),
+  KEY `carts_product_id_foreign` (`product_id`),
+  KEY `carts_product_merk_id_foreign` (`product_merk_id`),
+  CONSTRAINT `carts_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `carts_product_merk_id_foreign` FOREIGN KEY (`product_merk_id`) REFERENCES `product_merks` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `carts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.carts: ~3 rows (lebih kurang)
+REPLACE INTO `carts` (`id`, `user_id`, `product_id`, `product_merk_id`, `qty`, `price`, `total_price`, `created_at`, `updated_at`) VALUES
+	(10, '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', '1d58e518-b6a6-45fa-9a83-8022c6b241e5', 4, 2, 255150.00, 510300.00, '2024-05-15 08:24:50', '2024-05-16 08:01:00'),
+	(11, '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', '1b87f81c-9682-4f9b-b627-54193599f26d', 4, 1, 329400.00, 329400.00, '2024-05-15 08:24:52', '2024-05-16 07:48:21'),
+	(13, '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', '0c00e2b7-cba3-4733-b073-27be5deed5a4', 4, 1, 334125.00, 334125.00, '2024-05-15 08:39:16', '2024-05-16 07:47:58');
+
 -- membuang struktur untuk table posparts.categories
-DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `logo` longtext COLLATE utf8mb4_unicode_ci,
@@ -43,8 +67,50 @@ REPLACE INTO `categories` (`id`, `logo`, `name`, `deleted_at`, `created_at`, `up
 	(7, NULL, 'Aki', NULL, '2024-04-29 08:42:59', '2024-04-29 08:42:59'),
 	(8, NULL, 'Oli Motor', NULL, '2024-05-01 19:01:32', '2024-05-01 19:01:32');
 
+-- membuang struktur untuk table posparts.destination_orders
+CREATE TABLE IF NOT EXISTS `destination_orders` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `destination_orders_user_id_foreign` (`user_id`),
+  CONSTRAINT `destination_orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.destination_orders: ~0 rows (lebih kurang)
+REPLACE INTO `destination_orders` (`id`, `user_id`, `address`, `latitude`, `longitude`, `is_default`, `is_active`, `created_at`, `updated_at`) VALUES
+	(1, '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', 'l. Raya Gending KM.12, Krajan 2, Gending, Kec. Gending, Kabupaten Probolinggo, Jawa Timur 67272', '7.7922', '113.3125', 1, 1, '2024-05-16 08:57:13', '2024-05-16 08:57:13'),
+	(2, '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', 'Ut dolores numquam d', 'Commodi aut iure neq', 'Culpa amet non in a', 0, 1, '2024-05-16 09:37:09', '2024-05-16 09:37:09');
+
+-- membuang struktur untuk table posparts.discounts
+CREATE TABLE IF NOT EXISTS `discounts` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `logo` longtext COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `discount` double NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '0',
+  `start_date` timestamp NULL DEFAULT NULL,
+  `end_date` timestamp NULL DEFAULT NULL,
+  `type` enum('1','2') COLLATE utf8mb4_unicode_ci DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `discounts_code_unique` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.discounts: ~1 rows (lebih kurang)
+REPLACE INTO `discounts` (`id`, `logo`, `name`, `code`, `discount`, `is_active`, `start_date`, `end_date`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, '6644b0ba51a4b.png', 'DISKON 5.5', 'ABIABI', 10, 1, '2022-08-22 17:00:00', '2020-07-01 17:00:00', '1', '2024-05-15 05:55:22', '2024-05-15 06:00:14', NULL);
+
 -- membuang struktur untuk table posparts.failed_jobs
-DROP TABLE IF EXISTS `failed_jobs`;
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -60,15 +126,14 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
 -- Membuang data untuk tabel posparts.failed_jobs: ~0 rows (lebih kurang)
 
 -- membuang struktur untuk table posparts.migrations
-DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.migrations: ~0 rows (lebih kurang)
+-- Membuang data untuk tabel posparts.migrations: ~19 rows (lebih kurang)
 REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_000000_create_users_table', 1),
 	(2, '2014_10_12_100000_create_password_reset_tokens_table', 1),
@@ -79,10 +144,33 @@ REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(7, '2024_04_29_145406_create_categories_table', 2),
 	(8, '2024_05_04_093547_create_payment_options', 3),
 	(10, '2024_05_06_124807_create_stores_table', 4),
-	(11, '2024_05_06_230322_add_soft_delete_users', 5);
+	(11, '2024_05_06_230322_add_soft_delete_users', 5),
+	(13, '2024_05_07_045054_create_products_table', 6),
+	(14, '2024_05_07_094429_add_type_products', 7),
+	(15, '2024_05_07_101715_remove_unique__s_k_u_column_products', 8),
+	(16, '2024_05_07_125233_add_merk_column_products', 9),
+	(20, '2024_05_07_130234_create_request_products_table', 10),
+	(22, '2024_05_07_155719_create_product_stock_history_table', 11),
+	(23, '2024_05_11_042709_create_product_categories_table', 12),
+	(24, '2024_05_11_043358_add_product_categories_products', 13),
+	(25, '2024_05_11_053633_add_product_category_request_products', 14),
+	(26, '2024_05_11_061739_create_product_images_table', 15),
+	(27, '2024_05_11_075325_create_product_merks_table', 16),
+	(28, '2024_05_11_131429_add_cards_information_users', 16),
+	(29, '2024_05_11_134023_add_addtional_information_users', 17),
+	(30, '2024_05_11_141017_change_nik_type_users', 18),
+	(31, '2024_05_12_174018_add_image_product_category', 19),
+	(32, '2024_05_14_223525_add_product_category_id_product_merks', 20),
+	(33, '2024_05_14_223755_add_product_merk_id_products', 21),
+	(34, '2024_05_14_224317_add_product_merk_id_request_products', 22),
+	(35, '2024_05_13_155842_create_table_discounts', 23),
+	(36, '2024_05_15_125353_change_type_nullable_discounts', 24),
+	(37, '2024_05_15_143204_create_carts_table', 25),
+	(38, '2024_05_16_145316_create_transactions_table', 26),
+	(39, '2024_05_16_153658_create_destination_orders_table', 27),
+	(41, '2024_05_16_164332_create_transaction_details_table', 28);
 
 -- membuang struktur untuk table posparts.model_has_permissions
-DROP TABLE IF EXISTS `model_has_permissions`;
 CREATE TABLE IF NOT EXISTS `model_has_permissions` (
   `permission_id` bigint unsigned NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -95,7 +183,6 @@ CREATE TABLE IF NOT EXISTS `model_has_permissions` (
 -- Membuang data untuk tabel posparts.model_has_permissions: ~0 rows (lebih kurang)
 
 -- membuang struktur untuk table posparts.model_has_roles
-DROP TABLE IF EXISTS `model_has_roles`;
 CREATE TABLE IF NOT EXISTS `model_has_roles` (
   `role_id` bigint unsigned NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -105,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `model_has_roles` (
   CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.model_has_roles: ~10 rows (lebih kurang)
+-- Membuang data untuk tabel posparts.model_has_roles: ~14 rows (lebih kurang)
 REPLACE INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 	(1, 'App\\Models\\User', '9bec89f4-56d2-4b84-a857-d785c1dfd015'),
 	(2, 'App\\Models\\User', '9bec89f4-9738-4029-806f-a6ac2d23e571'),
@@ -117,10 +204,14 @@ REPLACE INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 	(2, 'App\\Models\\User', '9bfb3ef6-fc26-4892-923a-f89ef800c66f'),
 	(2, 'App\\Models\\User', '9bfb40d6-a8dd-456d-ad7c-e4b1ac6cd489'),
 	(2, 'App\\Models\\User', '9bfb4109-e9b3-4b9e-b271-079b6f633910'),
-	(3, 'App\\Models\\User', '9bfb9136-df00-4099-8eb5-4b8a3fdbc88e');
+	(3, 'App\\Models\\User', '9bfb9136-df00-4099-8eb5-4b8a3fdbc88e'),
+	(1, 'App\\Models\\User', '9c03cf8f-f3cc-4fd0-a226-35df7556fcc7'),
+	(2, 'App\\Models\\User', '9c03cf90-1ff5-42a9-9240-d9a344c82fc2'),
+	(3, 'App\\Models\\User', '9c03cf90-46f3-4a38-9808-6d8077e80c4e'),
+	(2, 'App\\Models\\User', '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec'),
+	(3, 'App\\Models\\User', '9c04a4ad-9cd9-4447-ba7f-7e61c28350ef');
 
 -- membuang struktur untuk table posparts.password_reset_tokens
-DROP TABLE IF EXISTS `password_reset_tokens`;
 CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -131,7 +222,6 @@ CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
 -- Membuang data untuk tabel posparts.password_reset_tokens: ~0 rows (lebih kurang)
 
 -- membuang struktur untuk table posparts.payment_options
-DROP TABLE IF EXISTS `payment_options`;
 CREATE TABLE IF NOT EXISTS `payment_options` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -143,14 +233,15 @@ CREATE TABLE IF NOT EXISTS `payment_options` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.payment_options: ~1 rows (lebih kurang)
+-- Membuang data untuk tabel posparts.payment_options: ~2 rows (lebih kurang)
 REPLACE INTO `payment_options` (`id`, `name`, `description`, `status`, `admin_fee`, `duration`, `deleted_at`, `created_at`, `updated_at`) VALUES
-	(2, 'Tunai', 'Pembayaran tunai', '1', 10, NULL, NULL, '2024-05-06 16:43:59', '2024-05-06 16:43:59');
+	(2, 'Tunai', 'Pembayaran tunai', '1', 10, NULL, NULL, '2024-05-06 16:43:59', '2024-05-06 16:43:59'),
+	(3, 'Transfer Bank', 'Transfer ke nomer rekening tertera', '1', 10, NULL, NULL, '2024-05-16 09:42:28', '2024-05-16 09:42:28'),
+	(4, 'Paylater', 'pembayaran cicilan', '1', 10, NULL, NULL, '2024-05-16 09:42:43', '2024-05-16 09:42:43');
 
 -- membuang struktur untuk table posparts.permissions
-DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE IF NOT EXISTS `permissions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -159,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Membuang data untuk tabel posparts.permissions: ~24 rows (lebih kurang)
 REPLACE INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
@@ -186,10 +277,10 @@ REPLACE INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_a
 	(21, 'create_store', 'web', NULL, NULL),
 	(22, 'read_store', 'web', NULL, NULL),
 	(23, 'update_store', 'web', NULL, NULL),
-	(24, 'delete_store', 'web', NULL, NULL);
+	(24, 'delete_store', 'web', NULL, NULL),
+	(25, 'request-product', 'web', '2024-05-07 06:47:05', '2024-05-07 06:47:05');
 
 -- membuang struktur untuk table posparts.personal_access_tokens
-DROP TABLE IF EXISTS `personal_access_tokens`;
 CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -208,8 +299,240 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 
 -- Membuang data untuk tabel posparts.personal_access_tokens: ~0 rows (lebih kurang)
 
+-- membuang struktur untuk table posparts.products
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `store_id` bigint unsigned NOT NULL,
+  `user_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `SKU` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `SKU_seller` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `machine_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `SAE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `manufacturer` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `merk` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `stock` int NOT NULL,
+  `size` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unit` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `discount` decimal(10,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `product_category_id` bigint unsigned NOT NULL,
+  `product_merk_id` bigint unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `products_store_id_foreign` (`store_id`),
+  KEY `products_user_id_foreign` (`user_id`),
+  KEY `products_product_category_id_foreign` (`product_category_id`),
+  KEY `products_product_merk_id_foreign` (`product_merk_id`),
+  CONSTRAINT `products_product_category_id_foreign` FOREIGN KEY (`product_category_id`) REFERENCES `product_categories` (`id`),
+  CONSTRAINT `products_product_merk_id_foreign` FOREIGN KEY (`product_merk_id`) REFERENCES `product_merks` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `products_store_id_foreign` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `products_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.products: ~51 rows (lebih kurang)
+REPLACE INTO `products` (`id`, `store_id`, `user_id`, `SKU`, `SKU_seller`, `name`, `type`, `machine_name`, `SAE`, `manufacturer`, `merk`, `stock`, `size`, `unit`, `price`, `discount`, `created_at`, `updated_at`, `product_category_id`, `product_merk_id`) VALUES
+	('0a9eb793-be80-45ee-8f46-79cad4267db0', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1201', '', 'IRC BAN MOTOR 120/70-17 RX 01 TUBELESS', 'RX', '-', '-', '-', NULL, 0, '120/70-17', 'PCS', 347625.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('0c00e2b7-cba3-4733-b073-27be5deed5a4', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'MAI-1101', '', 'IRC BAN MOTOR 110/70-17 RX-02 TUBELESS', 'RX-02', '-', '-', '-', NULL, 9, '110/70-17', 'PCS', 334125.00, 10.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('0d252ee5-8771-41a4-9203-e0bf8baff664', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1101', '', 'IRC BAN MOTOR 110/70-17 RX-01 TUBELESS', 'RX-01', '-', '-', '-', NULL, 34, '110/70-17', 'PCS', 329400.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('1b87f81c-9682-4f9b-b627-54193599f26d', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1104', '', 'IRC BAN MOTOR 110/70-17 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 15, '110/70-17', 'PCS', 329400.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('1d58e518-b6a6-45fa-9a83-8022c6b241e5', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1102', '', 'IRC BAN MOTOR 110/80-14 SCT 005 TUBELESS', 'SCT', '-', '-', '-', NULL, 33, '110/80-14', 'PCS', 255150.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('1e2fc2e0-2aa1-4ef0-b0c0-fbf0e3969643', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1402', '', 'IRC BAN MOTOR 140/70-14 SCT 005 R TUBELESS', 'SCT', '-', '-', '-', NULL, 85, '140/70-14', 'PCS', 344250.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('1fea8b05-62b1-4dcf-9ea9-8882b5e650b8', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1104 TH21-22 SUB 30 - KE', '', 'IRC BAN MOTOR 110/70-17 EXATO NR 88 TUBELESS TAHUN PRODUKSI 2021-2022  SURABAYA 30% - KUDU ENTEK', 'EXATO', '-', '-', '-', NULL, 0, '110/70-17', 'PCS', 251700.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('22213dc2-518b-4915-be15-74c241de8aa1', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1007', '', 'IRC BAN MOTOR 100/70-14 NR 82 BAN LUAR', 'NR', '-', '-', '-', NULL, 0, '100/70-14', 'PCS', 174675.00, 0.00, '2024-05-15 06:24:38', '2024-05-15 06:24:38', 1, 3),
+	('2321e666-0bc4-42d5-ba5b-2d5d661b4dc0', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IBD-1102', '', 'IRC BAN MOTOR 110/90-12 MB 67 TL TUBELESS', 'MB', '-', '-', '-', NULL, 108, '110/90-12', 'PCS', 228150.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('271395e3-779f-4e76-b11e-5cc14ec19dcf', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1202', '', 'IRC BAN MOTOR 120/70-17 NF 67 TUBELESS', 'NF', '-', '-', '-', NULL, 9, '120/70-17', 'PCS', 347625.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('35ee49ab-a672-4349-aadf-1b329ad63bae', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'MAI-1401', '', 'IRC BAN MOTOR 140/70-17 RX 02 TUBELESS', 'RX', '-', '-', '-', NULL, 4, '140/70-17', 'PCS', 482625.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('3a04c3ad-ab70-45ef-876f-795115248fb5', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1003', '', 'IRC BAN MOTOR 100/80-17 RX 01 TUBELESS', 'RX', '-', '-', '-', NULL, 0, '100/80-17', 'PCS', 282150.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('3ecc1e12-e2b2-4ee8-b540-8df3c55b4559', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1010', '', 'IRC BAN MOTOR 100/80-14 SCT-006 TUBELESS', 'SCT-006', '-', '-', '-', NULL, 185, '100/80-14', 'PCS', 230850.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('44cd4268-3927-43cc-926e-cfe441d96c3c', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1002', '', 'IRC BAN MOTOR 100/70-14 NR 84 BAN LUAR', 'NR', '-', '-', '-', NULL, 0, '100/70-14', 'PCS', 164400.00, 0.00, '2024-05-15 06:24:38', '2024-05-15 06:24:38', 1, 3),
+	('45d13c84-16b2-4d83-9882-c75c847db46c', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1307', '', 'IRC BAN MOTOR 130/70-17 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 0, '130/70-17', 'PCS', 432000.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('4e0d99df-8f14-44dc-912f-268d87537701', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAE-1101', '', 'IRC BAN MOTOR 110/70-13 SS 570 TUBELESS', 'SS', '-', '-', '-', NULL, 136, '110/70-13', 'PCS', 230850.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('52a614e3-b1ce-43b5-a4f6-39db5e841ae2', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'ICI1401 TH21-22 SUB 30 - KE', '', 'IRC BAN MOTOR 140/70-17 FASTI 1 TUBELESS TAHUN PRODUKSI 2021-2022 SURABAYA 30% - KUDU ENTEK', 'FASTI', '-', '-', '-', NULL, 0, '140/70-17', 'PCS', 433100.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('5399cb11-765b-4d1a-b7fd-0a9e58522de4', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1304', '', 'IRC BAN MOTOR 130/70-17 RX-01 TUBELESS', 'RX-01', '-', '-', '-', NULL, 50, '130/70-17', 'PCS', 432000.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('555d7528-fb59-4d1d-9357-5b1ec5c39ffc', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAE-1301', '', 'IRC BAN MOTOR 130/70-13 SS 560 R TUBELESS', 'SS', '-', '-', '-', NULL, 223, '130/70-13', 'PCS', 286875.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('5773eea0-c3e6-4129-bebb-21ea07f372f9', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1203', '', 'IRC BAN MOTOR 120/70-17 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 0, '120/70-17', 'PCS', 347625.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('57a4c5b3-e2e7-464d-a6f7-2319a0819cdd', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1104', '', 'IRC BAN MOTOR 110/70-14 SCT 006 TUBELESS', 'SCT', '-', '-', '-', NULL, 24, '110/70-14', 'PCS', 249750.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('5950a84b-bd12-4cf1-a623-e4463b988ff3', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1009', '', 'IRC BAN MOTOR 100/80-17 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 0, '100/80-17', 'PCS', 282150.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('6888c63d-f89e-4111-abfb-122e6436b2a5', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1011', '', 'IRC BAN MOTOR 100/80-17 RX-01 BAN LUAR', 'RX-01', '-', '-', '-', NULL, 0, '100/80-17', 'PCS', 229475.00, 0.00, '2024-05-15 06:24:38', '2024-05-15 06:24:38', 1, 3),
+	('7a802f2a-fa60-4d3e-bd08-a647f063ce23', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'MAI-1601', '', 'IRC BAN MOTOR 160/70-17 RX 02 TUBELESS', 'RX', '-', '-', '-', NULL, 5, '160/70-17', 'PCS', 563625.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('83f706c9-e342-4943-8de7-0accc64e6f1b', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1006', '', 'IRC BAN MOTOR 100/80-14 REBORN NR 87 TUBELESS', 'REBORN', '-', '-', '-', NULL, 0, '100/80-14', 'PCS', 230850.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('8808b163-88c4-48ea-a14e-7a5a373fe0b8', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1501', '', 'IRC BAN MOTOR 150/60-17 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 0, '150/60-17', 'PCS', 496125.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('89871c42-f636-4fd6-8940-ec61a0535920', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IBD-1103', '', 'IRC BAN MOTOR 110/90-12 NR 83 TUBELESS', 'NR', '-', '-', '-', NULL, 52, '110/90-12', 'PCS', 228150.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('8c105c2a-fd7e-4d44-8599-303054db3dc9', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IBD-1001', '', 'IRC BAN MOTOR 100/90-12 MB 86 TUBELESS', 'MB', '-', '-', '-', NULL, 119, '100/90-12', 'PCS', 190350.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('8c212883-c6b9-4cb1-89a2-512ffddb2a5d', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1004', '', 'IRC BAN MOTOR 100/70-17 NR 82 BAN LUAR', 'NR', '-', '-', '-', NULL, 18, '100/70-17', 'PCS', 232900.00, 0.00, '2024-05-15 06:24:38', '2024-05-15 06:24:38', 1, 3),
+	('91fb5af5-fee2-46fa-850e-33144e6b03f1', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAE-1201', '', 'IRC BAN MOTOR 120/70-13 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 0, '120/70-13', 'PCS', 266625.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('93bb23ca-2630-43bb-82a1-6e587dfef116', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'MAI-1101 TH21-22 SUB 30 - KE', '', 'IRC BAN MOTOR 110/70-17 RX-02 TUBELESS TAHUN PRODUKSI 2021-2022 SURABAYA 30% - KUDU ENTEK', 'RX-02', '-', '-', '-', NULL, 0, '110/70-17', 'PCS', 255300.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('96e33e85-b715-43a0-9935-3b409087e167', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'MAI-1301', '', 'IRC BAN MOTOR 130/70-17 RX 02 TUBELESS', 'RX', '-', '-', '-', NULL, 10, '130/70-17', 'PCS', 445500.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('9e47349e-51ba-4468-a806-5408412963f5', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1012', '', 'IRC BAN MOTOR 100/80-14 GP 5 TUBELESS', 'GP', '-', '-', '-', NULL, 0, '100/80-14', 'PCS', 230850.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('a0683412-ecc0-4956-acd0-63e0c6ce8adb', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAJ-1004', '', 'IRC BAN MOTOR 100/100-18 IX-09W BAN LUAR', 'IX-09W', '-', '-', '-', NULL, 0, '100/100-18', 'PCS', 624750.00, 0.00, '2024-05-15 06:24:38', '2024-05-15 06:24:38', 1, 3),
+	('a7d50fed-0974-4722-84c3-2a91a45e94b4', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'MAI-1501', '', 'IRC BAN MOTOR 150/70-17 RX 02 TUBELESS', 'RX', '-', '-', '-', NULL, 4, '150/70-17', 'PCS', 519750.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('b04b480d-ede5-4911-9823-6377a99acb01', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAE-1401', '', 'IRC BAN MOTOR 140/70-13 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 0, '140/70-13', 'PCS', 361125.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('b5e8c7e3-00e4-4de3-a7b6-557716ea3f95', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1401', '', 'IRC BAN MOTOR 140/70-17 RX 01 R TUBELESS', 'RX', '-', '-', '-', NULL, 45, '140/70-17', 'PCS', 460350.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('b669d632-1f26-4586-b9c0-28f8c9524c5e', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1014', '', 'IRC BAN MOTOR 100/80-14 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 33, '100/80-14', 'PCS', 230850.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('bf0d1c4a-dfd1-485a-a064-6b0d232f124d', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1501 TH21-22 SUB 30 - KE', '', 'IRC BAN MOTOR 150/60-17 EXATO NR 88 TUBELESS TAHUN PRODUKSI 2021-2022 SURABAYA 30% - KUDU ENTEK', 'EXATO', '-', '-', '-', NULL, 0, '150/60-17', 'PCS', 379000.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('c6370735-c3ca-45ab-922a-ed512f02e664', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1202', '', 'IRC BAN MOTOR 120/70-14 SCT 007 TUBELESS', 'SCT', '-', '-', '-', NULL, 209, '120/70-14', 'PCS', 276750.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('cbb80dd3-ed65-46a0-8eca-464ff72ea61a', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'MAI-1201', '', 'IRC BAN MOTOR 120/70-17 RX 02 TUBELESS', 'RX', '-', '-', '-', NULL, 0, '120/70-17', 'PCS', 357750.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('d23c13f8-a742-4b14-8422-3ebc09e5b6d3', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAE-1304', '', 'IRC BAN MOTOR 130/70-13 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 0, '130/70-13', 'PCS', 286875.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('e4b5b685-1d0c-4ed3-b4b0-3455ce264adf', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1005', '', 'IRC BAN MOTOR 100/80-17 NR 85 TUBELESS', 'NR', '-', '-', '-', NULL, 0, '100/80-17', 'PCS', 282150.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('e87c9bb2-b52e-43ad-8e91-8018f93250de', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1207', '', 'IRC BAN MOTOR 120/70-17 NR 83 TUBELESS', 'NR', '-', '-', '-', NULL, 19, '120/70-17', 'PCS', 347625.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('f20e4896-0ecf-40fc-8a06-5a7d98b5d521', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1013', '', 'IRC BAN MOTOR 100/80-14 NR 95 TUBELESS', 'NR', '-', '-', '-', NULL, 15, '100/80-14', 'PCS', 230850.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('f5b49bed-7a43-4d0b-98b7-9911147c821a', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1004 TH21-22 SUB 30 - KE', '', 'IRC BAN MOTOR 100/70-17 NR 82 BAN LUAR TAHUN PRODUKSI 2021-2022 SURABAYA 30% - KUDU ENTEK', 'NR', '-', '-', '-', NULL, 0, '100/70-17', 'PCS', 171500.00, 0.00, '2024-05-15 06:24:38', '2024-05-15 06:24:38', 1, 3),
+	('f7e546b7-cf30-45e7-a3f3-69cc85c16750', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAE-1102', '', 'IRC BAN MOTOR 110/70-13 EXATO NR 88 TUBELESS', 'EXATO', '-', '-', '-', NULL, 0, '110/70-13', 'PCS', 230850.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('f9c0300d-d214-44a2-9d41-aad131a75155', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAE-1303', '', 'IRC BAN MOTOR 130/70-13 SCT 007 TUBELESS', 'SCT', '-', '-', '-', NULL, 33, '130/70-13', 'PCS', 286875.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('fb111125-54e8-4e86-9a40-7e68187d4847', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAF-1011', '', 'IRC BAN MOTOR 100/90-14 SCT 004 TUBELESS', 'SCT', '-', '-', '-', NULL, 35, '100/90-14', 'PCS', 246375.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('fd2cf358-309c-4679-bab4-31420c4ddf04', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1205', '', 'IRC BAN MOTOR 120/70-17 RX-01 BAN LUAR', 'RX-01', '-', '-', '-', NULL, 0, '120/70-17', 'PCS', 286330.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4),
+	('fdf584db-135d-40a2-9caa-3e5707f7a49d', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'IAI-1001', '', 'IRC BAN MOTOR 100/90-17 NR 25 TUBELESS', 'NR', '-', '-', '-', NULL, 46, '100/90-17', 'PCS', 282150.00, 0.00, '2024-05-15 06:30:14', '2024-05-15 06:30:14', 1, 4);
+
+-- membuang struktur untuk table posparts.product_categories
+CREATE TABLE IF NOT EXISTS `product_categories` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` longtext COLLATE utf8mb4_unicode_ci,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.product_categories: ~5 rows (lebih kurang)
+REPLACE INTO `product_categories` (`id`, `name`, `image`, `is_active`, `created_at`, `updated_at`) VALUES
+	(1, 'Ban Motor', '664101537ab1a.png', 1, NULL, '2024-05-12 10:50:11'),
+	(2, 'Oli Motor', '664101647957c.png', 1, NULL, '2024-05-12 10:50:28'),
+	(3, 'Oli Transmisi Dan Oli Samping', '6641018cf0f5b.png', 1, NULL, '2024-05-12 10:51:08'),
+	(4, 'Bodyparts Motor', '66410196b2e77.png', 1, NULL, '2024-05-12 10:51:18'),
+	(5, 'Aki Motor', '6641019cd1468.png', 1, NULL, '2024-05-12 10:51:24');
+
+-- membuang struktur untuk table posparts.product_merks
+CREATE TABLE IF NOT EXISTS `product_merks` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `store_id` bigint unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `product_category_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_merks_store_id_foreign` (`store_id`),
+  KEY `product_merks_product_category_id_foreign` (`product_category_id`),
+  CONSTRAINT `product_merks_product_category_id_foreign` FOREIGN KEY (`product_category_id`) REFERENCES `product_categories` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_merks_store_id_foreign` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.product_merks: ~2 rows (lebih kurang)
+REPLACE INTO `product_merks` (`id`, `store_id`, `name`, `image`, `is_active`, `created_at`, `updated_at`, `product_category_id`) VALUES
+	(3, 6, 'IRC Ban Luar', '1715778349_PP-MT-BL-IRC.jpeg', 1, '2024-05-15 06:05:49', '2024-05-15 06:07:29', 1),
+	(4, 6, 'IRC Tubeless', '1715778699_Icon_Ban Motor_256px.png', 1, '2024-05-15 06:11:39', '2024-05-15 06:11:39', 1);
+
+-- membuang struktur untuk table posparts.product_stock_histories
+CREATE TABLE IF NOT EXISTS `product_stock_histories` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `store_id` bigint unsigned NOT NULL,
+  `in_stock` int NOT NULL DEFAULT '0',
+  `out_stock` int NOT NULL DEFAULT '0',
+  `final_stock` int NOT NULL DEFAULT '0',
+  `created_by` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_stock_histories_product_id_foreign` (`product_id`),
+  KEY `product_stock_histories_store_id_foreign` (`store_id`),
+  KEY `product_stock_histories_created_by_foreign` (`created_by`),
+  CONSTRAINT `product_stock_histories_created_by_foreign` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_stock_histories_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_stock_histories_store_id_foreign` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.product_stock_histories: ~51 rows (lebih kurang)
+REPLACE INTO `product_stock_histories` (`id`, `product_id`, `store_id`, `in_stock`, `out_stock`, `final_stock`, `created_by`, `created_at`, `updated_at`) VALUES
+	('04ba8c57-e523-4947-912d-c5918597d213', 'b5e8c7e3-00e4-4de3-a7b6-557716ea3f95', 6, 45, 0, 45, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('0ed67994-4fa1-4968-bf0d-d8442458445d', '271395e3-779f-4e76-b11e-5cc14ec19dcf', 6, 9, 0, 9, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('15b4deb3-f87c-42da-b7f4-ca45effea51e', '57a4c5b3-e2e7-464d-a6f7-2319a0819cdd', 6, 24, 0, 24, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('164eb0e1-9b6a-4caa-8d44-2a89a0a9ef05', '9e47349e-51ba-4468-a806-5408412963f5', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('17feb622-5f2b-4336-b691-843b4113fd61', '8c105c2a-fd7e-4d44-8599-303054db3dc9', 6, 119, 0, 119, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('1971ed79-e91a-4088-9609-872ce1429d0b', '5773eea0-c3e6-4129-bebb-21ea07f372f9', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('1d10abc0-17c1-44a8-912d-a9ad8dada03b', 'cbb80dd3-ed65-46a0-8eca-464ff72ea61a', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('1d4d62aa-5e4b-4dce-a662-bc9c7db442d9', '555d7528-fb59-4d1d-9357-5b1ec5c39ffc', 6, 223, 0, 223, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('1ddd86e4-023b-4934-bd33-03c8831960a4', 'e4b5b685-1d0c-4ed3-b4b0-3455ce264adf', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('1ec1af1a-0105-433b-916f-6ed13e056d14', 'a7d50fed-0974-4722-84c3-2a91a45e94b4', 6, 4, 0, 4, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('2501885d-4d12-47d4-8e72-a5c933190d57', 'e87c9bb2-b52e-43ad-8e91-8018f93250de', 6, 19, 0, 19, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('31a10764-8351-4251-8514-8ffdc46c9c93', '93bb23ca-2630-43bb-82a1-6e587dfef116', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('377e2f2f-b450-4c51-bcc8-58319b4a290a', '89871c42-f636-4fd6-8940-ec61a0535920', 6, 52, 0, 52, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('3ec3e15e-7b8c-45d9-87a2-8c6b0f28c592', '0c00e2b7-cba3-4733-b073-27be5deed5a4', 6, 9, 0, 9, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('49b0df23-1ca3-4ec7-a77c-bf1edad20ef1', '1d58e518-b6a6-45fa-9a83-8022c6b241e5', 6, 33, 0, 33, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('4c6a35cb-161f-4846-a6dc-3b748d80be83', '83f706c9-e342-4943-8de7-0accc64e6f1b', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('4cff681f-d83e-434e-855e-bf7124dedc9e', 'a0683412-ecc0-4956-acd0-63e0c6ce8adb', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:24:38', '2024-05-15 06:24:38'),
+	('4dc498f4-4f9c-4faf-8c51-27b6759fc600', '91fb5af5-fee2-46fa-850e-33144e6b03f1', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('4f6d6776-07c7-4657-b8f8-a9e2ec00e896', '22213dc2-518b-4915-be15-74c241de8aa1', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:24:38', '2024-05-15 06:24:38'),
+	('560b8409-fb10-4fe9-8f05-55a42d804fb1', '0d252ee5-8771-41a4-9203-e0bf8baff664', 6, 34, 0, 34, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('6a292db9-1d0a-4adc-9117-67e7d7835af5', 'f20e4896-0ecf-40fc-8a06-5a7d98b5d521', 6, 15, 0, 15, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('72374255-225d-4ed8-b16e-405329782297', 'd23c13f8-a742-4b14-8422-3ebc09e5b6d3', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('78634ac9-455b-46ac-8db8-b727025d966d', '0a9eb793-be80-45ee-8f46-79cad4267db0', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('7bd7a174-8dd4-48c8-87d9-9d5be2049463', '7a802f2a-fa60-4d3e-bd08-a647f063ce23', 6, 5, 0, 5, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('836a78f8-98b5-405c-a63b-ba1b940a3f7a', '8808b163-88c4-48ea-a14e-7a5a373fe0b8', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('83c0a346-cf36-4505-af58-bc6038ade601', '52a614e3-b1ce-43b5-a4f6-39db5e841ae2', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('877cbb05-dba2-4540-953c-5af3e02e62c6', '2321e666-0bc4-42d5-ba5b-2d5d661b4dc0', 6, 108, 0, 108, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('87a539df-03be-4b09-9ad3-d4203a51f2c3', '4e0d99df-8f14-44dc-912f-268d87537701', 6, 136, 0, 136, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('8eaa4d8a-a149-4aab-aa38-ed2f73d34725', '1fea8b05-62b1-4dcf-9ea9-8882b5e650b8', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('8edf401d-b0ed-4660-9d1d-a0b9037c8457', 'bf0d1c4a-dfd1-485a-a064-6b0d232f124d', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('9557b90a-cfe9-47d0-8274-091d109bcadb', '6888c63d-f89e-4111-abfb-122e6436b2a5', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:24:38', '2024-05-15 06:24:38'),
+	('9938b48e-0514-45f9-86db-e60bc3adc667', '5399cb11-765b-4d1a-b7fd-0a9e58522de4', 6, 50, 0, 50, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('a3554d4a-7d26-4464-b7a5-fa3300905687', '8c212883-c6b9-4cb1-89a2-512ffddb2a5d', 6, 18, 0, 18, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:24:38', '2024-05-15 06:24:38'),
+	('aa5dfbfd-5bca-4eef-9d27-fb8dc8b65a58', '44cd4268-3927-43cc-926e-cfe441d96c3c', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:24:38', '2024-05-15 06:24:38'),
+	('b3b7f37c-90e4-41a6-8274-b6f97701eec0', '5950a84b-bd12-4cf1-a623-e4463b988ff3', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('b96e9c2a-3735-4d8f-9c09-429570149e15', '3ecc1e12-e2b2-4ee8-b540-8df3c55b4559', 6, 185, 0, 185, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('be98a4b5-b749-4ea7-9012-2a4614954bda', '35ee49ab-a672-4349-aadf-1b329ad63bae', 6, 4, 0, 4, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('c34bf6a5-baa7-46d4-8572-aeefab2be088', 'f5b49bed-7a43-4d0b-98b7-9911147c821a', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:24:38', '2024-05-15 06:24:38'),
+	('c73290d1-4c9a-4042-936f-cfcd5c4376df', '1b87f81c-9682-4f9b-b627-54193599f26d', 6, 15, 0, 15, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('c7b65973-a0b8-4c25-8c31-be3349961537', 'c6370735-c3ca-45ab-922a-ed512f02e664', 6, 209, 0, 209, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('cac24ea3-0302-4b00-9f9a-fa334b617a51', '1e2fc2e0-2aa1-4ef0-b0c0-fbf0e3969643', 6, 85, 0, 85, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('ccc1c5ae-f7b3-4a28-abfb-1487b8822b39', 'fdf584db-135d-40a2-9caa-3e5707f7a49d', 6, 46, 0, 46, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('d580d578-3d72-40ca-ae3c-2983098db37f', 'fb111125-54e8-4e86-9a40-7e68187d4847', 6, 35, 0, 35, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('d930541e-3f4f-4694-918a-e5897d30b96d', 'f7e546b7-cf30-45e7-a3f3-69cc85c16750', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('defa6e21-7f5f-4921-90d1-d93e5d517084', 'b04b480d-ede5-4911-9823-6377a99acb01', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('dfc7f28e-2a47-43d1-a96a-b0b0c30fbbad', 'b669d632-1f26-4586-b9c0-28f8c9524c5e', 6, 33, 0, 33, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('ea13e32e-1af5-4934-a750-98151bab897e', '3a04c3ad-ab70-45ef-876f-795115248fb5', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('f5642c25-6f3f-46ea-bd16-6fb236f25d1f', 'f9c0300d-d214-44a2-9d41-aad131a75155', 6, 33, 0, 33, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('f6bf0ef5-418a-43ab-a79f-3b6490d8ed81', '45d13c84-16b2-4d83-9882-c75c847db46c', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('f9335b96-eb6d-4a93-b6cb-d4f0e451918f', '96e33e85-b715-43a0-9935-3b409087e167', 6, 10, 0, 10, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14'),
+	('fbf0225b-bd88-41f9-9eb7-54f2628d0718', 'fd2cf358-309c-4679-bab4-31420c4ddf04', 6, 0, 0, 0, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', '2024-05-15 06:30:14', '2024-05-15 06:30:14');
+
+-- membuang struktur untuk table posparts.request_products
+CREATE TABLE IF NOT EXISTS `request_products` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `store_id` bigint unsigned NOT NULL,
+  `user_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('menunggu','diterima','ditolak') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `feedback` text COLLATE utf8mb4_unicode_ci,
+  `reviewed_by` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `product_category_id` bigint unsigned NOT NULL,
+  `product_merk_id` bigint unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `request_products_store_id_foreign` (`store_id`),
+  KEY `request_products_user_id_foreign` (`user_id`),
+  KEY `request_products_reviewed_by_foreign` (`reviewed_by`),
+  KEY `request_products_product_category_id_foreign` (`product_category_id`),
+  KEY `request_products_product_merk_id_foreign` (`product_merk_id`),
+  CONSTRAINT `request_products_product_category_id_foreign` FOREIGN KEY (`product_category_id`) REFERENCES `product_categories` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `request_products_product_merk_id_foreign` FOREIGN KEY (`product_merk_id`) REFERENCES `product_merks` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `request_products_reviewed_by_foreign` FOREIGN KEY (`reviewed_by`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `request_products_store_id_foreign` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `request_products_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.request_products: ~2 rows (lebih kurang)
+REPLACE INTO `request_products` (`id`, `store_id`, `user_id`, `file`, `status`, `feedback`, `reviewed_by`, `created_at`, `updated_at`, `product_category_id`, `product_merk_id`) VALUES
+	('2783fc34-5428-4cbd-9dae-1180ed50f58c', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'PR-20240515132050.csv', 'diterima', 'file bagus', '9c03cf8f-f3cc-4fd0-a226-35df7556fcc7', '2024-05-15 06:20:50', '2024-05-15 06:24:38', 1, 3),
+	('d66dd835-1ef5-4b0f-a61f-b07101664ac7', 6, '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'PR-20240515132950.csv', 'diterima', 'bagus gais', '9c03cf8f-f3cc-4fd0-a226-35df7556fcc7', '2024-05-15 06:29:51', '2024-05-15 06:30:14', 1, 4);
+
 -- membuang struktur untuk table posparts.roles
-DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -227,7 +550,6 @@ REPLACE INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VA
 	(3, 'buyer', 'web', NULL, NULL);
 
 -- membuang struktur untuk table posparts.role_has_permissions
-DROP TABLE IF EXISTS `role_has_permissions`;
 CREATE TABLE IF NOT EXISTS `role_has_permissions` (
   `permission_id` bigint unsigned NOT NULL,
   `role_id` bigint unsigned NOT NULL,
@@ -237,7 +559,7 @@ CREATE TABLE IF NOT EXISTS `role_has_permissions` (
   CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.role_has_permissions: ~0 rows (lebih kurang)
+-- Membuang data untuk tabel posparts.role_has_permissions: ~26 rows (lebih kurang)
 REPLACE INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 	(1, 1),
 	(2, 1),
@@ -262,10 +584,11 @@ REPLACE INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 	(21, 1),
 	(22, 1),
 	(23, 1),
-	(24, 1);
+	(24, 1),
+	(25, 1),
+	(25, 2);
 
 -- membuang struktur untuk table posparts.stores
-DROP TABLE IF EXISTS `stores`;
 CREATE TABLE IF NOT EXISTS `stores` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -281,17 +604,72 @@ CREATE TABLE IF NOT EXISTS `stores` (
   UNIQUE KEY `stores_slug_unique` (`slug`),
   KEY `stores_user_id_foreign` (`user_id`),
   CONSTRAINT `stores_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.stores: ~4 rows (lebih kurang)
+-- Membuang data untuk tabel posparts.stores: ~0 rows (lebih kurang)
 REPLACE INTO `stores` (`id`, `name`, `slug`, `user_id`, `address`, `phone`, `logo`, `status`, `created_at`, `updated_at`) VALUES
-	(2, 'Toko Update', 'toko-update', '9bfb3eb6-1147-4f36-8f0a-45d5c6a73f0b', 'Sumber Sari, Jember, Jawa Timur', '081515144981', 'cjTND9fsMq.png', 1, '2024-05-06 15:18:32', '2024-05-06 15:59:38'),
-	(3, 'Gillian Alston', 'gillian-alston', '9bfb3ef6-fc26-4892-923a-f89ef800c66f', 'Temporibus commodi e', '+1 (972) 619-5638', NULL, 1, '2024-05-06 15:19:14', '2024-05-06 16:00:49'),
-	(4, 'Serena Jordan', 'serena-jordan', '9bfb40d6-a8dd-456d-ad7c-e4b1ac6cd489', 'Non eos nostrum aliq', '+1 (805) 332-2363', NULL, 0, '2024-05-06 15:24:29', '2024-05-06 16:16:51'),
-	(5, 'Austin Richardson', 'austin-richardson', '9bfb4109-e9b3-4b9e-b271-079b6f633910', 'Placeat veritatis m', '+1 (649) 155-9994', NULL, 0, '2024-05-06 15:25:02', '2024-05-06 15:25:02');
+	(6, 'Toko Ibnu', 'toko-ibnu', '9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'Sumber Sari, Jember, Jawa Timur', '081515144982', 'VpZBio5RAG.png', 1, '2024-05-10 21:36:56', '2024-05-11 06:14:00');
+
+-- membuang struktur untuk table posparts.transactions
+CREATE TABLE IF NOT EXISTS `transactions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `store_id` bigint unsigned NOT NULL,
+  `product_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `requested_qty` int DEFAULT NULL,
+  `rejected_qty` int DEFAULT NULL,
+  `approved_qty` int DEFAULT NULL,
+  `discount_price` decimal(15,2) DEFAULT NULL,
+  `price` decimal(15,2) DEFAULT NULL,
+  `total_price` decimal(15,2) DEFAULT NULL,
+  `status` enum('pending','approved','rejected') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transactions_user_id_foreign` (`user_id`),
+  KEY `transactions_store_id_foreign` (`store_id`),
+  KEY `transactions_product_id_foreign` (`product_id`),
+  CONSTRAINT `transactions_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `transactions_store_id_foreign` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `transactions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.transactions: ~0 rows (lebih kurang)
+
+-- membuang struktur untuk table posparts.transaction_details
+CREATE TABLE IF NOT EXISTS `transaction_details` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `transaction_id` bigint unsigned NOT NULL,
+  `user_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `qty` int NOT NULL,
+  `price` decimal(15,2) NOT NULL,
+  `total_price` decimal(15,2) NOT NULL,
+  `admin_fee` decimal(15,2) NOT NULL,
+  `status` enum('waiting_payment','user_confirm','admin_confirm','admin_reject','user_reject','process_by_merchant','shipping','done','waiting_confirmation') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `shipping_date` date DEFAULT NULL,
+  `payment_option_id` bigint unsigned NOT NULL,
+  `payment_proof` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `confirm_date` date DEFAULT NULL,
+  `receive_date` date DEFAULT NULL,
+  `receive_proof` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `receive_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transaction_details_transaction_id_foreign` (`transaction_id`),
+  KEY `transaction_details_user_id_foreign` (`user_id`),
+  KEY `transaction_details_product_id_foreign` (`product_id`),
+  KEY `transaction_details_payment_option_id_foreign` (`payment_option_id`),
+  CONSTRAINT `transaction_details_payment_option_id_foreign` FOREIGN KEY (`payment_option_id`) REFERENCES `payment_options` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `transaction_details_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `transaction_details_transaction_id_foreign` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `transaction_details_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Membuang data untuk tabel posparts.transaction_details: ~0 rows (lebih kurang)
 
 -- membuang struktur untuk table posparts.users
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -304,19 +682,26 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
+  `card_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bank_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `owner_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `province` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `regency` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `district` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `zip_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci,
+  `nik` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Membuang data untuk tabel posparts.users: ~6 rows (lebih kurang)
-REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `store_name`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	('9bec89f4-56d2-4b84-a857-d785c1dfd015', 'Admin', 'admin@moto.com', NULL, '$2y$10$4VQU7UeiJlIkCHBwcplPVuDFN0LvD2tfXdGJLal8mrskmKP7TK0zS', NULL, NULL, NULL, '2024-04-29 07:51:30', '2024-04-29 07:51:30', NULL),
-	('9bec89f4-b991-49fe-8326-c5b162bac9fc', 'Buyer', 'buyer@moto.com', NULL, '$2y$10$DBDyxUsf1gcnLb3hQ9XuyeuF0D4kXjBmHyHoqTa0Xi076wgAkUisq', NULL, NULL, NULL, '2024-04-29 07:51:31', '2024-04-29 07:51:31', NULL),
-	('9bfb3eb6-1147-4f36-8f0a-45d5c6a73f0b', 'Moh Ibnu Abdurrohman Sutio', 'ibnu@mail.com', NULL, '$2y$10$.5ja5/8Q.vMKzNU/CN6Qnu7ZBYUsDx5.LF46f4MNpQFBDG4zDGpu2', NULL, NULL, NULL, '2024-05-06 15:18:32', '2024-05-06 16:00:43', NULL),
-	('9bfb3ef6-fc26-4892-923a-f89ef800c66f', 'Gillian Alston', 'ruvop@mailinator.com', NULL, '$2y$10$ykI5gUGUOakmfm7GseQgr.DM69B0x1FLfEMY98O/GG4Vv7PhFV9ly', NULL, NULL, NULL, '2024-05-06 15:19:14', '2024-05-06 15:19:14', NULL),
-	('9bfb40d6-a8dd-456d-ad7c-e4b1ac6cd489', 'Serena Jordan', 'rewigi@mailinator.com', NULL, '$2y$10$OVCsNkizz1v3ISi0FPpl3.BSNsdj8B8IWURajUMSueGxqFg/FNcAC', NULL, NULL, NULL, '2024-05-06 15:24:29', '2024-05-06 16:16:51', '2024-05-06 16:16:51'),
-	('9bfb4109-e9b3-4b9e-b271-079b6f633910', 'Austin Richardson', 'xodym@mailinator.com', NULL, '$2y$10$BGb7vIwKepkrKR7eUl9VjOiUa/2oNOwoRExYNzaoXwysRUzr/rh2u', NULL, NULL, NULL, '2024-05-06 15:25:02', '2024-05-06 15:25:02', NULL),
-	('9bfb9136-df00-4099-8eb5-4b8a3fdbc88e', 'Icin', 'icin@mail.com', NULL, '$2y$10$3qjW3vqXlt0miA0IX5tbdOK1fwPoOC5fnsz0LyoxVQljWp1hRY5Fy', NULL, NULL, NULL, '2024-05-06 19:09:13', '2024-05-06 19:09:13', NULL);
+-- Membuang data untuk tabel posparts.users: ~4 rows (lebih kurang)
+REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `store_name`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `card_number`, `bank_name`, `owner_name`, `province`, `regency`, `district`, `zip_code`, `address`, `nik`) VALUES
+	('9c03cf8f-f3cc-4fd0-a226-35df7556fcc7', 'Admin', 'admin@moto.com', NULL, '$2y$10$OvuTTNTNvxYuAxwer7JZD.NItWykYZKU.zbFUl/zz5AW94DqqVSbC', NULL, NULL, NULL, '2024-05-10 21:30:11', '2024-05-10 21:30:11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	('9c03cf90-1ff5-42a9-9240-d9a344c82fc2', 'Seller', 'seller@moto.com', NULL, '$2y$10$OTxiGrC7KZCjeE9FcToANOahpGzCie/1M3mRCglSgNYmoFlLfOMci', NULL, NULL, NULL, '2024-05-10 21:30:11', '2024-05-10 21:30:11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	('9c03cf90-46f3-4a38-9808-6d8077e80c4e', 'Buyer', 'buyer@moto.com', NULL, '$2y$10$hZQ450e1ctC/5ieAPCo6FuEaspHHLR0dxzREblaIJrT0Pxt4GG6J.', NULL, NULL, NULL, '2024-05-10 21:30:11', '2024-05-10 21:30:11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	('9c03d1fa-42d5-4ed1-ac69-c136e2a741ec', 'Moh Ibnu Abdurrohman Sutio', 'ibnu@mail.com', NULL, '$2y$10$MOmJuvTYLt08mI8iKjkcwO3qts.1p3za7.UW3Sbt7S2Xw/8/Rk2t6', '081515144981', 'Toko Ibnu', NULL, '2024-05-10 21:36:56', '2024-05-11 07:10:49', NULL, '348953945', 'BCA', 'Ibnu', 'Jawa Timur', 'Kab. Jember', 'Sumber Sari', '68121', 'Sumber Sari, Jember, Jawa Timur', '3513182204020001'),
+	('9c04a4ad-9cd9-4447-ba7f-7e61c28350ef', 'Icin', 'icin@mail.com', NULL, '$2y$10$YDuVUk1JUVmP9qSAR6p38uqcXkXjXxzHdvY9xD/LOTGRbPJ2uzWqS', '081515144981', NULL, NULL, '2024-05-11 07:26:06', '2024-05-15 06:32:08', NULL, NULL, NULL, NULL, 'Jawa Timur', 'Kab. Jember', 'Sumber Sari', '68121', 'Sumber Sari, Jember, Jawa Timur', '3513182204020001');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
