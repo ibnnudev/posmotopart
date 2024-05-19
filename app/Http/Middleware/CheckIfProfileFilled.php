@@ -11,10 +11,10 @@ class CheckIfProfileFilled
     public function handle(Request $request, Closure $next): Response
     {
         // check if seller profile is filled
-        if (auth()->user()->hasRole('seller') && !auth()->user()->profile_filled) {
-            toast('Lengkapi profil anda terlebih dahulu', 'error');
-            return redirect()->route('admin.profile.index');
-        }
+        // if (auth()->user()->hasRole('seller') && auth()->user()->profile_filled == null) {
+        //     toast('Lengkapi profil anda terlebih dahulu', 'error');
+        //     return redirect()->route('admin.profile.index');
+        // }
         return $next($request);
     }
 }

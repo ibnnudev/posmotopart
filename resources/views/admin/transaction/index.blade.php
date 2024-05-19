@@ -2,7 +2,6 @@
     <x-breadcrumb :links="[
         ['name' => 'Dashboard', 'url' => route('admin.dashboard')],
         ['name' => 'Laporan Penjualan', 'url' => ''],
-        ['name' => 'Proses Oleh Merchant', 'url' => route('admin.transaction.index')],
     ]" />
 
     <x-card-container>

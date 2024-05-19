@@ -11,7 +11,7 @@ class TransactionDetail extends Model
 {
     const WAITING_PAYMENT      = 'waiting_payment'; // 2.  ketika stock disetujui masuk ke sini
     const WAITING_CONFIRMATION = 'waiting_confirmation'; // 3. ketika user sudah bayar masuk ke sini
-    // const USER_CONFIRM         = 'user_confirm';
+    const USER_CONFIRM         = 'user_confirm';
     const ADMIN_CONFIRM        = 'admin_confirm'; // 4. ketika admin sudah konfirmasi pembayaran oleh user
     // const ADMIN_REJECT         = 'admin_reject';
     // const USER_REJECT          = 'user_reject';

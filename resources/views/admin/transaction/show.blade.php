@@ -5,7 +5,7 @@
         ['name' => 'Detail', 'url' => ''],
     ]" />
 
-    <div id="alert-additional-content-4"
+    {{-- <div id="alert-additional-content-4"
         class="p-4 mb-4 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
         role="alert">
         <div class="flex items-center">
@@ -28,97 +28,256 @@
                 Tutup
             </button>
         </div>
-    </div>
+    </div> --}}
     <div class="py-2">
         <div class="mx-auto">
             <div class="bg-white border border-gray-100 shadow-sm overflow-hidden sm:rounded-2xl">
                 <div class="p-4">
-                    <div class="grid grid-cols-6 mb-2">
-                        <p class="font-medium text-gray-500">Nama Pembeli</p>
-                        <p class="font-medium text-gray-500">Tanggal Pesan</p>
-                        <p class="font-medium text-gray-500">Status</p>
-                    </div>
-                    <div class="grid grid-cols-6 items-start">
-                        <p>{{ $customer->name }}</p>
-                        <p>{{ $transaction->created_at->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                    <div class="grid grid-cols-4 mb-2 gap-6">
                         <div>
+                            <p class="font-medium text-gray-500 mb-1">Nama Pembeli</p>
+                            <p>{{ $customer->name }}</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">Tanggal Pesan</p>
+                            <p>{{ $transaction->created_at->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">Status</p>
                             @switch($transaction->status)
                                 @case('process_by_merchant')
-                                    <span
-                                        class="bg-gray-100 text-gray-800 text-xs capitalize me-2 px-2.5 py-0.5 rounded font-medium dark:bg-gray-700 dark:text-gray-300">
-                                        Diproses oleh penjual
-                                    </span>
+                                    <p class="text-yellow-500">Diproses oleh Penjual</p>
                                 @break
 
-                                @case('admin_confirmation')
-                                    <span
-                                        class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                                        Konfirmasi admin
-                                    </span>
+                                @case('user_confirm')
+                                    <p class="text-yellow-500">Konfirmasi Pembeli</p>
                                 @break
 
                                 @case('shipping')
-                                    <span
-                                        class="bg-indigo-100 text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">
-                                        Pengiriman
-                                    </span>
+                                    <p class="text-yellow-500">Dikirim</p>
+                                @break
+
+                                @case('done')
+                                    <p class="text-green-500">Selesai</p>
                                 @break
 
                                 @default
                             @endswitch
                         </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">No Telepon</p>
+                            <p>{{ $customer->phone }}</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">Alamat</p>
+                            <p>{{ $transaction->destinationOrder->address }}</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">Kota</p>
+                            <p>{{ $transaction->destinationOrder->regency }}</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">Kecamatan</p>
+                            <p>{{ $transaction->destinationOrder->district }}</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">Provinsi</p>
+                            <p>{{ $transaction->destinationOrder->province }}</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">Admin Fee</p>
+                            <p>Rp {{ number_format($transaction->admin_fee) }}</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">Tanggal Pengiriman</p>
+                            <p>{{ $transaction->shipping_date ? $transaction->shipping_date->locale('id')->isoFormat('dddd, D MMMM Y') : '-' }}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-500 mb-1">Metode Pembayaran</p>
+                            <p>
+                                {{ $transaction->paymentOption->name }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <form action="{{ route('admin.transaction.change-status', $transaction->id) }}" method="POST">
-        @csrf
         <x-card-container>
-            <div class="grid grid-cols-6 py-5 text-gray-500">
-                <p class="font-medium">Nama Produk</p>
-                <p class="font-medium">SKU</p>
-                <p class="font-medium">Jumlah Diminta</p>
-                <p class="font-medium">Jumlah Ditolak</p>
-                <p class="font-medium">Total Harga</p>
-                <p></p>
-            </div>
-            @foreach ($transactions as $item)
-                <div class="grid grid-cols-6 py-5 items-center">
-                    <p>{{ $item->product->name }}</p>
-                    <p>{{ $item->product->SKU }}</p>
-                    <p>{{ $item->requested_qty }}</p>
-                    <p>{{ $item->rejected_qty }}</p>
-                    <p>Rp {{ number_format($item->total_price) }}</p>
-                    <div>
-                        <input type="number" id="reject-qty-{{ $item->id }}" name="reject-qty-{{ $item->id }}"
-                            oninput="rejectQty({{ $item->id }}, {{ $item->requested_qty }})"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
-                            placeholder="Jumlah Ditolak" />
-                    </div>
+            <div class="grid lg:grid-cols-4 gap-6">
+                <div>
+                    <p class="font-medium text-gray-500 mb-2">Bukti Pembayaran</p>
+                    @if ($transaction->payment_proof != null)
+                        <a class="text-primary underline"
+                            href="{{ asset('storage/payment-proof/' . $transaction->payment_proof) }}"
+                            target="_blank">Lihat
+                            Bukti
+                            Pembayaran</a>
+                    @endif
                 </div>
-            @endforeach
+                <div class="">
+                    @if ($transaction->status == 'waiting_confirmation' || $transaction->status == 'user_confirm')
+                        <p class="font-medium text-gray-500 mb-2">Ubah Status Bukti Pembayaran</p>
+                        <form action="{{ route('admin.transaction.verification-payment', $transaction->id) }}"
+                            method="POST">
+                            @csrf
+                            <x-button type="submit" fit id="verify_payment_proof"
+                                class="bg-primary text-white">Verifikasi
+                                Bukti Pembayaran</x-button>
+                        </form>
+                    @endif
+
+                    @if ($transaction->status == 'admin_confirm')
+                        <p class="font-medium text-gray-500 mb-2">Status Bukti Pembayaran</p>
+                        <p class="text-green-500">Terverifikasi</p>
+                    @endif
+                </div>
+                @if (
+                    $transaction->status == 'done' ||
+                        $transaction->status == 'admin_reject' ||
+                        $transaction->status == 'shipping' ||
+                        $transaction->status == 'user_reject')
+                    <div>
+                        <p class="font-medium text-gray-500 mb-2">Status Transaksi</p>
+                        @include('admin.transaction.status', ['data' => $transaction])
+                    </div>
+                @else
+                    <x-select id="change_status" name="change_status" label="Ubah Status">
+                        <option value="">Pilih Status</option>
+                        <option value="process_by_merchant"
+                            {{ $transaction->status == 'process_by_merchant' || $transaction->status == 'waiting_confirmation' ? 'selected' : '' }}>
+                            Diproses oleh
+                            Penjual</option>
+                        <option value="user_confirm" {{ $transaction->status == 'user_confirm' ? 'selected' : '' }}>
+                            Konfirmasi Pembeli
+                        </option>
+                        <option value="shipping" {{ $transaction->status == 'shipping' ? 'selected' : '' }}>
+                            Dikirim</option>
+                        {{-- <option value="done" {{ $transaction->status == 'done' ? 'selected' : '' }}>Selesai
+                        </option> --}}
+                        <option value="admin_reject" {{ $transaction->status == 'admin_reject' ? 'selected' : '' }}>
+                            Ditolak
+                        </option>
+                    </x-select>
+                @endif
+            </div>
         </x-card-container>
-        <x-footer-form title="Konfirmasi Pesanan oleh Admin" :backButton="false" :isLeft="false" />
-    </form>
-    @push('js-internal')
-        <script>
-            function rejectQty(id, requested) {
-                const rejectQty = $('#reject-qty-' + id).val();
-                if (rejectQty > requested) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Jumlah yang ditolak melebihi jumlah yang diminta!',
-                    });
-                    $('#reject-qty-' + id).val('');
+
+        <form action="{{ route('admin.transaction.confirm-order', $transaction->id) }}" method="POST">
+            @csrf
+            <x-card-container>
+                <div class="grid grid-cols-6 py-5 text-gray-500">
+                    <p class="font-medium">Nama Produk</p>
+                    <p class="font-medium">SKU</p>
+                    <p class="font-medium">Jumlah Diminta</p>
+                    <p class="font-medium">Jumlah Ditolak</p>
+                    <p class="font-medium">Total Harga</p>
+                    <p></p>
+                </div>
+                @foreach ($transactions as $item)
+                    <div class="grid grid-cols-6 py-5 items-center">
+                        <p>{{ $item->product->name }}</p>
+                        <p>{{ $item->product->SKU }}</p>
+                        <p>{{ $item->requested_qty }}</p>
+                        <p>{{ $item->rejected_qty }}</p>
+                        <p>Rp {{ number_format($item->total_price) }}</p>
+                        <div
+                            class="{{ $transaction->status == 'done' ||
+                            $transaction->status == 'admin_reject' ||
+                            $transaction->status == 'shipping' ||
+                            $transaction->status == 'user_reject'
+                                ? 'hidden'
+                                : '' }}">
+                            <input type="number" id="reject-qty-{{ $item->id }}"
+                                name="rejected[{{ $item->id }}]" value="{{ $item->rejected_qty ?? '0' }}"
+                                min="0" oninput="rejectQty({{ $item->id }}, {{ $item->requested_qty }})"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+                                placeholder="Jumlah Ditolak" />
+                        </div>
+                    </div>
+                @endforeach
+            </x-card-container>
+            @if ($transaction->status == 'process_by_merchant')
+                <x-footer-form title="Simpan Perubahan" :backButton="false" :isLeft="false" />
+            @endif
+        </form>
+
+        @push('js-internal')
+            <script>
+                function rejectQty(id, requested) {
+                    const rejectQty = $('#reject-qty-' + id).val();
+                    if (rejectQty > requested) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Jumlah yang ditolak melebihi jumlah yang diminta!',
+                        });
+                        $('#reject-qty-' + id).val('');
+                    }
                 }
-            }
 
-            $('button[type="submit"]').on('click', function() {
+                $('#change_status').change(function(e) {
+                    e.preventDefault();
+                    const status = $(this).val();
+                    let transactionId = @json($transaction->id);
+                    let currentStatus = @json($transaction->status);
+                    if (status == '' || status == currentStatus) {
+                        return;
+                    }
+                    Swal.fire({
+                        title: 'Ubah Status Pesanan',
+                        text: 'Apakah Anda yakin ingin mengubah status pesanan menjadi ' + status + '?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Ubah Status!',
+                        cancelButtonText: 'Batal',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: "{{ route('admin.transaction.change-status', ':id') }}"
+                                    .replace(':id', transactionId),
+                                type: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    status: status,
+                                },
+                                success: function(response) {
+                                    Swal.fire({
+                                        title: 'Berhasil!',
+                                        text: 'Status pesanan berhasil diubah',
+                                        icon: 'success',
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                },
+                                error: function(xhr) {
+                                    Swal.fire({
+                                        title: 'Gagal!',
+                                        text: 'Status pesanan gagal diubah',
+                                        icon: 'error',
+                                    });
+                                },
+                            });
+                        }
+                    });
+                });
 
-            });
-        </script>
-    @endpush
+                $('#verify_payment_proof').click(function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Verifikasi Bukti Pembayaran',
+                        text: 'Apakah Anda yakin ingin memverifikasi bukti pembayaran?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Verifikasi!',
+                        cancelButtonText: 'Batal',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#verify_payment_proof').closest('form').submit();
+                        }
+                    });
+                });
+            </script>
+        @endpush
 </x-app-layout>

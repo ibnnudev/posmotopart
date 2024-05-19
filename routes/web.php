@@ -61,6 +61,9 @@ Route::group(['prefix' => 'checkout'], function () {
 // Transaction
 Route::group(['prefix' => 'transaction'], function () {
     Route::get('/', [TransactionController::class, 'index'])->name('transaction.index');
+    Route::post('upload-payment-proof/{id}', [TransactionController::class, 'uploadPaymentProof'])->name('transaction.upload-payment-proof');
+    Route::post('cancel-order/{id}', [TransactionController::class, 'cancelOrder'])->name('transaction.cancel-order');
+    Route::post('confirm-receive/{id}', [TransactionController::class, 'confirmReceive'])->name('transaction.confirm-receive');
 })->middleware('auth', 'role:buyer');
 
 Route::get('login', function () {
@@ -116,7 +119,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'transaction', 'as' => 'admin.transaction.'], function () {
         Route::get('/', [AdminTransactionController::class, 'index'])->name('index')->middleware('role:seller|admin');
         Route::get('show/{id}', [AdminTransactionController::class, 'show'])->name('show')->middleware('role:seller|admin');
+        Route::post('confirm-order/{id}', [AdminTransactionController::class, 'confirmOrder'])->name('confirm-order')->middleware('role:seller');
         Route::post('change-status/{id}', [AdminTransactionController::class, 'changeStatus'])->name('change-status')->middleware('role:seller');
+        Route::post('verification-payment/{id}', [AdminTransactionController::class, 'verificationPayment'])->name('verification-payment')->middleware('role:seller');
     });
     // Paylater
     Route::resource('wallet', AdminWalletController::class, ['as' => 'admin'])->middleware('role:admin|buyer');

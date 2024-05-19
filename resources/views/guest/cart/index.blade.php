@@ -194,6 +194,10 @@
                                 showConfirmButton: false,
                                 timer: 500
                             });
+
+                            if (response.currentQty) {
+                                $(`#counter-${id} .item-quantity`).text(response.currentQty);
+                            }
                         }
                     }
                 });

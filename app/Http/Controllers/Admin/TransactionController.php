@@ -19,7 +19,7 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-        $transactions = Auth::user()->hasRole('admin') ? $this->transaction->getAll() : $this->transaction->getAll()->where('status', TransactionDetail::PROCESS_BY_MERCHANT)->where('store_id', auth()->user()->store->id);
+        $transactions = Auth::user()->hasRole('admin') ? $this->transaction->getAll() : $this->transaction->getAll()->where('store_id', auth()->user()->store->id);
         if ($request->wantsJson()) {
             return datatables()
                 ->of($transactions)
@@ -53,20 +53,53 @@ class TransactionController extends Controller
 
     public function show($transactionCode)
     {
-        $transactions = $this->transaction->getByTransactionCode($transactionCode); // get list of transaction by transaction code
-        dd($transactions->first());
-        $customer = $transactions->first()->customer;
+        $transactions = $this->transaction->getByTransactionCode($transactionCode);                            // get list of transaction by transaction code
+        $transaction  = $this->transaction->getTransactionDetailByTransactionCode($transactionCode)->first();
+        $customer     = $transactions->first()->customer;
         return view('admin.transaction.show', [
             'transactions' => $transactions,
-            'customer' => $customer
+            'transaction'  => $transaction,
+            'customer'     => $customer
         ]);
+    }
+
+    public function confirmOrder($id, Request $request)
+    {
+        try {
+            $this->transaction->confirmOrder($id, $request->all());
+            toast('Transaksi dikonfirmasi, menunggu buyer melakukan pembayaran', 'success');
+            return redirect()->route('admin.transaction.index');
+        } catch (\Throwable $th) {
+            toast($th->getMessage(), 'error');
+            return redirect()->back();
+        }
     }
 
     public function changeStatus($id, Request $request)
     {
         try {
+            $this->transaction->changeStatus($id, $request->all());
+            return response()->json([
+                'status' => true,
+                'message' => 'Status transaksi berhasil diubah'
+            ]);
         } catch (\Throwable $th) {
-            //throw $th;
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function verificationPayment($id)
+    {
+        try {
+            $this->transaction->verificationPayment($id);
+            toast('Bukti pembayaran berhasil diveirifikasi', 'success');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            toast($th->getMessage(), 'error');
+            return redirect()->back();
         }
     }
 }

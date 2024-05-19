@@ -9,7 +9,7 @@
 ])
 
 <div>
-    <label class="block text-sm mb-2 font-medium">
+    <label class="block text-sm mb-2">
         {{ $label }} {!! $required ? '<span class="text-red-500">*</span>' : '' !!}
     </label>
     <div>

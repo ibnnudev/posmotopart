@@ -56,8 +56,15 @@ class CartController extends Controller
         try {
             $cart = $this->cart->getByUserId(auth()->user()->id)->where('id', $request->id)->first();
             $cart->qty += 1;
+
+            // check if stock of product is enough
+            if ($cart->qty > $cart->product->stock) {
+                return response()->json(['status' => false, 'message' => 'Stock produk tidak mencukupi', 'currentQty' => $cart->qty - 1]);
+            }
+
             $cart->total_price = $cart->price * $cart->qty;
             $cart->save();
+
             $currentTotalPrice = $this->cart->getByUserId(auth()->user()->id)->sum('total_price');
             return response()->json(['status' => true, 'message' => 'Keranjang berhasil diupdate', 'currentTotalPrice' => $currentTotalPrice]);
         } catch (\Throwable $th) {

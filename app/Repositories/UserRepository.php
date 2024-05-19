@@ -63,17 +63,12 @@ class UserRepository implements UserInterface
 
 
             $user->update($data);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-        }
-
-        try {
             $user->syncRoles($data['role']);
+
+            DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
         }
-
-        DB::commit();
     }
 
     public function destroy($id)

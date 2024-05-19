@@ -22,11 +22,8 @@
                     request()->routeIs('cart.*') ||
                     request()->routeIs('checkout.*') }}" />
             @auth
-                <x-sidebar-dropdown title="Riwayat Transaksi" icon="fas fa-poll-h" toggle="transaction"
-                    active="{{ request()->routeIs('transaction.*') }}">
-                    <x-sidebar-submenu name="Semua" route="{{ route('transaction.index') }}"
-                        active="{{ request()->routeIs('transaction.index') }}" icon="fas fa-list" />
-                </x-sidebar-dropdown>
+                <x-sidebar-item name="Riwayat Transaksi" icon="fas fa-history" route="{{ route('transaction.index') }}"
+                    active="{{ request()->routeIs('transaction.*') }}" />
                 <x-sidebar-item name="Profil" icon="fas fa-user" route="{{ route('admin.profile.index') }}"
                     active="{{ request()->routeIs('admin.profile.*') }}" />
                 <x-sidebar-item name="Pengajuan Saldo" icon="fas fa-wallet" route="{{ route('admin.wallet.index') }}"
