@@ -29,6 +29,8 @@
                 </x-sidebar-dropdown>
                 <x-sidebar-item name="Profil" icon="fas fa-user" route="{{ route('admin.profile.index') }}"
                     active="{{ request()->routeIs('admin.profile.*') }}" />
+                <x-sidebar-item name="Pengajuan Saldo" icon="fas fa-wallet" route="{{ route('admin.wallet.index') }}"
+                    active="{{ request()->routeIs('admin.wallet.*') }}" />
                 <li>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf

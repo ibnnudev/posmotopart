@@ -64,6 +64,8 @@
                 <x-sidebar-item name="Pengajuan Produk" icon="fas fa-box-open"
                     route="{{ route('admin.request-product.index') }}"
                     active="{{ request()->routeIs('admin.request-product.*') }}" />
+                <x-sidebar-item name="Pengajuan Saldo" icon="fas fa-user" route="{{ route('admin.wallet.index') }}"
+                    active="{{ request()->routeIs('admin.wallet.*') }}" />
             @endrole
             @role('seller')
                 <x-sidebar-dropdown title="Master" icon="fas fa-archive" toggle="master-store"

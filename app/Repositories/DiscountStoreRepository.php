@@ -55,4 +55,9 @@ class DiscountStoreRepository implements DiscountStoreInterface
     {
         return $this->discountStore->where('discount_id', $discount_id)->where('store_id', $store_id)->where('deleted_at', null)->first();
     }
+
+    public function getByDiscountId($discount_id)
+    {
+        return $this->discountStore->with('store.user')->where('discount_id', $discount_id)->where('deleted_at', null)->get();
+    }
 }

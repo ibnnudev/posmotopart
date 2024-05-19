@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\admin\WalletController as AdminWalletController;
 use App\Http\Controllers\DiscountStoreController;
 use App\Http\Controllers\Guest\CartController;
 use App\Http\Controllers\Guest\CheckoutController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\ProductController as GuestProductController;
 use App\Http\Controllers\Guest\StoreController as GuestStoreController;
 use App\Http\Controllers\Guest\TransactionController;
+use App\Http\Controllers\Guest\WalletController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProductStockHistoryController;
@@ -116,6 +118,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('show/{id}', [AdminTransactionController::class, 'show'])->name('show');
         Route::post('change-status/{id}', [AdminTransactionController::class, 'changeStatus'])->name('change-status');
     })->middleware('role:admin');
+    // Paylater
+    Route::resource('wallet', AdminWalletController::class, ['as' => 'admin'])->middleware('role:admin|buyer');
 });
 
 require __DIR__ . '/auth.php';
