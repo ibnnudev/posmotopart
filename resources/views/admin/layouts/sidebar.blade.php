@@ -20,7 +20,7 @@
             @role('buyer')
                 <x-sidebar-item name="Belanja" icon="fas fa-shopping-cart" route="{{ route('product-category.index') }}"
                     active="{{ request()->routeIs('product-category.index') }}" />
-                <x-sidebar-item name="Pengajuan Saldo" icon="fas fa-user" route="{{ route('admin.wallet.index') }}"
+                <x-sidebar-item name="Pengajuan Saldo" icon="fas fa-wallet" route="{{ route('admin.wallet.index') }}"
                     active="{{ request()->routeIs('admin.wallet.*') }}" />
             @endrole
             @role('seller')

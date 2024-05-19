@@ -3,7 +3,7 @@
         <button type="button"
             class="text-gray-400 bg-gray-200 cursor-not-allowed font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-gray-700 dark:text-gray-500 dark:border-gray-500"
             disabled>
-            <i class="fas fa-edit w-3 h-3"></i>
+            <i class="fas fa-check w-3 h-3"></i>
         </button>
     @else
         <a href="{{ route('admin.wallet.edit', $id) }}"

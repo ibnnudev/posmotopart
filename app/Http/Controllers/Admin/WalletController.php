@@ -46,13 +46,20 @@ class WalletController extends Controller
                     return $data->created_at;
                 })
                 ->addColumn('balance', function ($data) {
-                    return $data->balance;
+                    return 'Rp ' . number_format($data->balance, 2, ',', '.');
                 })
                 ->addColumn('action', function ($data) {
-                    return view('admin.wallet.column.action', [
-                        'id' => $data->id,
-                        'status' => $data->status
-                    ]);
+                    if (Auth::user()->hasRole('admin')) {
+                        return view('admin.wallet.column.action', [
+                            'id' => $data->id,
+                            'status' => $data->status
+                        ]);
+                    } else {
+                        return view('guest.wallet.column.action', [
+                            'id' => $data->id,
+                            'status' => $data->status
+                        ]);
+                    }
                 })
                 ->addIndexColumn()
                 ->make(true);
@@ -62,7 +69,7 @@ class WalletController extends Controller
         } else {
             return view('guest.wallet.index', [
                 'wallets' => $wallets,
-                'totalBalance' => $wallets->where('status', 1)->sum('balance'),
+                'totalBalance' => 'Rp ' . number_format($wallets->where('status', 1)->sum('balance'), 2, ',', '.'),
             ]);
         }
     }
@@ -70,16 +77,27 @@ class WalletController extends Controller
     public function edit($id)
     {
         $wallet = $this->wallet->getById($id);
-        return view('admin.wallet.edit', compact('wallet'));
+        if (Auth::user()->hasRole('admin')) {
+            return view('admin.wallet.edit', compact('wallet'));
+        } else {
+            return view('guest.wallet.edit', compact('wallet'));
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'balance' => 'required|numeric',
-            'status' => 'required|numeric',
-        ]);
-        if ($request->status == 0) {
+        $schemaValidation = 'required|numeric';
+        if (Auth::user()->hasRole('admin')) {
+            $request->validate([
+                'balance' => $schemaValidation,
+                'status' => $schemaValidation,
+            ]);
+        } else {
+            $request->validate([
+                'balance' => $schemaValidation,
+            ]);
+        }
+        if ($request->status == 0 && Auth::user()->hasRole('admin')) {
             toast('You can not update status to waiting again', 'error');
             return redirect()->route('admin.wallet.index');
         }
@@ -92,6 +110,7 @@ class WalletController extends Controller
             return redirect()->route('admin.wallet.index');
         }
     }
+
 
     public function create()
     {
@@ -111,6 +130,16 @@ class WalletController extends Controller
             throw $th;
             toast($th->getMessage(), 'error');
             return redirect()->route('admin.wallet.index');
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $this->wallet->destroy($id);
+            return response()->json(true);
+        } catch (\Throwable $th) {
+            return response()->json(false);
         }
     }
 }

@@ -5,10 +5,9 @@
     ]" />
     <x-card-container>
         <h1 class="text-lg font-medium">Total Saldo</h1>
-        <p class="text-3xl font-bold">Rp {{ $totalBalance }}</p>
+        <p class="text-3xl font-bold">{{ $totalBalance }}</p>
     </x-card-container>
     <x-card-container>
-
         <div class="text-end my-4">
             <a href="{{ route('admin.wallet.create') }}" class="px-4 py-2 bg-primary text-white rounded-md">Top Up</a>
         </div>
