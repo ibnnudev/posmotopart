@@ -116,23 +116,25 @@
                             Pembayaran</a>
                     @endif
                 </div>
-                <div class="">
-                    @if ($transaction->status == 'waiting_confirmation' || $transaction->status == 'user_confirm')
-                        <p class="font-medium text-gray-500 mb-2">Ubah Status Bukti Pembayaran</p>
-                        <form action="{{ route('admin.transaction.verification-payment', $transaction->id) }}"
-                            method="POST">
-                            @csrf
-                            <x-button type="submit" fit id="verify_payment_proof"
-                                class="bg-primary text-white">Verifikasi
-                                Bukti Pembayaran</x-button>
-                        </form>
-                    @endif
+                @role('seller')
+                    <div class="">
+                        @if ($transaction->status == 'waiting_confirmation' || $transaction->status == 'user_confirm')
+                            <p class="font-medium text-gray-500 mb-2">Ubah Status Bukti Pembayaran</p>
+                            <form action="{{ route('admin.transaction.verification-payment', $transaction->id) }}"
+                                method="POST">
+                                @csrf
+                                <x-button type="submit" fit id="verify_payment_proof"
+                                    class="bg-primary text-white">Verifikasi
+                                    Bukti Pembayaran</x-button>
+                            </form>
+                        @endif
 
-                    @if ($transaction->status == 'admin_confirm')
-                        <p class="font-medium text-gray-500 mb-2">Status Bukti Pembayaran</p>
-                        <p class="text-green-500">Terverifikasi</p>
-                    @endif
-                </div>
+                        @if ($transaction->status == 'admin_confirm')
+                            <p class="font-medium text-gray-500 mb-2">Status Bukti Pembayaran</p>
+                            <p class="text-green-500">Terverifikasi</p>
+                        @endif
+                    </div>
+                @endrole
                 @if (
                     $transaction->status == 'done' ||
                         $transaction->status == 'admin_reject' ||
@@ -143,23 +145,25 @@
                         @include('admin.transaction.status', ['data' => $transaction])
                     </div>
                 @else
-                    <x-select id="change_status" name="change_status" label="Ubah Status">
-                        <option value="">Pilih Status</option>
-                        <option value="process_by_merchant"
-                            {{ $transaction->status == 'process_by_merchant' || $transaction->status == 'waiting_confirmation' ? 'selected' : '' }}>
-                            Diproses oleh
-                            Penjual</option>
-                        <option value="user_confirm" {{ $transaction->status == 'user_confirm' ? 'selected' : '' }}>
-                            Konfirmasi Pembeli
-                        </option>
-                        <option value="shipping" {{ $transaction->status == 'shipping' ? 'selected' : '' }}>
-                            Dikirim</option>
-                        {{-- <option value="done" {{ $transaction->status == 'done' ? 'selected' : '' }}>Selesai
+                    @role('seller')
+                        <x-select id="change_status" name="change_status" label="Ubah Status">
+                            <option value="">Pilih Status</option>
+                            <option value="process_by_merchant"
+                                {{ $transaction->status == 'process_by_merchant' || $transaction->status == 'waiting_confirmation' ? 'selected' : '' }}>
+                                Diproses oleh
+                                Penjual</option>
+                            <option value="user_confirm" {{ $transaction->status == 'user_confirm' ? 'selected' : '' }}>
+                                Konfirmasi Pembeli
+                            </option>
+                            <option value="shipping" {{ $transaction->status == 'shipping' ? 'selected' : '' }}>
+                                Dikirim</option>
+                            {{-- <option value="done" {{ $transaction->status == 'done' ? 'selected' : '' }}>Selesai
                         </option> --}}
-                        <option value="admin_reject" {{ $transaction->status == 'admin_reject' ? 'selected' : '' }}>
-                            Ditolak
-                        </option>
-                    </x-select>
+                            <option value="admin_reject" {{ $transaction->status == 'admin_reject' ? 'selected' : '' }}>
+                                Ditolak
+                            </option>
+                        </x-select>
+                    @endrole
                 @endif
             </div>
         </x-card-container>
@@ -198,10 +202,12 @@
                     </div>
                 @endforeach
             </x-card-container>
-            @if ($transaction->status == 'process_by_merchant')
-                <x-footer-form title="Simpan Perubahan" :backButton="false" :isLeft="false" />
-            @endif
+            @role('seller')
+                @if ($transaction->status == 'process_by_merchant')
+                    <x-footer-form title="Simpan Perubahan" :backButton="false" :isLeft="false" />
+                @endrole
         </form>
+        @endif
 
         @push('js-internal')
             <script>

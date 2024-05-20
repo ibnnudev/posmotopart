@@ -1,24 +1,24 @@
 <x-app-layout>
-    <div class="grid gap-4 grid-cols-5 justify-around mb-4">
+    <div class="grid gap-4 grid-cols-5 justify-around mb-4 text-sm">
         {{-- Jumlah Order Diproses  --}}
         <x-card-container>
             <div class="flex justify-between pb-2">
                 <div>
-                    <h5 class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2">
-                        {{ $jumlahTransactionDetail }} <span class="text-md">pcs</span>
+                    <h5 class="leading-none text-lg font-bold text-gray-900 dark:text-white pb-2">
+                        {{ $jumlahTransactionDetail }} <span class="text-sm">pcs</span>
                     </h5>
-                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Jumlah Order Diproses</p>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Jumlah Order Diproses</p>
                 </div>
                 <div
-                    class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+                    class="flex items-center px-2.5 py-0.5 text-sm font-semibold text-green-500 dark:text-green-500 text-center">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
             </div>
             <div class="grid grid-cols-1 items-center border-gray-200 dark:border-gray-700 justify-between">
                 <div class="flex justify-between items-center pt-5">
                     <a href="{{ route('admin.transaction.index') }}"
-                        class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
-                        transaction detail
+                        class="capitalize text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
+                        Detail Transaksi
                         <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -33,21 +33,21 @@
         <x-card-container>
             <div class="flex justify-between pb-2">
                 <div>
-                    <h5 class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2">
-                        <span class="text-md">Rp. </span> {{ $totalTransactionDetail }}
+                    <h5 class="leading-none text-lg font-bold text-gray-900 dark:text-white pb-2">
+                        <span class="text-sm">Rp. </span> {{ $totalTransactionDetail }}
                     </h5>
-                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Jumlah Order Diproses</p>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Jumlah Order Diproses</p>
                 </div>
                 <div
-                    class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+                    class="flex items-center px-2.5 py-0.5 text-sm font-semibold text-green-500 dark:text-green-500 text-center">
                     <i class="fas fa-dollar-sign"></i>
                 </div>
             </div>
             <div class="grid grid-cols-1 items-center border-gray-200 dark:border-gray-700 justify-between">
                 <div class="flex justify-between items-center pt-5">
                     <a href="{{ route('admin.transaction.index') }}"
-                        class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
-                        transaction detail
+                        class="capitalize text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
+                        Detail Transaksi
                         <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -62,21 +62,21 @@
         <x-card-container>
             <div class="flex justify-between pb-2">
                 <div>
-                    <h5 class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2">
-                        <span class="text-md">Rp. </span> {{ $totalRejectTransaction }}
+                    <h5 class="leading-none text-lg font-bold text-gray-900 dark:text-white pb-2">
+                        {{ $totalRejectTransaction }}
                     </h5>
-                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Jumlah Barang Ditolak</p>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Jumlah Barang Ditolak</p>
                 </div>
                 <div
-                    class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+                    class="flex items-center px-2.5 py-0.5 text-sm font-semibold text-green-500 dark:text-green-500 text-center">
                     <i class="fas fa-object-group"></i>
                 </div>
             </div>
             <div class="grid grid-cols-1 items-center border-gray-200 dark:border-gray-700 justify-between">
                 <div class="flex justify-between items-center pt-5">
                     <a href="{{ route('admin.transaction.index') }}"
-                        class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
-                        transaction detail
+                        class="capitalize text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
+                        Detail Transaksi
                         <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -91,20 +91,20 @@
         <x-card-container>
             <div class="flex justify-between pb-2">
                 <div>
-                    <h5 class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2">
+                    <h5 class="leading-none text-lg font-bold text-gray-900 dark:text-white pb-2">
                         {{ $jumlahSkuNull }}
                     </h5>
-                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Jumlah SKU Kosong</p>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Jumlah SKU Kosong</p>
                 </div>
                 <div
-                    class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+                    class="flex items-center px-2.5 py-0.5 text-sm font-semibold text-green-500 dark:text-green-500 text-center">
                     <i class="fas fa-panorama"></i>
                 </div>
             </div>
             <div class="grid grid-cols-1 items-center border-gray-200 dark:border-gray-700 justify-between">
                 <div class="flex justify-between items-center pt-5">
                     <a href="{{ route('admin.product.index') }}"
-                        class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
+                        class="capitalize text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
                         Product Detail
                         <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
@@ -120,20 +120,20 @@
         <x-card-container>
             <div class="flex justify-between pb-2">
                 <div>
-                    <h5 class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2">
+                    <h5 class="leading-none text-lg font-bold text-gray-900 dark:text-white pb-2">
                         {{ $jumlahBarangDitolak }}
                     </h5>
-                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Jumlah Barang Ditolak</p>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Order Ditolak</p>
                 </div>
                 <div
-                    class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+                    class="flex items-center px-2.5 py-0.5 text-sm font-semibold text-green-500 dark:text-green-500 text-center">
                     <i class="fas fa-redo"></i>
                 </div>
             </div>
             <div class="grid grid-cols-1 items-center border-gray-200 dark:border-gray-700 justify-between">
                 <div class="flex justify-between items-center pt-5">
                     <a href="{{ route('admin.request-product.index') }}"
-                        class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
+                        class="capitalize text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
                         Pengajuan Produk
                         <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
@@ -159,7 +159,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h5 class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-1">3.4k</h5>
+                    <h5 class="leading-none text-lg font-bold text-gray-900 dark:text-white pb-1">3.4k</h5>
                     <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Leads generated per week</p>
                 </div>
             </div>

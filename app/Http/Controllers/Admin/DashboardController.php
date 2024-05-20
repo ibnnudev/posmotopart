@@ -36,11 +36,12 @@ class DashboardController extends Controller
             $data = $this->getDataPerMonth();
 
             return view('dashboard', [
-                'totalTransactionDetail' =>   number_format($this->transactionDetail->where('status', $this->transactionDetail::PROCESS_BY_MERCHANT)->sum('total_price'), 2, ',', '.'),
+                'totalTransactionDetail' =>   number_format($this->transactionDetail->where('status', $this->transactionDetail::DONE)->sum('total_price'), 2, ',', '.'),
                 'jumlahTransactionDetail' =>  $this->transactionDetail->where('status', $this->transactionDetail::PROCESS_BY_MERCHANT)->count(),
-                'totalRejectTransaction' =>  $this->transaction->getAll()->sum('rejected_qty'),
+                'totalRejectTransaction' =>  $this->transaction->getAll()->where('status', 'user_reject')->count('id'),
                 'jumlahSkuNull' => $this->product->getAll()->where('stock', null)->count(),
-                'jumlahBarangDitolak' => $this->requestProduct->getAll()->where('status', RequestProduct::STATUS_REJECTED)->count(),
+                'jumlahBarangDitolak' => $this->transaction->getAll()->where('status', TransactionDetail::ADMIN_REJECT)
+                    ->where('status', TransactionDetail::USER_REJECT)->count(),
                 'data' => $data,
             ]);
         }

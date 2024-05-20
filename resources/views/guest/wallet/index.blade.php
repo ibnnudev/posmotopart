@@ -1,11 +1,11 @@
-<x-app-layout>
+<x-guest-layout>
     <x-breadcrumb :links="[
         ['name' => 'Dashboard', 'url' => route('admin.dashboard')],
         ['name' => 'Top Up', 'url' => route('admin.wallet.index')],
     ]" />
     <x-card-container>
-        <h1 class="text-lg font-medium">Total Saldo</h1>
-        <p class="text-3xl font-bold">{{ $totalBalance }}</p>
+        <h1 class="text-base">Total Saldo</h1>
+        <p class="text-lg font-bold">{{ $totalBalance }}</p>
     </x-card-container>
     <x-card-container>
         <div class="text-end my-4">
@@ -101,4 +101,4 @@
             });
         </script>
     @endpush
-</x-app-layout>
+</x-guest-layout>
