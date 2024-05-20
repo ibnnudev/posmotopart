@@ -47,7 +47,8 @@
                 <div class="border-b border-gray-200 my-5"></div>
 
                 <div class="grid grid-cols-6 items-center text-sm font-medium text-gray-400">
-                    <div class="col-span-2">Bukti Pembayaran</div>
+                    <div class="col-span-2">Bukti
+                        pembayaran</div>
                     <div></div>
                     <div></div>
                     <p>Status</p>
@@ -98,12 +99,19 @@
                         @else
                             <form action="{{ route('transaction.cancel-order', $data->id) }}" method="POST">
                                 @csrf
-                                <x-button type="submit" fit class="bg-red-500 text-white">Batalkan Transaksi</x-button>
+                                <x-button type="submit" fit class="bg-red-500 text-white">Batalkan
+                                    Transaksi</x-button>
                             </form>
                         @endif
                     </div>
                     <p>Rp {{ number_format($data->total_price) }}</p>
                 </div>
+                {{-- button cetak invoice --}}
+
+                <a href="{{ route('admin.transaction.invoice', ['transactionCode' => $data->transaction_code, 'type' => 'stream']) }}"
+                    target="_blank" class="block w-full py-3 font-semibold text-center text-white bg-primary">Cetak
+                    Invoice</a>
+
             </div>
         </div>
     @empty

@@ -122,6 +122,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('confirm-order/{id}', [AdminTransactionController::class, 'confirmOrder'])->name('confirm-order')->middleware('role:seller');
         Route::post('change-status/{id}', [AdminTransactionController::class, 'changeStatus'])->name('change-status')->middleware('role:seller');
         Route::post('verification-payment/{id}', [AdminTransactionController::class, 'verificationPayment'])->name('verification-payment')->middleware('role:seller');
+        Route::get('invoice/{transactionCode}/{type}', [AdminTransactionController::class, 'invoice'])->name('invoice')->middleware('role:seller|buyer');
     });
     // Paylater
     Route::resource('wallet', AdminWalletController::class, ['as' => 'admin'])->middleware('role:admin|buyer');
