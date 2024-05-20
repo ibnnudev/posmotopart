@@ -111,7 +111,7 @@
                             <td>
                                 Code Transaksi: {{ $transactions[0]->transaction_code }}<br>
                                 Tanggal Order: {{ $transactions[0]->created_at }}<br>
-                                Metode Pembayaran:{{ $transactions[0]->paymentOption->name ?? '-' }}<br>
+                                Metode Pembayaran:{{ $transactionsDetail->paymentOption->name ?? '-' }}<br>
                                 Diterbitkan Atas Nama: {{ $transactions[0]->store->user->name ?? '-' }}<br>
                                 Toko : {{ $transactions[0]->store->name }}<br>
                                 Bank : {{ $transactions[0]->store->user->bank_name }}
@@ -171,18 +171,18 @@
             @endforeach
 
             <tr class="total">
-                <td></td>
+                <td style="font-weight: bold">Total</td>
                 <td></td>
                 <td></td>
                 <td></td>
 
-                <td>
+                <td style="font-weight: bold">
                     @php
                         $totalPrice = 0;
                         foreach ($transactions as $transaction) {
                             $totalPrice += $transaction->total_price;
                         }
-                        echo 'Rp ' . number_format($totalPrice, 2, ',', '.');
+                        echo number_format($totalPrice, 2, ',', '.');
                     @endphp
                 </td>
             </tr>

@@ -106,13 +106,14 @@ class TransactionController extends Controller
     public function invoice($transactionCode, $type)
     {
         $transactions = $this->transaction->getByTransactionCode($transactionCode);
-        $pdf = app('dompdf.wrapper')->loadView('invoice', compact('transactions'));
+        $transactionsDetail = $this->transaction->getTransactionDetailByTransactionCode($transactionCode)->first();
+        $pdf = app('dompdf.wrapper')->loadView('invoice', compact('transactions', 'transactionsDetail'));
         if ($type == 'stream') {
             return $pdf->stream('invoice.pdf');
         }
         if ($type == 'download') {
             return $pdf->download('invoice.pdf');
         }
-        // return view('invoice', compact('transactions'));
+        // return view('invoice', compact('transactions', 'transactionsDetail'));
     }
 }
