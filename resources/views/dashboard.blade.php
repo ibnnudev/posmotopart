@@ -18,7 +18,12 @@
                 <div class="flex justify-between items-center pt-5">
                     <a href="{{ route('admin.transaction.index') }}"
                         class="capitalize text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
-                        Detail Transaksi
+                        @role('admin')
+                            Detail Transaksi
+                        @endrole
+                        @role('seller')
+                            Laporan Penjualan
+                        @endrole
                         <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -36,7 +41,7 @@
                     <h5 class="leading-none text-lg font-bold text-gray-900 dark:text-white pb-2">
                         <span class="text-sm">Rp. </span> {{ $totalTransactionDetail }}
                     </h5>
-                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Jumlah Order Diproses</p>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Pendapatan</p>
                 </div>
                 <div
                     class="flex items-center px-2.5 py-0.5 text-sm font-semibold text-green-500 dark:text-green-500 text-center">
@@ -47,7 +52,12 @@
                 <div class="flex justify-between items-center pt-5">
                     <a href="{{ route('admin.transaction.index') }}"
                         class="capitalize text-sm font-semibold inline-flex items-center rounded-lg text-green-600 hover:text-green-700 dark:hover:text-green-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 py-2">
-                        Detail Transaksi
+                        @role('admin')
+                            Detail Transaksi
+                        @endrole
+                        @role('seller')
+                            Laporan Penjualan
+                        @endrole
                         <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -123,7 +133,7 @@
                     <h5 class="leading-none text-lg font-bold text-gray-900 dark:text-white pb-2">
                         {{ $jumlahBarangDitolak }}
                     </h5>
-                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Order Ditolak</p>
+                    <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Total Pengajuan Produk Ditolak</p>
                 </div>
                 <div
                     class="flex items-center px-2.5 py-0.5 text-sm font-semibold text-green-500 dark:text-green-500 text-center">

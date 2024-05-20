@@ -8,7 +8,7 @@
                         {{ auth()->user()->name }}
                     @endrole
                     @role('seller')
-                        {{ auth()->user()->store->name }}
+                        {{ auth()->user()->store->name ?? '-'}}
                     @endrole
                 </span>
                 <img src="https://ui-avatars.com/api/?background=1D9A6C&color=fff&name={{ auth()->user()->name }}"
