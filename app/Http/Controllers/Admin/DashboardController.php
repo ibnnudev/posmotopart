@@ -34,14 +34,13 @@ class DashboardController extends Controller
             return redirect()->route('product-category.index');
         } else {
             $data = $this->getDataPerMonth();
-
+            $isAdmin = auth()->user()->hasRole('admin');
             return view('dashboard', [
-                'totalTransactionDetail' =>   number_format($this->transactionDetail->where('status', $this->transactionDetail::DONE)->sum('total_price'), 2, ',', '.'),
-                'jumlahTransactionDetail' =>  $this->transactionDetail->where('status', $this->transactionDetail::PROCESS_BY_MERCHANT)->count(),
-                'totalRejectTransaction' =>  $this->transaction->getAll()->where('status', 'user_reject')->count('id'),
-                'jumlahSkuNull' => $this->product->getAll()->where('stock', null)->count(),
-                'jumlahBarangDitolak' => $this->transaction->getAll()->where('status', TransactionDetail::ADMIN_REJECT)
-                    ->where('status', TransactionDetail::USER_REJECT)->count(),
+                'totalTransactionDetail' => $isAdmin ? number_format($this->transactionDetail->where('status', $this->transactionDetail::DONE)->sum('admin_fee'), 2, ',', '.') :  number_format($this->transactionDetail->where('status', $this->transactionDetail::DONE)->where('store_id', auth()->user()->store->id)->sum('total_price'), 2, ',', '.'),
+                'jumlahTransactionDetail' => $isAdmin ? ($this->transactionDetail->where('status', $this->transactionDetail::PROCESS_BY_MERCHANT)->count()) : $this->transactionDetail->where('status', $this->transactionDetail::PROCESS_BY_MERCHANT)->where('store_id', auth()->user()->store->id)->count(),
+                'totalRejectTransaction' => $isAdmin ? $this->transaction->getAll()->where('status', 'user_reject')->count('id') : $this->transaction->getAll()->where('status', 'user_reject')->where('store_id', auth()->user()->store->id)->count('id'),
+                'jumlahSkuNull' => $isAdmin ? $this->product->getAll()->where('stock', null)->count() : $this->product->getAll()->where('stock', null)->where('store_id', auth()->user()->store->id)->count(),
+                'jumlahBarangDitolak' => $isAdmin ? $this->requestProduct->getAll()->where('status', RequestProduct::STATUS_REJECTED)->count() : $this->requestProduct->getAll()->where('status', RequestProduct::STATUS_REJECTED)->where('store_id', auth()->user()->store->id)->count(),
                 'data' => $data,
             ]);
         }
