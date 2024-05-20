@@ -188,19 +188,21 @@
                         <p>{{ $item->requested_qty }}</p>
                         <p>{{ $item->rejected_qty }}</p>
                         <p>Rp {{ number_format($item->total_price) }}</p>
-                        <div
-                            class="{{ $transaction->status == 'done' ||
-                            $transaction->status == 'admin_reject' ||
-                            $transaction->status == 'shipping' ||
-                            $transaction->status == 'user_reject'
-                                ? 'hidden'
-                                : '' }}">
-                            <input type="number" id="reject-qty-{{ $item->id }}"
-                                name="rejected[{{ $item->id }}]" value="{{ $item->rejected_qty ?? '0' }}"
-                                min="0" oninput="rejectQty({{ $item->id }}, {{ $item->requested_qty }})"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
-                                placeholder="Jumlah Ditolak" />
-                        </div>
+                        @role('seller')
+                            <div
+                                class="{{ $transaction->status == 'done' ||
+                                $transaction->status == 'admin_reject' ||
+                                $transaction->status == 'shipping' ||
+                                $transaction->status == 'user_reject'
+                                    ? 'hidden'
+                                    : '' }}">
+                                <input type="number" id="reject-qty-{{ $item->id }}"
+                                    name="rejected[{{ $item->id }}]" value="{{ $item->rejected_qty ?? '0' }}"
+                                    min="0" oninput="rejectQty({{ $item->id }}, {{ $item->requested_qty }})"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+                                    placeholder="Jumlah Ditolak" />
+                            </div>
+                        @endrole
                     </div>
                 @endforeach
             </x-card-container>
