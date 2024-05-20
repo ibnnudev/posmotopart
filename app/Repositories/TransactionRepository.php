@@ -8,8 +8,10 @@ use App\Interfaces\ProductStockHistoryInterface;
 use App\Interfaces\StoreInterface;
 use App\Interfaces\TransactionInterface;
 use App\Models\PaymentOption;
+use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
+use App\Models\Wallet;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -191,7 +193,44 @@ class TransactionRepository implements TransactionInterface
                     'final_stock' => $product->stock - $transaction->approved_qty,
                     'created_by'  => auth()->user()->id,
                 ]);
+
+                Product::find($product->id)->update(['stock' => $product->stock - $transaction->approved_qty]);
             }
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+        }
+    }
+
+    public function confirmPaylater($id)
+    {
+        DB::beginTransaction();
+        try {
+            $wallet = Wallet::where('user_id', auth()->user()->id)->first();
+            if ($wallet->balance < $this->transactionDetail->find($id)->total_price) {
+                throw new \Exception('Saldo tidak mencukupi');
+                DB::rollBack();
+            }
+            $this->transactionDetail->find($id)->update(['status' => $this->transactionDetail::SHIPPING]);
+            $transactions = $this->transaction->where('transaction_code', $this->transactionDetail->find($id)->transaction_code)->get();
+
+            // create product stock history
+            foreach ($transactions as $transaction) {
+                $product = $this->product->getById($transaction->product_id);
+                $this->productStockHistory->create([
+                    'product_id'  => $product->id,
+                    'store_id'    => $transaction->store_id,
+                    'in_stock'    => 0,
+                    'out_stock'   => $transaction->approved_qty == 0 ? $transaction->requested_qty : $transaction->approved_qty,
+                    'final_stock' => $product->stock - $transaction->approved_qty,
+                    'created_by'  => auth()->user()->id,
+                ]);
+
+                Product::find($product->id)->update(['stock' => $product->stock - $transaction->approved_qty]);
+            }
+            $wallet->update(['balance' => $wallet->balance - $this->transactionDetail->find($id)->total_price]);
 
             DB::commit();
         } catch (\Throwable $th) {

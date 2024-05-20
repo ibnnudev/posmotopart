@@ -61,4 +61,16 @@ class TransactionController extends Controller
             return redirect()->back();
         }
     }
+
+    public function confirmPaylater($id, Request $request)
+    {
+        try {
+            $this->transaction->confirmPaylater($id);
+            toast('Pesanan berhasil dibuat', 'success');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            toast($th->getMessage(), 'error');
+            return redirect()->back();
+        }
+    }
 }
