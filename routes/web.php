@@ -64,6 +64,9 @@ Route::group(['prefix' => 'transaction'], function () {
     Route::post('upload-payment-proof/{id}', [TransactionController::class, 'uploadPaymentProof'])->name('transaction.upload-payment-proof');
     Route::post('cancel-order/{id}', [TransactionController::class, 'cancelOrder'])->name('transaction.cancel-order');
     Route::post('confirm-receive/{id}', [TransactionController::class, 'confirmReceive'])->name('transaction.confirm-receive');
+
+    // Paylater
+    Route::post('confirm-paylater/{id}', [TransactionController::class, 'confirmPaylater'])->name('transaction.confirm-paylater');
 })->middleware('auth', 'role:buyer');
 
 Route::get('login', function () {

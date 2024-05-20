@@ -118,7 +118,9 @@
                 </div>
                 @role('seller')
                     <div class="">
-                        @if ($transaction->status == 'waiting_confirmation' || $transaction->status == 'user_confirm')
+                        @if (
+                            $transaction->status == 'waiting_confirmation' ||
+                                ($transaction->status == 'user_confirm' && $transaction->paymentOption->name != 'Paylater'))
                             <p class="font-medium text-gray-500 mb-2">Ubah Status Bukti Pembayaran</p>
                             <form action="{{ route('admin.transaction.verification-payment', $transaction->id) }}"
                                 method="POST">

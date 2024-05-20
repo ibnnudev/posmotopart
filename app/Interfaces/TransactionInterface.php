@@ -17,4 +17,6 @@ interface TransactionInterface
     public function uploadPaymentProof($id, $data);
     public function verificationPayment($id);
     public function confirmReceive($id, $data);
+
+    public function confirmPaylater($id);
 }

@@ -58,16 +58,24 @@
                 <div class="grid grid-cols-6 py-5 items-center text-sm">
                     <div>
                         @if ($data->status == 'user_confirm')
-                            <form action="{{ route('transaction.upload-payment-proof', $data->id) }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <input type="file" name="payment_proof" id="payment_proof-{{ $data->id }}"
-                                    class="hidden" accept="image/*">
-                                <x-button onclick="uploadPaymentProof({{ $data->id }})" type="button" fit
-                                    class="bg-primary text-white">Upload Bukti Pembayaran</x-button>
-                            </form>
+                            @if ($data->paymentOption->name == 'Paylater')
+                                <form action="{{ route('transaction.confirm-paylater', $data->id) }}" method="POST">
+                                    @csrf
+                                    <x-button type="submit" fit class="bg-primary text-white">
+                                        Konfirmasi Pembayaran
+                                    </x-button>
+                                </form>
+                            @else
+                                <form action="{{ route('transaction.upload-payment-proof', $data->id) }}"
+                                    method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="file" name="payment_proof" id="payment_proof-{{ $data->id }}"
+                                        class="hidden" accept="image/*">
+                                    <x-button onclick="uploadPaymentProof({{ $data->id }})" type="button" fit
+                                        class="bg-primary text-white">Upload Bukti Pembayaran</x-button>
+                                </form>
+                            @endif
                         @endif
-
                         @if ($data->status != 'process_by_merchant' && $data->payment_proof != null)
                             <a href="{{ asset('storage/payment-proof/' . $data->payment_proof) }}" target="_blank"
                                 class="text-primary underline">Lihat Bukti Pembayaran</a>
@@ -88,7 +96,7 @@
                         @endif
                     </div>
                     <div>
-                        @if ($data->status == 'done')
+                        @if ($data->status == 'done' && $data->receive_proof != null)
                             <a href="{{ asset('storage/receipt-proof/' . $data->receive_proof) }}" target="_blank"
                                 class="text-primary underline">Lihat Bukti Penerimaan</a>
                         @endif
@@ -102,6 +110,15 @@
                                 <x-button type="submit" fit class="bg-red-500 text-white">Batalkan
                                     Transaksi</x-button>
                             </form>
+                            @if ($data->status == 'shipping')
+                                <span class="text-primary">Sedang Dikirim</span>
+                            @else
+                                <form action="{{ route('transaction.cancel-order', $data->id) }}" method="POST">
+                                    @csrf
+                                    <x-button type="submit" fit class="bg-red-500 text-white">Batalkan
+                                        Transaksi</x-button>
+                                </form>
+                            @endif
                         @endif
                     </div>
                     <p>Rp {{ number_format($data->total_price) }}</p>
