@@ -125,9 +125,14 @@
                 </div>
                 {{-- button cetak invoice --}}
 
-                <a href="{{ route('admin.transaction.invoice', ['transactionCode' => $data->transaction_code, 'type' => 'stream']) }}"
-                    target="_blank" class="block w-full py-3 font-semibold text-center text-white bg-primary">Cetak
-                    Invoice</a>
+                <div>
+                    <a href="{{ route('admin.transaction.invoice', ['transactionCode' => $data->transaction_code, 'type' => 'stream']) }}"
+                        target="_blank"
+                        class=" text-sm flex items-center w-fit px-4 py-2.5 font-medium text-center text-white bg-primary rounded-lg">
+                        <i class="fas fa-print mr-2"></i>
+                        Cetak Invoice
+                    </a>
+                </div>
 
             </div>
         </div>
