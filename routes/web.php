@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\admin\WalletController as AdminWalletController;
+use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\DiscountStoreController;
 use App\Http\Controllers\Guest\CartController;
 use App\Http\Controllers\Guest\CheckoutController;
