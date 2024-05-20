@@ -47,7 +47,8 @@
                 <div class="border-b border-gray-200 my-5"></div>
 
                 <div class="grid grid-cols-6 items-center text-sm font-medium text-gray-400">
-                    <div class="col-span-2">Bukti Pembayaran</div>
+                    <div class="col-span-2">Bukti
+                        pembayaran</div>
                     <div></div>
                     <div></div>
                     <p>Status</p>
@@ -104,6 +105,11 @@
                         @if ($data->status == 'done' || $data->status == 'admin_reject' || $data->status == 'user_reject')
                             @include('admin.transaction.status', ['status' => $data->status])
                         @else
+                            <form action="{{ route('transaction.cancel-order', $data->id) }}" method="POST">
+                                @csrf
+                                <x-button type="submit" fit class="bg-red-500 text-white">Batalkan
+                                    Transaksi</x-button>
+                            </form>
                             @if ($data->status == 'shipping')
                                 <span class="text-primary">Sedang Dikirim</span>
                             @else
@@ -117,6 +123,12 @@
                     </div>
                     <p>Rp {{ number_format($data->total_price) }}</p>
                 </div>
+                {{-- button cetak invoice --}}
+
+                <a href="{{ route('admin.transaction.invoice', ['transactionCode' => $data->transaction_code, 'type' => 'stream']) }}"
+                    target="_blank" class="block w-full py-3 font-semibold text-center text-white bg-primary">Cetak
+                    Invoice</a>
+
             </div>
         </div>
     @empty
