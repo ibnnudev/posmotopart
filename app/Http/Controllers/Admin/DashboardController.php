@@ -37,7 +37,7 @@ class DashboardController extends Controller
                 'jumlahTransactionDetail' => $isAdmin ? ($this->transactionDetail->where('status', $this->transactionDetail::PROCESS_BY_MERCHANT)->count()) : $this->transactionDetail->where('status', $this->transactionDetail::PROCESS_BY_MERCHANT)->where('store_id', auth()->user()->store->id)->count(),
                 'totalRejectTransaction' => $isAdmin ? $this->transaction->getAll()->where('status', 'user_reject')->count('id') : $this->transaction->getAll()->where('status', 'user_reject')->where('store_id', auth()->user()->store->id)->count('id'),
                 'jumlahSkuNull' => $isAdmin ? $this->product->getAll()->where('stock', null)->count() : $this->product->getAll()->where('stock', null)->where('store_id', auth()->user()->store->id)->count(),
-                'totalFee' => $isAdmin ?  number_format($this->transactionDetail->all()->sum('admin_fee'), 2, ',', '.') : number_format($this->transactionDetail->all()->where('store_id', auth()->user()->store->id)->where('status', 'done')->sum('admin_fee'), 2, ',', '.'),
+                'totalFee' => $isAdmin ?  number_format($this->transactionDetail->all()->where('status', 'done')->sum('admin_fee'), 2, ',', '.') : number_format($this->transactionDetail->all()->where('store_id', auth()->user()->store->id)->where('status', 'done')->sum('admin_fee'), 2, ',', '.'),
                 'data' => $data,
             ]);
         }
