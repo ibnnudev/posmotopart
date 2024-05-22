@@ -89,7 +89,7 @@
                                                 id="stock-{{ $data->id }}">{{ $data->stock }}</span>
                                         </div>
                                         @auth
-                                            @if ($data->stock != 0 || $data->stock != null)
+                                            @if ($data->stock != 0 || $data->stock != null || $data->stock != '')
                                                 @if ($data->cart)
                                                     <div class="lg:flex justify-end items-center mt-6">
                                                         {{-- <span class="text-gray-500">Keranjang</span> --}}
