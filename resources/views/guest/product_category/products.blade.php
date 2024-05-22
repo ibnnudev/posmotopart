@@ -85,23 +85,9 @@
                                         </div>
                                         <div class="lg:flex justify-between items-center">
                                             <span class="text-gray-500">Stok</span>
-                                            <span class="font-medium">{{ $data->stock }}</span>
+                                            <span class="font-medium"
+                                                id="stock-{{ $data->id }}">{{ $data->stock }}</span>
                                         </div>
-                                        {{-- <div
-                                            class="mt-3 pt-4 border-t border-t-gray-200 lg:flex items-center justify-between">
-                                            <span class="text-gray-500">Jumlah Barang</span>
-                                            <div class="flex items-center gap-2">
-                                                <button wire:click="decrement('{{ $data->id }}')"
-                                                    class="bg-gray-200 text-gray-600 px-2 py-1 rounded-md focus:outline-none">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                                <span>1</span>
-                                                <button wire:click="increment('{{ $data->id }}')"
-                                                    class="bg-primary text-white px-2 py-1 rounded-md focus:outline-none">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div> --}}
                                         @auth
                                             @if ($data->stock != 0 || $data->stock != null)
                                                 @if ($data->cart)
@@ -143,6 +129,18 @@
     @push('js-internal')
         <script>
             function addToCart(id) {
+                // get stock 
+                let stock = $('#stock-' + id).text();
+                if (stock == 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Stok Habis',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    return;
+                }
                 $.ajax({
                     url: "{{ route('cart.add') }}",
                     type: "POST",
