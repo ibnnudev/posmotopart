@@ -22,7 +22,7 @@
             <thead>
                 <tr>
                     {{-- <th>#</th> --}}
-                    <th>Nama Admin</th>
+                    <th>Oleh</th>
                     <th>SKU</th>
                     <th>Seller SKU</th>
                     <th>Nama Produk</th>

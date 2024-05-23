@@ -194,7 +194,8 @@ class TransactionRepository implements TransactionInterface
                     'created_by'  => auth()->user()->id,
                 ]);
 
-                Product::find($product->id)->update(['stock' => $product->stock - $transaction->approved_qty]);
+                $lastQty = $transaction->approved_qty == 0 ? $transaction->requested_qty : $transaction->approved_qty;
+                Product::find($product->id)->update(['stock' => $product->stock - $lastQty]);
             }
 
             DB::commit();
@@ -228,7 +229,8 @@ class TransactionRepository implements TransactionInterface
                     'created_by'  => auth()->user()->id,
                 ]);
 
-                Product::find($product->id)->update(['stock' => $product->stock - $transaction->approved_qty]);
+                $lastQty = $transaction->approved_qty == 0 ? $transaction->requested_qty : $transaction->approved_qty;
+                Product::find($product->id)->update(['stock' => $product->stock - $lastQty]);
             }
             $wallet->update(['balance' => $wallet->balance - $this->transactionDetail->find($id)->total_price]);
 
