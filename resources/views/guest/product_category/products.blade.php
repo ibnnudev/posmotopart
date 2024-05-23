@@ -83,7 +83,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="lg:flex justify-between items-center">
+                                        <div class="lg:flex justify-between items-center mb-2">
                                             <span class="text-gray-500">Stok</span>
                                             <span class="font-medium"
                                                 id="stock-{{ $data->id }}">{{ $data->stock }}</span>
