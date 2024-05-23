@@ -20,11 +20,11 @@ class ProductController extends Controller
 
     public function __construct(ProductInterface $product, ProductCategoryInterface $productCategory, ProductMerkInterface $productMerk, StoreInterface $store, CartInterface $cart)
     {
-        $this->product = $product;
+        $this->product         = $product;
         $this->productCategory = $productCategory;
-        $this->productMerk = $productMerk;
-        $this->store = $store;
-        $this->cart = $cart;
+        $this->productMerk     = $productMerk;
+        $this->store           = $store;
+        $this->cart            = $cart;
     }
 
     public function index()
@@ -36,15 +36,15 @@ class ProductController extends Controller
     public function show($categoryId, $storeId, Request $request)
     {
         $productMerks = $this->productMerk->getByStoreAndCategory($storeId, $categoryId);
-        $store = $this->store->getById($storeId);
+        $store        = $this->store->getById($storeId);
         return view('guest.product_category.show', compact('productMerks', 'store'));
     }
 
     public function products($product_merk_id)
     {
-        $products = $this->product->getProductByMerk($product_merk_id);
+        $products    = $this->product->getProductByMerk($product_merk_id);
         $productMerk = $this->productMerk->getById($product_merk_id);
-        $store = $this->store->getById($productMerk->store_id);
+        $store       = $this->store->getById($productMerk->store_id);
         return view('guest.product_category.products', compact('products', 'store', 'productMerk'));
     }
 }

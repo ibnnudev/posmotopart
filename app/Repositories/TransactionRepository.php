@@ -88,7 +88,7 @@ class TransactionRepository implements TransactionInterface
 
     public function getAll()
     {
-        return $this->transactionDetail->with(['transactions', 'paymentOption', 'destinationOrder', 'store'])->get();
+        return $this->transactionDetail->with(['transactions', 'paymentOption', 'destinationOrder', 'store'])->orderBy('created_at', 'desc')->get();
     }
 
     public function getById($id)

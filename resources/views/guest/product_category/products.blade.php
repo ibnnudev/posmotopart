@@ -89,25 +89,19 @@
                                                 id="stock-{{ $data->id }}">{{ $data->stock }}</span>
                                         </div>
                                         @auth
-                                            @if ($data->stock != 0 || $data->stock != null || $data->stock != '')
-                                                @if ($data->cart)
-                                                    <div class="lg:flex justify-end items-center mt-6">
-                                                        {{-- <span class="text-gray-500">Keranjang</span> --}}
-                                                        <x-link-button title="Lihat Keranjang" class="text-center"
-                                                            icon="fas fa-info-circle" href="{{ route('cart.index') }}" />
-                                                    </div>
-                                                @else
-                                                    <div class="lg:flex justify-end items-center mt-6">
-                                                        {{-- <span class="text-gray-500">Keranjang</span> --}}
-                                                        <x-link-button title="Keranjang" primary class="text-center"
-                                                            onclick="addToCart('{{ $data->id }}')"
-                                                            icon="fas fa-shopping-cart" />
-                                                    </div>
-                                                @endif
-                                            @else
+                                            @if ($data->stock == 0)
                                                 <div class="lg:flex justify-end items-center mt-6">
                                                     <span class="text-red-500">Stok Habis</span>
                                                 </div>
+                                            @else
+                                                @if (!$data->cart)
+                                                    <x-link-button title="Keranjang" primary class="text-center"
+                                                        onclick="addToCart('{{ $data->id }}')"
+                                                        icon="fas fa-shopping-cart" />
+                                                @else
+                                                    <x-link-button title="Lihat Keranjang" class="text-center"
+                                                        icon="fas fa-info-circle" href="{{ route('cart.index') }}" />
+                                                @endif
                                             @endif
                                         @endauth
                                     </x-card-container>
@@ -137,7 +131,6 @@
                         title: 'Gagal',
                         text: 'Stok Habis',
                         showConfirmButton: false,
-                        timer: 1500
                     });
                     return;
                 }
@@ -155,8 +148,6 @@
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
                             });
                             // reload
                             setTimeout(() => {
@@ -167,8 +158,6 @@
                                 icon: 'error',
                                 title: 'Gagal',
                                 text: response.message,
-                                showConfirmButton: false,
-                                timer: 1500
                             });
                         }
                     }

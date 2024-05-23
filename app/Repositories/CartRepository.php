@@ -24,7 +24,12 @@ class CartRepository implements CartInterface
 
     public function add($data)
     {
-        $product                 = $this->product->where('id', $data['product_id'])->first();
+        $product = $this->product->where('id', $data['product_id'])->first();
+
+        if ($product->stock < $data['qty']) {
+            throw new \Exception('Stok produk tidak cukup');
+        }
+
         $data['user_id']         = auth()->user()->id;
         $data['store_id']        = $product->store_id;
         $data['product_merk_id'] = $product->product_merk_id;
